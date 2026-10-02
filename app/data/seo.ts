@@ -190,14 +190,20 @@ export function serviceSchema({
   };
 }
 
-export function faqSchema(faqs: { question: string; answer: string }[], path: string): Record<string, unknown> {
+export function faqSchema(
+  faqs: readonly { question: string; answer: string }[],
+  path: string
+): Record<string, unknown> {
   return {
     '@type': 'FAQPage',
     '@id': `${absoluteUrl(path)}#faq`,
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
-      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
     })),
   };
 }
