@@ -1,3 +1,8 @@
 [build]
   command = "npm run build:netlify"
   publish = ".next"
+
+# This repository also contains Vite tooling. Explicitly run the Next.js adapter
+# so Netlify packages server routes instead of publishing raw .next files.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
