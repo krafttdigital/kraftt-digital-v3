@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { GeoServicePage } from '../../../components/geo/GeoServicePage';
+import { LocationServicePage as LocationServiceContent } from '../../_components/LocationServicePage';
 import { enabledLocationServices, isLocationServiceEnabled, locationBySlug, locations } from '../../../data/geo';
 import { createPageMetadata } from '../../../data/seo';
 import { serviceBySlug } from '../../../data/services';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -37,5 +37,5 @@ export default async function LocationServicePage({ params }: { params: Promise<
     .map((slug) => serviceBySlug(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
-  return <GeoServicePage kind="location" market={location} service={service} siblingServices={siblingServices} />;
+  return <LocationServiceContent market={location} service={service} siblingServices={siblingServices} />;
 }

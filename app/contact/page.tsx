@@ -146,7 +146,7 @@ export default function ContactPage() {
         <div className="page-faq-inner">
           <Reveal className="page-faq-heading">
             <div><p className="eyebrow eyebrow-dark">Common questions · 04 focused answers</p><h2 id="contact-faq-title">Know the essentials<br /><em>before you send.</em></h2></div>
-            <div><p>Scope, fit, audit requirements and working location—answered without making you search the site.</p><Link href="#intro-call">Send project details <i aria-hidden="true">→</i></Link></div>
+            <div><p>Scope, fit, audit requirements and working location—answered without making you search the site.</p><Link href="">Send project details <i aria-hidden="true">→</i></Link></div>
           </Reveal>
           <PageFaq
             title="Contact Kraftt Digital questions"

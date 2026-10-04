@@ -97,7 +97,7 @@ export default function AuditPage() {
         <div className="audit-next-steps"><p className="eyebrow eyebrow-dark">What happens next</p><ol><li><span>01</span><p><strong>Request reviewed</strong>Your details are checked for fit and completeness.</p></li><li><span>02</span><p><strong>Payment confirmed</strong>Payment instructions and any missing inputs are shared.</p></li><li><span>03</span><p><strong>Research begins</strong>Delivery format and timing are confirmed before work starts.</p></li></ol></div>
       </section>
 
-      <p className="privacy-note audit-privacy">Requesting the audit does not take payment. We confirm scope, timing and payment instructions before research begins. Prefer to talk first? <Link href="/contact#intro-call">Request a Free Introductory Call</Link>. Form submissions are processed by Formspree; WhatsApp opens a message for your review. See the <Link href="/legal/privacy-policy">privacy policy</Link>.</p>
+      <p className="privacy-note audit-privacy">Requesting the audit does not take payment. We confirm scope, timing and payment instructions before research begins. Prefer to talk first? <Link href="/contact">Request a Free Introductory Call</Link>. Form submissions are processed by Formspree; WhatsApp opens a message for your review. See the <Link href="/legal/privacy-policy">privacy policy</Link>.</p>
       <Footer />
     </main>
   );

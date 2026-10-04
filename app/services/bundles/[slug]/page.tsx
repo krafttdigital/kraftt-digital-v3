@@ -232,7 +232,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
         </div>
         <Reveal className="bundle-detail-fit-cta">
           <div><Clock3 size={18} /><p>Unsure whether a bundle or one service is the right scope?</p></div>
-          <Link href="/contact#intro-call">Request a Free Introductory Call <ArrowRight size={15} /></Link>
+          <Link href="/contact">Request a Free Introductory Call <ArrowRight size={15} /></Link>
         </Reveal>
       </section>
 

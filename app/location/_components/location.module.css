@@ -1,0 +1,58 @@
+/* Location-only additions. Main-site classes supply the shared design. */
+.directoryHero::before { content: 'LOCATIONS'; }
+.servicesSection::before { content: attr(data-service-count); }
+.breadcrumbs { margin: 0 0 30px; color: var(--dusk); font-size: 12px; line-height: 1.6; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0; list-style: none; }
+.breadcrumbs li { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+.breadcrumbs a { color: var(--forest); text-decoration: underline; text-underline-offset: 4px; }
+.breadcrumbs [aria-current] { color: var(--raw-umber); }
+.context { padding: clamp(42px, 5vw, 76px) 0; border-bottom: 1px solid var(--bone); background: var(--parchment); }
+.contextInner { width: min(calc(100% - 80px), 1440px); margin: 0 auto; }
+.contextGrid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr); gap: clamp(32px, 5vw, 80px); align-items: center; padding: clamp(28px, 3.5vw, 54px); border: 1px solid rgb(139 115 85 / 20%); border-radius: 28px; background: #faf8f3; }
+.contextCopy { min-width: 0; }
+.contextEyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; color: var(--raw-umber); font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+.contextEyebrow > span:first-child { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border: 1px solid rgb(44 74 62 / 20%); border-radius: 999px; color: var(--forest); }
+.contextCopy h2 { max-width: 17ch; margin: 26px 0 22px; font-family: var(--font-display), Georgia, serif; font-size: clamp(38px, 3.8vw, 62px); font-weight: 400; line-height: 1.02; letter-spacing: -.035em; }
+.contextCopy > p { max-width: 57ch; margin: 0; color: var(--dusk); font-size: 15px; line-height: 1.8; }
+.contextLink { display: inline-flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 30px; padding: 6px 7px 6px 21px; border: 1px solid var(--midnight); border-radius: 999px; background: var(--midnight); color: var(--parchment); font-size: 13px; font-weight: 500; transition: background 180ms ease; }
+.contextLink > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--linen); color: var(--midnight); }
+.contextLink:hover { background: var(--forest); }
+.deliveryCard { position: relative; overflow: hidden; min-width: 0; padding: clamp(26px, 3vw, 42px); border-radius: 22px; background: var(--forest); color: var(--parchment); box-shadow: 0 18px 38px rgb(44 74 62 / 10%); }
+.deliveryTop { display: flex; align-items: center; gap: 14px; color: var(--linen); font-size: 10px; line-height: 1.8; letter-spacing: .08em; text-transform: uppercase; }
+.deliveryTop strong { color: rgb(242 239 233 / 65%); font-size: 9px; font-weight: 400; letter-spacing: .02em; }
+.deliveryIcon { display: grid; flex: 0 0 48px; height: 48px; place-items: center; border: 1px solid rgb(232 220 200 / 26%); border-radius: 14px; }
+.deliveryCard h3 { margin: 30px 0 18px; color: var(--parchment); font-family: var(--font-display), Georgia, serif; font-size: clamp(30px, 2.7vw, 43px); font-weight: 400; line-height: 1.04; letter-spacing: -.025em; }
+.deliveryCard h3 em { color: var(--sand); font-weight: inherit; }
+.deliveryCard > p { margin: 0; color: rgb(242 239 233 / 83%); font-size: 13px; line-height: 1.75; }
+.deliveryModes { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 24px 0; }
+.deliveryModes > span { display: inline-flex; align-items: center; gap: 7px; color: var(--linen); font-size: 11px; }
+.deliveryCard > a { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding-top: 20px; border-top: 1px solid rgb(242 239 233 / 25%); color: var(--parchment); font-size: 12px; font-weight: 500; }
+.deliveryCard > a:hover { color: var(--sand); }
+.nearbyAreas { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 24px 10px 0; }
+.nearbyAreas > span { display: inline-flex; align-items: center; gap: 8px; color: var(--raw-umber); font-size: 11px; font-weight: 500; }
+.nearbyAreas ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.nearbyAreas li { padding: 7px 12px; border: 1px solid rgb(139 115 85 / 21%); border-radius: 999px; color: var(--dusk); font-size: 11px; }
+.deliveryBase { display: block; margin-top: 7px; color: var(--dusk); font-size: 10px; font-weight: 400; line-height: 1.5; }
+.serviceGrid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+.directoryGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cityCard { min-width: 0; }
+@media (max-width: 1100px) { .directoryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 960px) {
+  .contextGrid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .contextCopy h2 { max-width: 23ch; }
+  .contextCopy > p { max-width: 68ch; }
+}
+@media (max-width: 760px) {
+  .contextGrid, .directoryGrid, .serviceGrid { grid-template-columns: minmax(0, 1fr); }
+  .contextInner { width: calc(100% - 36px); }
+  .contextGrid { padding: 24px 20px; border-radius: 22px; }
+  .contextCopy h2 { font-size: clamp(35px, 9vw, 46px); }
+  .contextCopy > p { font-size: 14px; line-height: 1.75; }
+  .contextEyebrow { font-size: 9px; gap: 10px; }
+  .deliveryCard { padding: 25px 22px; border-radius: 17px; }
+  .deliveryCard h3 { font-size: 33px; }
+  .nearbyAreas { padding: 22px 3px 0; gap: 12px; }
+  .breadcrumbs { font-size: 11px; }
+  .breadcrumbs ol { gap: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .contextLink { transition: none; } }

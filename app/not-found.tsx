@@ -26,7 +26,7 @@ const routes = [
     number: '03',
     label: 'Free Introductory Call',
     description: 'Tell us what you need and discuss a sensible next step.',
-    href: '/contact#intro-call',
+    href: '/contact',
   },
 ];
 

@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+const metadataMaster = JSON.parse(await readFile(new URL('../app/data/metadata-master.json', import.meta.url), 'utf8'));
 const baseUrl = (process.env.SEO_VALIDATE_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 
 const decode = (value = '') => value
@@ -27,6 +29,9 @@ const productionUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) =
 if (productionUrls.length === 0) throw new Error('Sitemap contains no URLs.');
 
 const failures = [];
+for (const path of Object.keys(metadataMaster)) {
+  if (!productionUrls.some(url => new URL(url).pathname === path)) failures.push(`${path}: metadata master route absent from sitemap`);
+}
 const titles = new Map();
 const descriptions = new Map();
 const ogImages = new Set();
@@ -51,8 +56,10 @@ for (const canonicalUrl of productionUrls) {
   if (response.status !== 200) failures.push(`${path}: HTTP ${response.status}`);
   if (!pageTitle) failures.push(`${path}: missing title`);
   if (!description) failures.push(`${path}: missing description`);
+  const expected = metadataMaster[path];
+  if (expected && (pageTitle !== expected.title || description !== expected.description || ogTitle !== expected.ogTitle || ogDescription !== expected.ogDescription)) failures.push(`${path}: metadata differs from approved master`);
   if (canonical !== canonicalUrl) failures.push(`${path}: canonical ${canonical || '(missing)'} does not match ${canonicalUrl}`);
-  if (!robots.toLowerCase().includes('index') || !robots.toLowerCase().includes('follow')) failures.push(`${path}: index/follow robots missing`);
+  if (robots.toLowerCase().includes('noindex') || robots.toLowerCase().includes('nofollow') || !robots.toLowerCase().includes('index') || !robots.toLowerCase().includes('follow')) failures.push(`${path}: index/follow robots missing`);
   if (!ogTitle || !ogDescription || ogUrl !== canonicalUrl || !ogImage) failures.push(`${path}: incomplete Open Graph metadata`);
   if (twitterCard !== 'summary_large_image' || !twitterTitle || !twitterDescription) failures.push(`${path}: incomplete Twitter metadata`);
   if (jsonLdScripts.length < 2) failures.push(`${path}: expected global and page JSON-LD`);

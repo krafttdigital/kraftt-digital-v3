@@ -23,7 +23,7 @@ export function GeoDirectoryPage({ kind, markets, title, description }: GeoDirec
       <SiteHeader />
       <section className={styles.directoryHero} aria-labelledby="geo-directory-title">
         <Reveal direction="left"><p className="eyebrow eyebrow-dark">Markets served · Kraftt Digital</p><h1 id="geo-directory-title">Work without<br /><em>unclear distance.</em></h1></Reveal>
-        <Reveal direction="right"><p>{description}</p><Link href="/contact#intro-call">Request a free introductory call <ArrowRight size={15} /></Link></Reveal>
+        <Reveal direction="right"><p>{description}</p><Link href="/contact">Request a free introductory call <ArrowRight size={15} /></Link></Reveal>
       </section>
       <section className={styles.directoryGrid} aria-label={kind === 'location' ? 'Indian service areas' : 'International markets served'}>
         {markets.map((market, index) => (

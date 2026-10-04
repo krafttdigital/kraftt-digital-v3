@@ -1,0 +1,38 @@
+{
+  "website": {
+    "160": "/assets/animated-service-icons/website-160.587dfedf2b53.webp",
+    "640": "/assets/animated-service-icons/website-640.df8ca34e2109.webp"
+  },
+  "branding": {
+    "160": "/assets/animated-service-icons/branding-160.9a42f840fedf.webp",
+    "640": "/assets/animated-service-icons/branding-640.6f81f2b90ad6.webp"
+  },
+  "stores": {
+    "160": "/assets/animated-service-icons/stores-160.099ff11cef5c.webp",
+    "640": "/assets/animated-service-icons/stores-640.7d0a5f8638c4.webp"
+  },
+  "marketplace": {
+    "160": "/assets/animated-service-icons/marketplace-160.f00c9ad3fb83.webp",
+    "640": "/assets/animated-service-icons/marketplace-640.b1543fc9e20e.webp"
+  },
+  "seo": {
+    "160": "/assets/animated-service-icons/seo-160.7b9b5d8d440d.webp",
+    "640": "/assets/animated-service-icons/seo-640.7c777ecda151.webp"
+  },
+  "socialmedia": {
+    "160": "/assets/animated-service-icons/socialmedia-160.acb7e60e42ea.webp",
+    "640": "/assets/animated-service-icons/socialmedia-640.1fe757c029b1.webp"
+  },
+  "landing page": {
+    "160": "/assets/animated-service-icons/landing-page-160.de4caf534f3e.webp",
+    "640": "/assets/animated-service-icons/landing-page-640.4d252318753f.webp"
+  },
+  "appdev": {
+    "160": "/assets/animated-service-icons/appdev-160.2ba66b7d9a87.webp",
+    "640": "/assets/animated-service-icons/appdev-640.7b3ab797b1a0.webp"
+  },
+  "dashobard": {
+    "160": "/assets/animated-service-icons/dashobard-160.2850201aeed8.webp",
+    "640": "/assets/animated-service-icons/dashobard-640.6be31404b47e.webp"
+  }
+}

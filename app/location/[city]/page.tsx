@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { GeoLandingPage } from '../../components/geo/GeoLandingPage';
+import { LocationLandingPage } from '../_components/LocationLandingPage';
 import { locationBySlug, locations } from '../../data/geo';
 import { createPageMetadata } from '../../data/seo';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -29,5 +29,5 @@ export default async function LocationPage({ params }: { params: Promise<{ city:
   const location = locationBySlug(city);
   if (!location) notFound();
 
-  return <GeoLandingPage kind="location" market={location} />;
+  return <LocationLandingPage market={location} />;
 }

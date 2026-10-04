@@ -6,7 +6,7 @@ import { JsonLd } from './components/JsonLd';
 import { PricingCurrencyProvider } from './components/PricingCurrencyProvider';
 import { SiteLoader } from './components/SiteLoader';
 import { detectPricingCurrency } from './data/pricing.server';
-import { organizationAndWebsiteSchema } from './data/seo';
+import { metadataByPath, organizationAndWebsiteSchema } from './data/seo';
 import { siteUrl } from './data/site';
 
 const cormorant = Cormorant_Garamond({
@@ -24,11 +24,11 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Kraftt Digital — Digital presence for brands who take themselves seriously',
+    default: metadataByPath['/'].title,
     template: '%s',
   },
   description:
-    'Be discovered. Be trusted. Be chosen. Kraftt Digital builds brand identities, websites, online stores and digital presence for ambitious businesses.',
+    metadataByPath['/'].description,
   manifest: '/favicon/site.webmanifest',
   icons: {
     icon: [
@@ -59,15 +59,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Kraftt Digital',
-    title: 'Kraftt Digital — Digital presence for brands who take themselves seriously',
-    description: 'Be discovered. Be trusted. Be chosen. Brand, websites, commerce, SEO and social media by Kraftt Digital.',
+    title: metadataByPath['/'].title,
+    description: metadataByPath['/'].description,
     url: '/',
     images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Kraftt Digital — Make your business easier to discover, trust and choose.' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kraftt Digital — Digital presence for brands who take themselves seriously',
-    description: 'Be discovered. Be trusted. Be chosen. Brand, websites, commerce, SEO and social media by Kraftt Digital.',
+    title: metadataByPath['/'].title,
+    description: metadataByPath['/'].description,
     images: ['/og.png'],
   },
 };

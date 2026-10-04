@@ -24,7 +24,7 @@ export default function ToolsPage() {
           <p>{pageDescription}</p>
           <div className="tool-hub-actions">
             <Button href="/tools/digital-presence-score">Check your digital presence <span aria-hidden="true">→</span></Button>
-            <Button href="/contact#intro-call" variant="secondary">Request a Free Introductory Call <span aria-hidden="true">↗</span></Button>
+            <Button href="/contact" variant="secondary">Request a Free Introductory Call <span aria-hidden="true">↗</span></Button>
           </div>
         </div>
       </header>

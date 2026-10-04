@@ -48,7 +48,7 @@ export default function ProcessPage() {
             <h1 id="process-page-title">Clarity before<br /><em>commitment.</em></h1>
             <p>Start with a free conversation. We clarify the requirement, explain the recommended scope and document the terms before delivery begins.</p>
             <div className="process-clarity-actions">
-              <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+              <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
               <Link href="/services">View services <span aria-hidden="true">↗</span></Link>
             </div>
           </Reveal>
@@ -92,7 +92,7 @@ export default function ProcessPage() {
               <span><b><RegionalPriceCopy>₹999</RegionalPriceCopy></b> optional paid audit</span>
               <span><b>Written</b> scope and terms</span>
             </div>
-            <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
           </aside>
 
           <div className="process-clarity-steps">
@@ -135,7 +135,7 @@ export default function ProcessPage() {
         <div>
           <p><RegionalPriceCopy>The free introductory call helps us understand the need. A paid audit is available if a researched review would help.</RegionalPriceCopy></p>
           <div className="process-clarity-actions process-clarity-actions-inverse">
-            <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
             <Link href="/contact">Ask a question <span aria-hidden="true">↗</span></Link>
           </div>
         </div>

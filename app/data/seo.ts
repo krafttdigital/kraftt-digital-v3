@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import { contactEmail, contactPhone, siteUrl } from './site';
 import type { ClientReview } from './reviews';
+import metadataMaster from './metadata-master.json';
+import { services, coreServices } from './services';
+import { bundles } from './bundles';
+import { projects } from './projects';
+import { tools } from '../tools/data';
+
+type MasterMetadata = { title: string; description: string; ogTitle: string; ogDescription: string };
+export const metadataByPath: Record<string, MasterMetadata> = metadataMaster;
 
 export const brandName = 'Kraftt Digital';
 export const siteOrigin = siteUrl.replace(/\/$/, '');
@@ -9,6 +17,7 @@ export const websiteId = `${siteOrigin}/#website`;
 
 export function absoluteUrl(path = '/') {
   const normalisedPath = path === '' ? '/' : path.startsWith('/') ? path : `/${path}`;
+  // Next normalizes origin-only metadata URLs without a trailing slash.
   if (normalisedPath === '/') return siteOrigin;
   return `${siteOrigin}${normalisedPath}`;
 }
@@ -43,7 +52,12 @@ export function createPageMetadata({
   languages,
   locale = 'en_IN',
 }: PageMetadataInput): Metadata {
-  const canonical = absoluteUrl(path);
+  const master = metadataByPath[path];
+  title = master?.title ?? title;
+  description = master?.description ?? description;
+  languages ??= noIndex ? undefined : { 'en-IN': path, 'x-default': path };
+  const isHomepage = path === '/';
+  const canonical = isHomepage ? `${siteOrigin}/` : absoluteUrl(path);
   const ogImage = image ? absoluteUrl(image) : socialImage(path, title, label);
   const robots = noIndex
     ? { index: false, follow: false }
@@ -60,6 +74,8 @@ export function createPageMetadata({
       };
 
   return {
+    // All social/alternate URLs are absolute. Avoid Next stripping the root slash.
+    ...(isHomepage ? { metadataBase: null } : {}),
     title,
     description,
     alternates: {
@@ -71,8 +87,8 @@ export function createPageMetadata({
       type,
       siteName: brandName,
       locale,
-      title,
-      description,
+      title: master?.ogTitle ?? title,
+      description: master?.ogDescription ?? description,
       url: canonical,
       images: [{
         url: ogImage,
@@ -106,11 +122,24 @@ export function createPageSchema({
 }): Record<string, unknown> {
   const url = absoluteUrl(path);
   const breadcrumbId = `${url}#breadcrumb`;
+  const master = metadataByPath[path];
+  name = master?.title ?? name;
+  description = master?.description ?? description;
+  const pageType = path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage'
+    : ['/services', '/work', '/tools'].includes(path) ? 'CollectionPage' : 'WebPage';
+  const collection = path === '/services'
+    ? [...coreServices, ...services.filter(s => ['landing-pages', 'app-development', 'dashboards-internal-tools'].includes(s.slug))].map(s => ({ name: s.name, path: `/services/${s.slug}` }))
+    : path === '/work' ? projects.map(p => ({ name: p.name, path: `/work/${p.slug}` }))
+    : path === '/tools' ? tools.map(t => ({ name: t.name, path: `/tools/${t.slug}` })) : [];
+  const tool = tools.find(t => path === `/tools/${t.slug}`);
+  const additional: Record<string, unknown>[] = [];
+  if (collection.length) additional.push({ '@type': 'ItemList', '@id': `${url}#list`, itemListElement: collection.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: absoluteUrl(item.path) })) });
+  if (tool) additional.push({ '@type': 'WebApplication', '@id': `${url}#application`, name: tool.name, description: tool.description, url, operatingSystem: 'Web', applicationCategory: tool.slug.startsWith('gst-') ? 'FinanceApplication' : 'BusinessApplication', offers: { '@type': 'Offer', price: 0, priceCurrency: 'INR' }, publisher: { '@id': organizationId } });
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'WebPage',
+        '@type': pageType,
         '@id': `${url}#webpage`,
         url,
         name,
@@ -129,7 +158,9 @@ export function createPageSchema({
           item: absoluteUrl(item.path),
         })),
       },
-      ...entities,
+      // Agency testimonials remain visible but are not self-serving review markup.
+      ...entities.filter(entity => !['Review', 'AggregateRating'].includes(String(entity['@type']))),
+      ...additional,
     ],
   };
 }
@@ -142,10 +173,13 @@ export function organizationAndWebsiteSchema(): Record<string, unknown> {
         '@type': 'Organization',
         '@id': organizationId,
         name: brandName,
-        url: siteOrigin,
+        alternateName: ['Kraftt', 'Kraftt.Digital'],
+        url: `${siteOrigin}/`,
         logo: absoluteUrl('/favicon/android-chrome-512x512.png'),
         email: contactEmail,
         telephone: contactPhone,
+        address: { '@type': 'PostalAddress', addressLocality: 'Bathinda', addressRegion: 'Punjab', addressCountry: 'IN' },
+        contactPoint: { '@type': 'ContactPoint', telephone: contactPhone, email: contactEmail, contactType: 'customer service' },
         description: 'Kraftt Digital builds brand identities, websites and online stores, with marketplace, SEO and social media services for businesses in India and international markets.',
         sameAs: [
           'https://www.instagram.com/krafttdigital',
@@ -155,8 +189,9 @@ export function organizationAndWebsiteSchema(): Record<string, unknown> {
       {
         '@type': 'WebSite',
         '@id': websiteId,
-        url: siteOrigin,
+        url: `${siteOrigin}/`,
         name: brandName,
+        alternateName: ['Kraftt', 'Kraftt.Digital', 'krafttdigital.in'],
         publisher: { '@id': organizationId },
         inLanguage: 'en-IN',
       },
@@ -178,8 +213,13 @@ export function serviceSchema({
   serviceType?: string;
 }): Record<string, unknown> {
   const url = absoluteUrl(path);
+  const service = services.find(s => path === `/services/${s.slug}`);
+  const bundle = bundles.find(b => path === `/services/bundles/${b.slug}`);
+  const scopes = service?.tiers.map(t => ({ name: t.name, description: t.deliverables.join('; ') }))
+    ?? (bundle ? [{ name: bundle.name, description: bundle.deliverables.join('; ') }] : []);
   return {
     '@type': 'Service',
+    ...(scopes.length ? { offers: scopes.map(scope => ({ '@type': 'Offer', ...scope, url, seller: { '@id': organizationId } })) } : {}),
     '@id': `${url}#service`,
     name,
     description,

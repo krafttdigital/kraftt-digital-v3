@@ -1,30 +1,35 @@
-import Image from 'next/image';
+import iconAssets from '../data/service-icon-assets.json';
 
-const animatedServiceIcons: Record<string, string> = {
-  'web-design-development': '/assets/animation%20icons/website.gif',
-  'brand-identity': '/assets/animation%20icons/branding.gif',
-  'ecommerce-store-development': '/assets/animation%20icons/stores.gif',
-  'marketplace-catalogue-building': '/assets/animation%20icons/marketplace.gif',
-  'ecommerce-seo': '/assets/animation%20icons/seo.gif',
-  'social-media-management': '/assets/animation%20icons/socialmedia.gif',
-  'landing-pages': '/assets/animation%20icons/landing%20page.gif',
-  'app-development': '/assets/animation%20icons/appdev.gif',
-  'dashboards-internal-tools': '/assets/animation%20icons/dashobard.gif',
-  'content-copywriting': '/assets/animation%20icons/landing%20page.gif',
-  'ai-powered-creative': '/assets/animation%20icons/branding.gif',
+const animatedServiceIcons: Record<string, keyof typeof iconAssets> = {
+  'web-design-development': 'website',
+  'brand-identity': 'branding',
+  'ecommerce-store-development': 'stores',
+  'marketplace-catalogue-building': 'marketplace',
+  'ecommerce-seo': 'seo',
+  'social-media-management': 'socialmedia',
+  'landing-pages': 'landing page',
+  'app-development': 'appdev',
+  'dashboards-internal-tools': 'dashobard',
+  'content-copywriting': 'landing page',
+  'ai-powered-creative': 'branding',
 };
 
 export function AnimatedServiceIcon({ slug, size = 40 }: { slug: string; size?: number }) {
-  const src = animatedServiceIcons[slug] ?? animatedServiceIcons['dashboards-internal-tools'];
+  const assets = iconAssets[animatedServiceIcons[slug] ?? 'dashobard'];
 
   return (
-    <Image
+    // Pre-encoded animation variants bypass Next's static-image optimizer.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       className="animated-service-icon"
-      src={src}
+      src={assets['160']}
+      srcSet={`${assets['160']} 160w, ${assets['640']} 640w`}
+      sizes={`${Math.max(size, 48)}px`}
       alt=""
       width={size}
       height={size}
-      unoptimized
+      loading="lazy"
+      decoding="async"
       aria-hidden="true"
     />
   );

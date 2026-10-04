@@ -75,7 +75,7 @@ export default function WorkPage() {
 
           <Reveal className="work-page-method-actions">
             <Link href="/process">Explore the process <span aria-hidden="true">↗</span></Link>
-            <Link href="/contact#intro-call">Request a free introductory call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a free introductory call <span aria-hidden="true">→</span></Link>
           </Reveal>
         </div>
       </section> */}

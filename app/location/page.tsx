@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { GeoDirectoryPage } from '../components/geo/GeoDirectoryPage';
+import { LocationDirectoryPage } from './_components/LocationDirectoryPage';
 import { locations } from '../data/geo';
 import { createPageMetadata } from '../data/seo';
 
@@ -14,5 +14,5 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function LocationsPage() {
-  return <GeoDirectoryPage kind="location" markets={locations} title={title} description={description} />;
+  return <LocationDirectoryPage markets={locations} title={title} description={description} />;
 }

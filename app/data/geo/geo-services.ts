@@ -16,8 +16,8 @@ const commerce = [...core, 'ecommerce-seo'] as const;
 const full = [...commerce, 'social-media-management'] as const;
 
 export const enabledLocationServices = {
-  bathinda: core,
-  mohali: [...core, 'social-media-management'],
+  bathinda: commerce,
+  mohali: full,
   ludhiana: full,
   chandigarh: full,
   gurugram: full,
@@ -25,12 +25,12 @@ export const enabledLocationServices = {
   noida: commerce,
   bengaluru: commerce,
   hyderabad: commerce,
-  jaipur: [...core, 'social-media-management'],
+  jaipur: full,
   mumbai: full,
-  barnala: core,
+  barnala: commerce,
   jalandhar: commerce,
   amritsar: commerce,
-  mansa: core,
+  mansa: commerce,
   chennai: commerce,
 } as const satisfies Record<LocationSlug, readonly GeoServiceSlug[]>;
 

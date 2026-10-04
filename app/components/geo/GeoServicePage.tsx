@@ -154,7 +154,7 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
 
       <section className={styles.cta} aria-labelledby="geo-service-cta-title">
         <Reveal direction="left"><p className="eyebrow">Choose the next clear step</p><h2 id="geo-service-cta-title">Discuss {service.name.toLowerCase()}.<br /><em>Start with clarity.</em></h2></Reveal>
-        <Reveal className={styles.ctaActions} direction="right"><p>Request a free introductory call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={`/contact?service=${encodeURIComponent(service.name)}&market=${encodeURIComponent(marketName)}#intro-call`}>Request a free call <ArrowRight size={15} /></Link><a href={message}>Message about this service <ArrowRight size={15} /></a></div></Reveal>
+        <Reveal className={styles.ctaActions} direction="right"><p>Request a free introductory call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={`/contact?service=${encodeURIComponent(service.name)}&market=${encodeURIComponent(marketName)}`}>Request a free call <ArrowRight size={15} /></Link><a href={message}>Message about this service <ArrowRight size={15} /></a></div></Reveal>
       </section>
 
       <Footer />

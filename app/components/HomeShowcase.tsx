@@ -34,7 +34,7 @@ export function HomeShowcase({
           <p className="kraftt-hero-tagline"><em>“Digital presence for brands who take themselves seriously.”</em></p>
           <p className="kraftt-hero-intro">{intro}</p>
           <div className="kraftt-hero-actions">
-            <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
             <Link href="/work">Explore Our Work <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="kraftt-hero-note" aria-label="Kraftt approach">

@@ -112,7 +112,7 @@ export default function AboutPage() {
               ))}
             </div>
             <div className="about-clarity-actions">
-              <Link href="/contact#intro-call">Request a Free Call <span aria-hidden="true">→</span></Link>
+              <Link href="/contact">Request a Free Call <span aria-hidden="true">→</span></Link>
               <Link href="/work">See real project outcomes <span aria-hidden="true">↗</span></Link>
             </div>
           </Reveal>
@@ -280,7 +280,7 @@ export default function AboutPage() {
           <Reveal className="about-clarity-fit-card about-clarity-fit-card-good">
             <span>✓</span><h3>A good fit if…</h3>
             <ul>{goodFit.map((item) => <li key={item}>{item}</li>)}</ul>
-            <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
           </Reveal>
           <Reveal className="about-clarity-fit-card">
             <span>→</span><h3>What we need from you</h3>
@@ -298,7 +298,7 @@ export default function AboutPage() {
         <div>
           <p>Begin with a free introductory call. A paid Digital Presence Audit is available when deeper research would help.</p>
           <div className="about-clarity-actions about-clarity-actions-inverse">
-            <Link href="/contact#intro-call">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
             <Link href="/process">Explore the process <span aria-hidden="true">↗</span></Link>
           </div>
         </div>

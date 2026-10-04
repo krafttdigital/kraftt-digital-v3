@@ -1,0 +1,404 @@
+{
+  "/": {
+    "title": "Kraftt Digital | Branding, Web Design & SEO Agency in India",
+    "description": "Kraftt Digital is a research-led digital agency in India for brand identity, websites, e-commerce, SEO, social media and custom digital systems.",
+    "ogTitle": "Digital Agency in India | Branding, Web & SEO | Kraftt Digital",
+    "ogDescription": "Kraftt Digital is a research-led digital agency in India for brand identity, websites, e-commerce, SEO, social media and custom digital systems."
+  },
+  "/services": {
+    "title": "Branding, Website & Digital Services in India | Kraftt Digital",
+    "description": "Compare Kraftt Digital services for brand identity, web design, e-commerce, marketplace setup, SEO, social media, apps and custom business software.",
+    "ogTitle": "Branding, Website & Digital Services in India | Kraftt Digital",
+    "ogDescription": "Compare Kraftt Digital services for brand identity, web design, e-commerce, marketplace setup, SEO, social media, apps and custom business software."
+  },
+  "/services/web-design-development": {
+    "title": "Web Design & Development Company in India | Kraftt Digital",
+    "description": "Professional web design and development in India for responsive business websites, clear enquiry paths, launch SEO and practical handover.",
+    "ogTitle": "Web Design & Development Company in India | Kraftt Digital",
+    "ogDescription": "Professional web design and development in India for responsive business websites, clear enquiry paths, launch SEO and practical handover."
+  },
+  "/services/brand-identity": {
+    "title": "Brand Identity & Branding Services in India | Kraftt Digital",
+    "description": "Build a clear brand identity with positioning, logo system, colour, typography, voice and practical brand guidance from Kraftt Digital.",
+    "ogTitle": "Brand Identity & Branding Services in India | Kraftt Digital",
+    "ogDescription": "Build a clear brand identity with positioning, logo system, colour, typography, voice and practical brand guidance from Kraftt Digital."
+  },
+  "/services/ecommerce-store-development": {
+    "title": "E-commerce & Shopify Development in India | Kraftt Digital",
+    "description": "E-commerce store development in India for Shopify, Wix and WooCommerce, including catalogue setup, product pages, launch SEO and owner training.",
+    "ogTitle": "E-commerce & Shopify Development in India | Kraftt Digital",
+    "ogDescription": "E-commerce store development in India for Shopify, Wix and WooCommerce, including catalogue setup, product pages, launch SEO and owner training."
+  },
+  "/services/marketplace-catalogue-building": {
+    "title": "Amazon, Flipkart & Meesho Catalogue Services | Kraftt Digital",
+    "description": "Marketplace catalogue support for Indian sellers across Amazon, Flipkart and Meesho, including setup assistance, listings, research and pricing support.",
+    "ogTitle": "Amazon, Flipkart & Meesho Catalogue Services | Kraftt Digital",
+    "ogDescription": "Marketplace catalogue support for Indian sellers across Amazon, Flipkart and Meesho, including setup assistance, listings, research and pricing support."
+  },
+  "/services/ecommerce-seo": {
+    "title": "SEO Services for Websites & E-commerce in India | Kraftt Digital",
+    "description": "SEO support for online stores and business websites, focused on search foundations, on-page optimisation, content, technical improvements and monitoring.",
+    "ogTitle": "SEO Services for Websites & E-commerce in India | Kraftt Digital",
+    "ogDescription": "SEO support for online stores and business websites, focused on search foundations, on-page optimisation, content, technical improvements and monitoring."
+  },
+  "/services/social-media-management": {
+    "title": "Social Media Management Services in India | Kraftt Digital",
+    "description": "Social media strategy and management in India with planned content, publishing, engagement, comment replies and monthly performance reporting.",
+    "ogTitle": "Social Media Management Services in India | Kraftt Digital",
+    "ogDescription": "Social media strategy and management in India with planned content, publishing, engagement, comment replies and monthly performance reporting."
+  },
+  "/services/landing-pages": {
+    "title": "Landing Page Design & Development in India | Kraftt Digital",
+    "description": "Landing page design and development in India for focused offers, lead generation and clear conversion paths across supported website platforms.",
+    "ogTitle": "Landing Page Design & Development in India | Kraftt Digital",
+    "ogDescription": "Landing page design and development in India for focused offers, lead generation and clear conversion paths across supported website platforms."
+  },
+  "/services/app-development": {
+    "title": "App Development in India | Android & iOS | Kraftt Digital",
+    "description": "Custom app development in India for Android and iOS, planned around your users, business workflow, required features and integrations.",
+    "ogTitle": "App Development in India | Android & iOS | Kraftt Digital",
+    "ogDescription": "Custom app development in India for Android and iOS, planned around your users, business workflow, required features and integrations."
+  },
+  "/services/dashboards-internal-tools": {
+    "title": "Custom Software & Internal Tools Development | Kraftt Digital",
+    "description": "Custom software, dashboards and internal tools designed around business workflows, including admin systems, local tools and cloud-based solutions.",
+    "ogTitle": "Custom Software & Internal Tools Development | Kraftt Digital",
+    "ogDescription": "Custom software, dashboards and internal tools designed around business workflows, including admin systems, local tools and cloud-based solutions."
+  },
+  "/services/content-copywriting": {
+    "title": "Content & Copywriting Services | Kraftt Digital",
+    "description": "Content and copywriting services from Kraftt Digital for clear website messaging, brand communication and search-aware business content.",
+    "ogTitle": "Content & Copywriting Services | Kraftt Digital",
+    "ogDescription": "Content and copywriting services from Kraftt Digital for clear website messaging, brand communication and search-aware business content."
+  },
+  "/services/ai-powered-creative": {
+    "title": "AI-Powered Creative Services | Ads, Mockups & Copy | Kraftt",
+    "description": "AI-assisted creative services from Kraftt Digital for brand-controlled visual production, ad concepts, product mockups and related creative work.",
+    "ogTitle": "AI-Powered Creative Services | Ads, Mockups & Copy | Kraftt",
+    "ogDescription": "AI-assisted creative services from Kraftt Digital for brand-controlled visual production, ad concepts, product mockups and related creative work."
+  },
+  "/services/bundles/starter-business-launch": {
+    "title": "Starter Business Launch Bundle | Brand, Website & Social | Kraftt",
+    "description": "A connected starter engagement for businesses that need a clearer brand, professional website and coordinated social presence.",
+    "ogTitle": "Starter Business Launch Bundle | Brand, Website & Social | Kraftt",
+    "ogDescription": "A connected starter engagement for businesses that need a clearer brand, professional website and coordinated social presence."
+  },
+  "/services/bundles/d2c-brand-launch-kit": {
+    "title": "D2C Brand Launch Kit | Shopify, Branding & SEO | Kraftt Digital",
+    "description": "A connected D2C launch engagement combining brand identity, e-commerce foundations and search-ready digital setup around the business.",
+    "ogTitle": "D2C Brand Launch Kit | Shopify, Branding & SEO | Kraftt Digital",
+    "ogDescription": "A connected D2C launch engagement combining brand identity, e-commerce foundations and search-ready digital setup around the business."
+  },
+  "/services/bundles/full-digital-presence": {
+    "title": "Full Digital Presence Bundle | Brand, Web, Social & SEO | Kraftt",
+    "description": "A connected digital presence engagement bringing brand, website, social communication and search visibility into one coordinated scope.",
+    "ogTitle": "Full Digital Presence Bundle | Brand, Web, Social & SEO | Kraftt",
+    "ogDescription": "A connected digital presence engagement bringing brand, website, social communication and search visibility into one coordinated scope."
+  },
+  "/services/bundles/local-business-dominator": {
+    "title": "Business Visibility & Enquiries Bundle | Kraftt Digital",
+    "description": "A connected engagement focused on making a business easier to discover, understand and contact through the right digital foundations.",
+    "ogTitle": "Business Visibility & Enquiries Bundle | Kraftt Digital",
+    "ogDescription": "A connected engagement focused on making a business easier to discover, understand and contact through the right digital foundations."
+  },
+  "/work": {
+    "title": "Digital Agency Case Studies | Branding, Web & SEO | Kraftt",
+    "description": "Explore Kraftt Digital case studies across branding, websites, e-commerce, SEO, professional services and digital products.",
+    "ogTitle": "Digital Agency Case Studies | Branding, Web & SEO | Kraftt",
+    "ogDescription": "Explore Kraftt Digital case studies across branding, websites, e-commerce, SEO, professional services and digital products."
+  },
+  "/work/shree-hari-spintex": {
+    "title": "Shree Hari Spintex Website & SEO Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital case study for Shree Hari Spintex, showing how a cotton spinning manufacturer’s digital presence was structured and improved.",
+    "ogTitle": "Shree Hari Spintex Website & SEO Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital case study for Shree Hari Spintex, showing how a cotton spinning manufacturer’s digital presence was structured and improved."
+  },
+  "/work/mittal-architect": {
+    "title": "Mittal Architect Website & Local SEO Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital case study for Mittal Architect covering a clearer professional website presence and local search-focused digital foundations.",
+    "ogTitle": "Mittal Architect Website & Local SEO Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital case study for Mittal Architect covering a clearer professional website presence and local search-focused digital foundations."
+  },
+  "/work/kiraq-jewellery": {
+    "title": "Kiraq Jewellery Branding & E-commerce Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital case study for Kiraq Jewellery covering brand direction and an e-commerce-focused digital presence for the jewellery business.",
+    "ogTitle": "Kiraq Jewellery Branding & E-commerce Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital case study for Kiraq Jewellery covering brand direction and an e-commerce-focused digital presence for the jewellery business."
+  },
+  "/work/elixir-beverages": {
+    "title": "Elixir Beverages Branding & Website Case Study | Kraftt",
+    "description": "A Kraftt Digital case study for Elixir Beverages covering premium beverage brand identity and its connected digital presentation.",
+    "ogTitle": "Elixir Beverages Branding & Website Case Study | Kraftt",
+    "ogDescription": "A Kraftt Digital case study for Elixir Beverages covering premium beverage brand identity and its connected digital presentation."
+  },
+  "/work/bharat-bhushan-singla": {
+    "title": "Bharat Bhushan Singla Legal Website Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital case study for Bharat Bhushan Singla showing the development of a clear, professional digital presence for legal services.",
+    "ogTitle": "Bharat Bhushan Singla Legal Website Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital case study for Bharat Bhushan Singla showing the development of a clear, professional digital presence for legal services."
+  },
+  "/work/the-vibed-vines": {
+    "title": "The Vibed Vines E-commerce Website Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital case study for The Vibed Vines focused on an e-commerce experience, product presentation and a clearer online buying path.",
+    "ogTitle": "The Vibed Vines E-commerce Website Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital case study for The Vibed Vines focused on an e-commerce experience, product presentation and a clearer online buying path."
+  },
+  "/work/aegis-squad": {
+    "title": "Aegis Squad Website Redesign Case Study | Kraftt Digital",
+    "description": "An early founder project showing how Aegis Squad moved from a limited single-page presence to clearer services, navigation and contact paths.",
+    "ogTitle": "Aegis Squad Website Redesign Case Study | Kraftt Digital",
+    "ogDescription": "An early founder project showing how Aegis Squad moved from a limited single-page presence to clearer services, navigation and contact paths."
+  },
+  "/work/employee-os": {
+    "title": "Employee OS Product & Desktop App Case Study | Kraftt Digital",
+    "description": "Employee OS is a Kraftt Digital desktop product for local-first employee records, attendance, payroll, reporting and operational workflows.",
+    "ogTitle": "Employee OS Product & Desktop App Case Study | Kraftt Digital",
+    "ogDescription": "Employee OS is a Kraftt Digital desktop product for local-first employee records, attendance, payroll, reporting and operational workflows."
+  },
+  "/work/ketan-goyal": {
+    "title": "Ketan Goyal Founder Portfolio Case Study | Kraftt Digital",
+    "description": "A Kraftt Digital founder project documenting a portfolio and publishing platform built to present completed work, exploration, learning and future goals.",
+    "ogTitle": "Ketan Goyal Founder Portfolio Case Study | Kraftt Digital",
+    "ogDescription": "A Kraftt Digital founder project documenting a portfolio and publishing platform built to present completed work, exploration, learning and future goals."
+  },
+  "/process": {
+    "title": "Kraftt Digital Process | Audit to Delivery",
+    "description": "See Kraftt Digital’s research-led project process from business audit and written scope through onboarding, production, review and delivery.",
+    "ogTitle": "Kraftt Digital Process | Audit to Delivery",
+    "ogDescription": "See Kraftt Digital’s research-led project process from business audit and written scope through onboarding, production, review and delivery."
+  },
+  "/about": {
+    "title": "About Kraftt Digital | Founder-led Digital Agency in India",
+    "description": "Learn about Kraftt Digital, a founder-led Indian digital agency connecting brand, websites, content and digital systems around business needs.",
+    "ogTitle": "About Kraftt Digital | Founder-led Digital Agency in India",
+    "ogDescription": "Learn about Kraftt Digital, a founder-led Indian digital agency connecting brand, websites, content and digital systems around business needs."
+  },
+  "/contact": {
+    "title": "Contact Kraftt Digital | Start a Digital Project",
+    "description": "Contact Kraftt Digital to discuss branding, websites, e-commerce, SEO, social media, apps or custom digital systems for your business.",
+    "ogTitle": "Contact Kraftt Digital | Start a Digital Project",
+    "ogDescription": "Contact Kraftt Digital to discuss branding, websites, e-commerce, SEO, social media, apps or custom digital systems for your business."
+  },
+  "/audit": {
+    "title": "Digital Presence Audit | Research Before You Invest | Kraftt",
+    "description": "Start with a focused Kraftt Digital audit of your business, category, competitors, current digital systems, gaps and useful opportunities.",
+    "ogTitle": "Digital Presence Audit | Research Before You Invest | Kraftt",
+    "ogDescription": "Start with a focused Kraftt Digital audit of your business, category, competitors, current digital systems, gaps and useful opportunities."
+  },
+  "/partner-program": {
+    "title": "Kraftt Digital Partner Program | Work With Kraftt",
+    "description": "Explore the Kraftt Digital partner program for suitable collaboration and referral opportunities connected to its digital services.",
+    "ogTitle": "Kraftt Digital Partner Program | Work With Kraftt",
+    "ogDescription": "Explore the Kraftt Digital partner program for suitable collaboration and referral opportunities connected to its digital services."
+  },
+  "/tools": {
+    "title": "Free Digital Business Tools & Calculators | Kraftt Digital",
+    "description": "Use Kraftt Digital tools for website cost, social media cost, SEO ROI, ROAS, GST, invoices and digital presence assessment.",
+    "ogTitle": "Free Digital Business Tools & Calculators | Kraftt Digital",
+    "ogDescription": "Use Kraftt Digital tools for website cost, social media cost, SEO ROI, ROAS, GST, invoices and digital presence assessment."
+  },
+  "/tools/digital-presence-score": {
+    "title": "Digital Presence Score Tool | Audit Your Online Presence | Kraftt",
+    "description": "Assess your business’s digital presence across key areas with Kraftt Digital’s online score tool and use the result as a starting point for review.",
+    "ogTitle": "Digital Presence Score Tool | Audit Your Online Presence | Kraftt",
+    "ogDescription": "Assess your business’s digital presence across key areas with Kraftt Digital’s online score tool and use the result as a starting point for review."
+  },
+  "/tools/website-cost-calculator": {
+    "title": "Website Cost Calculator India | Estimate Your Project | Kraftt",
+    "description": "Estimate a website project budget with Kraftt Digital’s website cost calculator based on the scope and options selected in the tool.",
+    "ogTitle": "Website Cost Calculator India | Estimate Your Project | Kraftt",
+    "ogDescription": "Estimate a website project budget with Kraftt Digital’s website cost calculator based on the scope and options selected in the tool."
+  },
+  "/tools/social-media-cost-calculator": {
+    "title": "Social Media Cost Calculator India | Kraftt Digital",
+    "description": "Estimate social media management costs with Kraftt Digital’s calculator based on the platforms and service scope selected in the tool.",
+    "ogTitle": "Social Media Cost Calculator India | Kraftt Digital",
+    "ogDescription": "Estimate social media management costs with Kraftt Digital’s calculator based on the platforms and service scope selected in the tool."
+  },
+  "/tools/seo-roi-calculator": {
+    "title": "SEO ROI Calculator | Estimate Search Return | Kraftt Digital",
+    "description": "Estimate potential SEO return using Kraftt Digital’s SEO ROI calculator and your own traffic, conversion and commercial assumptions.",
+    "ogTitle": "SEO ROI Calculator | Estimate Search Return | Kraftt Digital",
+    "ogDescription": "Estimate potential SEO return using Kraftt Digital’s SEO ROI calculator and your own traffic, conversion and commercial assumptions."
+  },
+  "/tools/roas-calculator": {
+    "title": "ROAS Calculator | Calculate Return on Ad Spend | Kraftt",
+    "description": "Calculate return on ad spend from advertising revenue and spend using Kraftt Digital’s free ROAS calculator.",
+    "ogTitle": "ROAS Calculator | Calculate Return on Ad Spend | Kraftt",
+    "ogDescription": "Calculate return on ad spend from advertising revenue and spend using Kraftt Digital’s free ROAS calculator."
+  },
+  "/tools/gst-calculator": {
+    "title": "GST Calculator India | Calculate GST Online | Kraftt Digital",
+    "description": "Calculate GST amounts for Indian pricing with Kraftt Digital’s online GST calculator for quick price and tax checks.",
+    "ogTitle": "GST Calculator India | Calculate GST Online | Kraftt Digital",
+    "ogDescription": "Calculate GST amounts for Indian pricing with Kraftt Digital’s online GST calculator for quick price and tax checks."
+  },
+  "/tools/gst-invoice-generator": {
+    "title": "GST Invoice Generator India | Create an Invoice | Kraftt Digital",
+    "description": "Create a GST-ready invoice using Kraftt Digital’s online invoice generator and the business details entered into the tool.",
+    "ogTitle": "GST Invoice Generator India | Create an Invoice | Kraftt Digital",
+    "ogDescription": "Create a GST-ready invoice using Kraftt Digital’s online invoice generator and the business details entered into the tool."
+  },
+  "/legal/privacy-policy": {
+    "title": "Privacy Policy | Kraftt Digital",
+    "description": "Read the Kraftt Digital privacy policy covering how information is handled when you use the website and contact the business.",
+    "ogTitle": "Privacy Policy | Kraftt Digital",
+    "ogDescription": "Read the Kraftt Digital privacy policy covering how information is handled when you use the website and contact the business."
+  },
+  "/legal/terms": {
+    "title": "Website Terms | Kraftt Digital",
+    "description": "Read the Kraftt Digital website terms covering service information, audit limitations, project claims, intellectual property and project agreements.",
+    "ogTitle": "Website Terms | Kraftt Digital",
+    "ogDescription": "Read the Kraftt Digital website terms covering service information, audit limitations, project claims, intellectual property and project agreements."
+  },
+  "/region/uk": {
+    "title": "Indian Digital Agency for UK Businesses | Kraftt Digital",
+    "description": "Kraftt Digital serves United Kingdom businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process.",
+    "ogTitle": "Indian Digital Agency for UK Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt Digital serves United Kingdom businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process."
+  },
+  "/region/usa": {
+    "title": "Digital Agency in India for US Businesses | Kraftt Digital",
+    "description": "Kraftt Digital serves United States businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process.",
+    "ogTitle": "Digital Agency in India for US Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt Digital serves United States businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process."
+  },
+  "/region/canada": {
+    "title": "Indian Digital Agency for Canadian Businesses | Kraftt Digital",
+    "description": "Kraftt Digital serves Canada businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process.",
+    "ogTitle": "Indian Digital Agency for Canadian Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt Digital serves Canada businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process."
+  },
+  "/region/uae": {
+    "title": "Indian Digital Agency for UAE Businesses | Kraftt Digital",
+    "description": "Kraftt Digital serves UAE businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process.",
+    "ogTitle": "Indian Digital Agency for UAE Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt Digital serves UAE businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process."
+  },
+  "/region/australia": {
+    "title": "Indian Digital Agency for Australian Businesses | Kraftt Digital",
+    "description": "Kraftt Digital serves Australia businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process.",
+    "ogTitle": "Indian Digital Agency for Australian Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt Digital serves Australia businesses remotely from India across brand, websites, commerce and digital systems through a documented engagement process."
+  },
+  "/region/uk/web-design-development": {
+    "title": "Web Design & Development in India for UK Businesses | Kraftt",
+    "description": "Kraftt provides web design and development from India for United Kingdom businesses, with responsive builds, clear enquiry paths and a documented remote process.",
+    "ogTitle": "Web Design & Development in India for UK Businesses | Kraftt",
+    "ogDescription": "Kraftt provides web design and development from India for United Kingdom businesses, with responsive builds, clear enquiry paths and a documented remote process."
+  },
+  "/region/uk/ecommerce-store-development": {
+    "title": "E-commerce Development in India for UK Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce and Shopify development from India for United Kingdom businesses, with store structure, catalogue setup and practical handover.",
+    "ogTitle": "E-commerce Development in India for UK Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce and Shopify development from India for United Kingdom businesses, with store structure, catalogue setup and practical handover."
+  },
+  "/region/uk/brand-identity": {
+    "title": "Brand Identity Services in India for UK Businesses | Kraftt",
+    "description": "Kraftt provides brand identity services from India for United Kingdom businesses, connecting positioning, visual identity and practical brand guidance.",
+    "ogTitle": "Brand Identity Services in India for UK Businesses | Kraftt",
+    "ogDescription": "Kraftt provides brand identity services from India for United Kingdom businesses, connecting positioning, visual identity and practical brand guidance."
+  },
+  "/region/uk/ecommerce-seo": {
+    "title": "E-commerce SEO in India for UK Businesses | Kraftt Digital",
+    "description": "Kraftt provides e-commerce SEO support from India for United Kingdom businesses, focused on search foundations, content and ongoing store visibility.",
+    "ogTitle": "E-commerce SEO in India for UK Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt provides e-commerce SEO support from India for United Kingdom businesses, focused on search foundations, content and ongoing store visibility."
+  },
+  "/region/usa/web-design-development": {
+    "title": "Web Design & Development in India for US Businesses | Kraftt",
+    "description": "Kraftt provides web design and development from India for United States businesses, with responsive builds, clear enquiry paths and a documented remote process.",
+    "ogTitle": "Web Design & Development in India for US Businesses | Kraftt",
+    "ogDescription": "Kraftt provides web design and development from India for United States businesses, with responsive builds, clear enquiry paths and a documented remote process."
+  },
+  "/region/usa/ecommerce-store-development": {
+    "title": "E-commerce Development in India for US Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce and Shopify development from India for United States businesses, with store structure, catalogue setup and practical handover.",
+    "ogTitle": "E-commerce Development in India for US Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce and Shopify development from India for United States businesses, with store structure, catalogue setup and practical handover."
+  },
+  "/region/usa/brand-identity": {
+    "title": "Brand Identity Services in India for US Businesses | Kraftt",
+    "description": "Kraftt provides brand identity services from India for United States businesses, connecting positioning, visual identity and practical brand guidance.",
+    "ogTitle": "Brand Identity Services in India for US Businesses | Kraftt",
+    "ogDescription": "Kraftt provides brand identity services from India for United States businesses, connecting positioning, visual identity and practical brand guidance."
+  },
+  "/region/usa/ecommerce-seo": {
+    "title": "E-commerce SEO in India for US Businesses | Kraftt Digital",
+    "description": "Kraftt provides e-commerce SEO support from India for United States businesses, focused on search foundations, content and ongoing store visibility.",
+    "ogTitle": "E-commerce SEO in India for US Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt provides e-commerce SEO support from India for United States businesses, focused on search foundations, content and ongoing store visibility."
+  },
+  "/region/canada/web-design-development": {
+    "title": "Web Development in India for Canadian Businesses | Kraftt",
+    "description": "Kraftt provides web design and development from India for Canada businesses, with responsive builds, clear enquiry paths and a documented remote process.",
+    "ogTitle": "Web Development in India for Canadian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides web design and development from India for Canada businesses, with responsive builds, clear enquiry paths and a documented remote process."
+  },
+  "/region/canada/ecommerce-store-development": {
+    "title": "E-commerce Development in India for Canadian Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce and Shopify development from India for Canada businesses, with store structure, catalogue setup and practical handover.",
+    "ogTitle": "E-commerce Development in India for Canadian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce and Shopify development from India for Canada businesses, with store structure, catalogue setup and practical handover."
+  },
+  "/region/canada/brand-identity": {
+    "title": "Brand Identity Services in India for Canadian Businesses | Kraftt",
+    "description": "Kraftt provides brand identity services from India for Canada businesses, connecting positioning, visual identity and practical brand guidance.",
+    "ogTitle": "Brand Identity Services in India for Canadian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides brand identity services from India for Canada businesses, connecting positioning, visual identity and practical brand guidance."
+  },
+  "/region/canada/ecommerce-seo": {
+    "title": "E-commerce SEO in India for Canadian Businesses | Kraftt Digital",
+    "description": "Kraftt provides e-commerce SEO support from India for Canada businesses, focused on search foundations, content and ongoing store visibility.",
+    "ogTitle": "E-commerce SEO in India for Canadian Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt provides e-commerce SEO support from India for Canada businesses, focused on search foundations, content and ongoing store visibility."
+  },
+  "/region/uae/web-design-development": {
+    "title": "Web Design & Development in India for UAE Businesses | Kraftt",
+    "description": "Kraftt provides web design and development from India for UAE businesses, with responsive builds, clear enquiry paths and a documented remote process.",
+    "ogTitle": "Web Design & Development in India for UAE Businesses | Kraftt",
+    "ogDescription": "Kraftt provides web design and development from India for UAE businesses, with responsive builds, clear enquiry paths and a documented remote process."
+  },
+  "/region/uae/ecommerce-store-development": {
+    "title": "E-commerce Development in India for UAE Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce and Shopify development from India for UAE businesses, with store structure, catalogue setup and practical handover.",
+    "ogTitle": "E-commerce Development in India for UAE Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce and Shopify development from India for UAE businesses, with store structure, catalogue setup and practical handover."
+  },
+  "/region/uae/brand-identity": {
+    "title": "Brand Identity Services in India for UAE Businesses | Kraftt",
+    "description": "Kraftt provides brand identity services from India for UAE businesses, connecting positioning, visual identity and practical brand guidance.",
+    "ogTitle": "Brand Identity Services in India for UAE Businesses | Kraftt",
+    "ogDescription": "Kraftt provides brand identity services from India for UAE businesses, connecting positioning, visual identity and practical brand guidance."
+  },
+  "/region/uae/ecommerce-seo": {
+    "title": "E-commerce SEO in India for UAE Businesses | Kraftt Digital",
+    "description": "Kraftt provides e-commerce SEO support from India for UAE businesses, focused on search foundations, content and ongoing store visibility.",
+    "ogTitle": "E-commerce SEO in India for UAE Businesses | Kraftt Digital",
+    "ogDescription": "Kraftt provides e-commerce SEO support from India for UAE businesses, focused on search foundations, content and ongoing store visibility."
+  },
+  "/region/australia/web-design-development": {
+    "title": "Web Development in India for Australian Businesses | Kraftt",
+    "description": "Kraftt provides web design and development from India for Australia businesses, with responsive builds, clear enquiry paths and a documented remote process.",
+    "ogTitle": "Web Development in India for Australian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides web design and development from India for Australia businesses, with responsive builds, clear enquiry paths and a documented remote process."
+  },
+  "/region/australia/ecommerce-store-development": {
+    "title": "E-commerce Development India for Australian Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce and Shopify development from India for Australia businesses, with store structure, catalogue setup and practical handover.",
+    "ogTitle": "E-commerce Development India for Australian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce and Shopify development from India for Australia businesses, with store structure, catalogue setup and practical handover."
+  },
+  "/region/australia/brand-identity": {
+    "title": "Brand Identity in India for Australian Businesses | Kraftt",
+    "description": "Kraftt provides brand identity services from India for Australia businesses, connecting positioning, visual identity and practical brand guidance.",
+    "ogTitle": "Brand Identity in India for Australian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides brand identity services from India for Australia businesses, connecting positioning, visual identity and practical brand guidance."
+  },
+  "/region/australia/ecommerce-seo": {
+    "title": "E-commerce SEO in India for Australian Businesses | Kraftt",
+    "description": "Kraftt provides e-commerce SEO support from India for Australia businesses, focused on search foundations, content and ongoing store visibility.",
+    "ogTitle": "E-commerce SEO in India for Australian Businesses | Kraftt",
+    "ogDescription": "Kraftt provides e-commerce SEO support from India for Australia businesses, focused on search foundations, content and ongoing store visibility."
+  }
+}

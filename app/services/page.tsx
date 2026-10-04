@@ -111,7 +111,7 @@ const servicesPageFaqs = [
     question: 'How do I start a project with Kraftt Digital?',
     answer: 'Start with a free introductory call to explain the requirement. Kraftt then reviews the need, recommends the appropriate service, confirms scope, timing, fees and responsibilities, and begins only after the written proposal and agreement are approved. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.',
     links: [
-      { label: 'Book a free call', href: '/contact#intro-call' },
+      { label: 'Book a free call', href: '/contact' },
       { label: 'Request the ₹999 audit', href: '/audit' },
     ],
   },
@@ -134,7 +134,7 @@ export default function ServicesPage() {
           <h1 id="services-page-title">Choose the outcome.<br /><em>See the path.</em></h1>
           <p>Start with the business need. Kraftt helps you choose a focused service or a connected bundle, then confirms the scope, price and responsibilities before work begins.</p>
           <div className="services-flow-hero-actions">
-            <Link href="/contact#intro-call">Book a free introductory call <ArrowUpRight size={15} /></Link>
+            <Link href="/contact">Book a free introductory call <ArrowUpRight size={15} /></Link>
             <Link href="#service-menu">Browse all services <span aria-hidden="true">↓</span></Link>
           </div>
           <ul className="services-flow-hero-signals" aria-label="What to expect before work begins">
@@ -294,7 +294,7 @@ export default function ServicesPage() {
         <div className="page-faq-inner">
           <Reveal className="page-faq-heading" direction="left">
             <div><p className="eyebrow eyebrow-dark">Services FAQ · quick decisions</p><h2 id="services-faq-title">Clear answers<br /><em>before you choose.</em></h2></div>
-            <div><p>Compare service fit, likely investment and the right starting point. Get quick direction on a call or use the audit for deeper research.</p><span className="page-faq-actions"><Link href="/contact#intro-call">Book a free call <ArrowRight size={14} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={14} /></Link></span></div>
+            <div><p>Compare service fit, likely investment and the right starting point. Get quick direction on a call or use the audit for deeper research.</p><span className="page-faq-actions"><Link href="/contact">Book a free call <ArrowRight size={14} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={14} /></Link></span></div>
           </Reveal>
           <PageFaq title="Kraftt Digital services questions" items={servicesPageFaqs} categoryTitles={['Choosing a service', 'Scope, pricing and next steps']} />
         </div>

@@ -18,7 +18,7 @@ export function AuditCTA({
         <p className={`eyebrow${isLight ? ' eyebrow-dark' : ''}`}>Free introductory call</p>
         <h2>{title}</h2>
         <p>Tell us what you need. We’ll discuss the fit, the likely scope and a sensible starting point.</p>
-        <Link className="button button-accent" href="/contact#intro-call">Request a Free Introductory Call</Link>
+        <Link className="button button-accent" href="/contact">Request a Free Introductory Call</Link>
       </Reveal>
     </section>
   );

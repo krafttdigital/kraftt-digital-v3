@@ -420,7 +420,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             </div> */}
 
             {/* <div className="home-trust-decision-choices" aria-label="Choose your starting point"> */}
-              <Link className="home-trust-decision-choice" href="/contact#intro-call">
+              <Link className="home-trust-decision-choice" href="/contact">
                 <div className="home-trust-decision-choice-meta"><span>01</span><small>Free</small></div>
                 <p>Best for a defined need</p>
                 <strong>Talk it through in a free introductory call.</strong>

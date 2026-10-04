@@ -1,5 +1,19 @@
 # Search and AI discovery setup
 
+## Metadata master applied 2026-10-04
+
+`app/data/metadata-master.json` contains the 67 route records from `Kraftt_Metadata_Master_Codex.csv`. The central metadata helper applies titles, descriptions and social metadata without changing visible page content. All 20 regional service routes in the sheet exist in the enabled route configuration. Legacy services remain indexable and self-canonical pending a Search Console performance review.
+
+The `/services/ecommerce-seo` title uses the sheet's permitted broad-SEO variant because the existing visible page is named "SEO Services" and covers business websites and stores. Research keywords and formula cells are not rendered or executed.
+
+Existing reciprocal regional hreflang groups are preserved; other indexable pages have self-referencing `en-IN` and `x-default` links. Structured data uses stable organization IDs, Bathinda as the provider location, visible FAQs, collection lists, case-study articles and free WebApplication offers. Paid service/bundle offers describe published scope without numeric prices, because prices vary by visitor currency. No fabricated ratings, office addresses, outcomes or hidden FAQ content are added.
+
+The homepage canonical and sitemap use `https://krafttdigital.in` (Next's normalized origin-only URL, equivalent to the CSV's trailing-slash form).
+
+Google requires no special AI-only schema for AI Overviews or AI Mode. Crawlability and accurate ordinary structured data support discovery; indexing and AI citations are not guaranteed. Reference: https://developers.google.com/search/docs/appearance/ai-features
+
+Search Console readiness does not mean ownership has been verified or the sitemap submitted. Complete the production steps below after deployment with a real verification token (or DNS verification).
+
 ## Production environment variables
 
 Set these in the production hosting environment before the final build:

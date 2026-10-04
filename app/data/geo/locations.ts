@@ -16,7 +16,7 @@ export const locations = [
       title: 'Turn an established reputation into visible proof.',
       body: 'For manufacturers, professional practices and growing local brands, the challenge is often not credibility itself—it is making that credibility easy to verify online. A structured website, consistent identity and working enquiry route help people understand the business before the first conversation.',
     },
-    nearbyAreas: ['Mansa', 'Rampura Phul', 'Talwandi Sabo'],
+    nearbyAreas: ['Mansa', 'Rampura Phul', 'Talwandi Sabo', 'Maur', 'Goniana'],
     searchTerms: ['digital agency Bathinda', 'website designer Bathinda', 'branding agency Bathinda'],
     schemaPlace: { '@type': 'City', name: 'Bathinda', containedInPlace: { '@type': 'State', name: 'Punjab' } },
   },

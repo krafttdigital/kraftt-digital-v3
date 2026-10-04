@@ -140,7 +140,7 @@ export function ResultActions({
   serviceLabel: string;
   auditHref: string;
 }) {
-  const contactHref = `${auditHref.replace(/^\/audit/, '/contact')}#intro-call`;
+  const contactHref = `${auditHref.replace(/^\/audit/, '/contact')}`;
   return (
     <div className="tool-result-actions">
       <Button href={serviceHref} variant="secondary">{serviceLabel} <span aria-hidden="true">↗</span></Button>

@@ -22,7 +22,7 @@ export function GET() {
     `- Case studies, portfolio work and Kraftt products: ${absoluteUrl('/work')}`,
     `- Working process: ${absoluteUrl('/process')}`,
     `- About Kraftt: ${absoluteUrl('/about')}`,
-    `- Free introductory call request: ${absoluteUrl('/contact#intro-call')}`,
+    `- Free introductory call request: ${absoluteUrl('/contact')}`,
     `- Optional paid Digital Presence Audit (₹999 / $24): ${absoluteUrl('/audit')}`,
     `- Contact: ${absoluteUrl('/contact')}`,
     `- Current offers: ${absoluteUrl('/offers/campaign-festive-season-offer')} — Active campaign status, scope, terms and enquiry options are shown on the canonical page.`,

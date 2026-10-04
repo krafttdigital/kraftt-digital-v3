@@ -20,7 +20,7 @@ export function Footer() {
           <BrandWordmark inverse />
         </Link>
         <p>Branding, websites, e-commerce, marketplace setup, SEO and social media shaped around your business.</p>
-        <Link className="button button-accent footer-cta" href="/contact#intro-call">Request a Free Introductory Call</Link>
+        <Link className="button button-accent footer-cta" href="/contact">Request a Free Introductory Call</Link>
         <div className="footer-contact-links" aria-label="Contact Kraftt Digital">
           <a href={`mailto:${contactEmail}`}><span>Email</span><strong>{contactEmail}</strong></a>
           <a href={contactPhoneHref}><span>Call</span><strong>{contactPhone}</strong></a>
