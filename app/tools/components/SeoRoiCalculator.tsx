@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Field, ResultPanel, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -27,7 +29,7 @@ export function SeoRoiCalculator() {
     return { ...scenario, additionalVisitors, additionalConversions, additionalRevenue, roi };
   }), [conversionRate, customerValue, seoCost, visitors]);
 
-  function calculate(event: FormEvent) { event.preventDefault(); if (!valid) return; setShowResult(true); revealResult(resultRef); }
+  function calculate(event: FormEvent) { event.preventDefault(); if (!valid) return; setShowResult(true); trackEvent('tool_complete', { cta_location: 'tool' }); revealResult(resultRef); }
   return <>
     <form className="tool-calculator tool-wrap-wide" id="tool-workspace" onSubmit={calculate}>
       <div className="tool-form-heading"><p className="tool-eyebrow">Illustrative planning model</p><h2>Compare three organic-growth scenarios.</h2></div>

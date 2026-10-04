@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Field, OptionQuestion, ResultPanel, formatINR, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -31,7 +33,7 @@ export function GstCalculator() {
   function calculate(event: FormEvent) {
     event.preventDefault();
     if (!isValid) return;
-    setShowResult(true);
+    setShowResult(true); trackEvent('tool_complete', { cta_location: 'tool' });
     revealResult(resultRef);
   }
 

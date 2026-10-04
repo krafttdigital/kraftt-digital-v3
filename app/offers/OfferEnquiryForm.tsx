@@ -1,5 +1,7 @@
 'use client';
 
+import { trackFormSuccess } from '../../lib/analytics/core';
+
 import Link from 'next/link';
 import { useRef, useState, type FormEvent } from 'react';
 import type { Offer } from '../data/offers';
@@ -40,6 +42,7 @@ export function OfferEnquiryForm({
 
     try {
       await submitOfferEnquiry({ endpoint: offer.formEndpoint, data });
+      trackFormSuccess('offer_enquiry', form);
       form.reset();
       setSubmitState('success');
     } catch (error) {

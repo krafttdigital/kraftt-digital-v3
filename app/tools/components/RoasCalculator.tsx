@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Field, ResultPanel, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -23,7 +25,7 @@ export function RoasCalculator() {
     const profit = hasMargin ? Number(revenue) * Number(margin) / 100 - Number(spend) : null;
     return { roas, breakEven, profit, clears: breakEven === null ? null : roas >= breakEven };
   }, [margin, revenue, spend]);
-  function calculate(event: FormEvent) { event.preventDefault(); if (!valid) return; setShowResult(true); revealResult(resultRef); }
+  function calculate(event: FormEvent) { event.preventDefault(); if (!valid) return; setShowResult(true); trackEvent('tool_complete', { cta_location: 'tool' }); revealResult(resultRef); }
   return <>
     <form className="tool-calculator tool-wrap-wide" id="tool-workspace" onSubmit={calculate}>
       <div className="tool-form-heading"><p className="tool-eyebrow">Advertising return</p><h2>Measure return against real margin.</h2></div>

@@ -14,7 +14,9 @@
     "test:offers": "node --experimental-strip-types scripts/test-offer-form.mjs",
     "validate:seo": "node scripts/validate-seo.mjs",
     "validate:geo": "node scripts/validate-geo.mjs",
-    "indexnow": "node scripts/submit-indexnow.mjs"
+    "indexnow": "node scripts/submit-indexnow.mjs",
+    "test:analytics": "node --experimental-strip-types scripts/test-analytics.mjs",
+    "utm": "node --experimental-strip-types scripts/build-utm.mjs"
   },
   "dependencies": {
     "@netlify/functions": "^6.0.0",

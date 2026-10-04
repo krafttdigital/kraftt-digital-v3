@@ -1,5 +1,7 @@
 'use client';
 
+import { trackFormSuccess } from '../../lib/analytics/core';
+
 import { useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 
@@ -35,6 +37,7 @@ function getSubmissionError(payload: FormspreeResponse | null, status: number) {
 
 export function PartnerApplicationForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const inFlightRef = useRef(false);
   const [source, setSource] = useState('');
   const [submitError, setSubmitError] = useState('');
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
@@ -42,7 +45,8 @@ export function PartnerApplicationForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = formRef.current;
-    if (!form || !form.reportValidity()) return;
+    if (!form || inFlightRef.current || !form.reportValidity()) return;
+    inFlightRef.current = true;
 
     setSubmitError('');
     setSubmitState('sending');
@@ -61,6 +65,7 @@ export function PartnerApplicationForm() {
       if (!response.ok) {
         throw new Error(getSubmissionError(result, response.status));
       }
+      trackFormSuccess('partner_application', form);
       form.reset();
       setSource('');
       setSubmitState('success');
@@ -71,6 +76,8 @@ export function PartnerApplicationForm() {
           : 'The application could not be sent. Please try again or contact Kraftt Digital.',
       );
       setSubmitState('error');
+    } finally {
+      inFlightRef.current = false;
     }
   }
 

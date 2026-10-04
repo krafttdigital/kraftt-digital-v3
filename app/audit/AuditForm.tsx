@@ -1,5 +1,7 @@
 'use client';
 
+import { formContext, trackEvent, trackFormSuccess } from '../../lib/analytics/core';
+
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
@@ -23,6 +25,7 @@ export function AuditForm() {
   const currency = usePricingCurrency();
   const auditPrice = regionalizePriceCopy('₹999', currency);
   const formRef = useRef<HTMLFormElement>(null);
+  const inFlightRef = useRef(false);
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   useEffect(() => {
@@ -96,13 +99,15 @@ export function AuditForm() {
       .join('\n');
 
     const message = `Hi Kraftt, I would like to request the ${auditPrice} Digital Presence Audit.\n\n${details}\n\nI consent to Kraftt using these details to review my business and contact me about the audit.`;
+    trackEvent('whatsapp_click', { ...formContext(form), form_id: 'audit_request', cta_location: 'form', cta_label: 'whatsapp', destination_type: 'whatsapp' });
     window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
   }
 
   async function handleFormspree(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = getValidForm();
-    if (!form) return;
+    if (!form || inFlightRef.current) return;
+    inFlightRef.current = true;
 
     setSubmitState('sending');
     try {
@@ -113,10 +118,13 @@ export function AuditForm() {
       });
 
       if (!response.ok) throw new Error('Form submission failed');
+      trackFormSuccess('audit_request', form);
       form.reset();
       setSubmitState('success');
     } catch {
       setSubmitState('error');
+    } finally {
+      inFlightRef.current = false;
     }
   }
 

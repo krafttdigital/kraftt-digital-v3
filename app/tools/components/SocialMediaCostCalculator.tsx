@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useRef, useState, type FormEvent } from 'react';
 import { OptionQuestion, ResultPanel, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -29,6 +31,7 @@ export function SocialMediaCostCalculator() {
         ? { name: 'Social Growth', price: `${formatRegionalAmount(pricing.socialMediaCalculator.growth[currency], currency)}/month`, includes: ['One shared set of 21 posts across 2 platforms', '15 stories each month', 'Monthly content calendar', 'Engagement and comment replies', 'Monthly performance report'] }
         : { name: 'Social Starter', price: `${formatRegionalAmount(pricing.socialMediaCalculator.starter[currency], currency)}/month`, includes: ['15 posts on 1 platform', '10 stories each month', 'Profile setup and captions', 'Engagement and comment replies', 'Monthly performance report'] };
     setResult({ ...next, auditHref: `/audit?socialTier=${encodeURIComponent(next.name)}&platforms=${platforms}&posts=${posts}&stories=${stories}&community=${community}` });
+    trackEvent('tool_complete', { cta_location: 'tool' });
     revealResult(resultRef);
   }
 

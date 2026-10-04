@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useRef, useState, type FormEvent } from 'react';
 import { OptionQuestion, ResultPanel, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -62,6 +64,7 @@ export function WebsiteCostCalculator() {
       addons,
       auditHref: `/audit?tier=${encodeURIComponent(packageName.toLowerCase().replaceAll(' ', '-'))}&addons=${queryAddons}&siteType=${siteType}&pages=${pages}&urgency=${urgency}`,
     });
+    trackEvent('tool_complete', { cta_location: 'tool' });
     revealResult(resultRef);
   }
 

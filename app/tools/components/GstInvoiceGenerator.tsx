@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useMemo, useState } from 'react';
 import { Field, formatINR } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
@@ -98,6 +100,7 @@ export function GstInvoiceGenerator() {
       if (bankDetails) { doc.setFont('helvetica', 'bold'); doc.text('Bank details', 112, y); y += 5; doc.setFont('helvetica', 'normal'); doc.text(doc.splitTextToSize(bankDetails, 82), 112, y); }
       doc.setFont('helvetica', 'normal'); doc.setTextColor(115); doc.setFontSize(7.5); doc.text('Generated with Kraftt Digital', pageWidth / 2, 289, { align: 'center' });
       doc.save(`${invoice.number.replace(/[^a-z0-9-_]/gi, '-') || 'invoice'}.pdf`);
+      trackEvent('tool_complete', { cta_location: 'tool' });
     } finally { setIsDownloading(false); }
   }
 

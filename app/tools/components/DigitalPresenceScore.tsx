@@ -1,5 +1,7 @@
 'use client';
 
+import { trackEvent } from '../../../lib/analytics/core';
+
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Button, ResultActions } from './ToolSuite';
 import { RegionalPriceCopy } from '../../components/PricingCurrencyProvider';
@@ -79,6 +81,7 @@ export function DigitalPresenceScore() {
     const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const focus = categories.reduce((lowest, category) => scores[category.key] < scores[lowest.key] ? category : lowest).key;
     setResult({ total, scores, focus });
+    trackEvent('tool_complete', { cta_location: 'tool' });
     window.setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
   }
 

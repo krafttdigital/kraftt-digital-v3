@@ -1,5 +1,7 @@
 'use client';
 
+import { formContext, trackEvent, trackFormSuccess } from '../../lib/analytics/core';
+
 import { useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { services } from '../data/services';
@@ -16,6 +18,7 @@ const fields = [
 
 export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
+  const inFlightRef = useRef(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   function validForm() {
@@ -32,13 +35,15 @@ export function ContactForm() {
       .filter(([, value]) => value)
       .map(([label, value]) => `${label}: ${value}`)
       .join('\n');
+    trackEvent('whatsapp_click', { ...formContext(form), form_id: 'contact_enquiry', cta_location: 'form', cta_label: 'whatsapp', destination_type: 'whatsapp' });
     window.open(whatsappUrl(`Hi Kraftt, I would like to discuss a project.\n\n${details}`), '_blank', 'noopener,noreferrer');
   }
 
   async function sendForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = validForm();
-    if (!form || state === 'sending') return;
+    if (!form || inFlightRef.current) return;
+    inFlightRef.current = true;
     setState('sending');
     try {
       const response = await fetch(formspreeEndpoint, {
@@ -47,10 +52,13 @@ export function ContactForm() {
         headers: { Accept: 'application/json' },
       });
       if (!response.ok) throw new Error('Could not send enquiry');
+      trackFormSuccess('contact_enquiry', form);
       form.reset();
       setState('success');
     } catch {
       setState('error');
+    } finally {
+      inFlightRef.current = false;
     }
   }
 
