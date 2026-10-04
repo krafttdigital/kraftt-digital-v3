@@ -79,13 +79,14 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en">
       <head>
         {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18424492469" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CHE056H2KV" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              gtag('config', 'G-CHE056H2KV');
               gtag('config', 'AW-18424492469');
             `,
           }}
