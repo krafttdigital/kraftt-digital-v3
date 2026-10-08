@@ -1,0 +1,26 @@
+'use client';
+
+/* eslint-disable @next/next/no-img-element -- A local data-URL logo preview needs no remote image optimiser. */
+
+import { uid, paymentPreset, type Brand, type Milestone, type TermSettings } from '../../../lib/quotation/model';
+import { Field, TextField, SelectField, OrderButtons, move } from './Fields';
+
+export function TermSettingsEditor({ value, onChange }: { value: TermSettings; onChange: (value: TermSettings) => void }) {
+  const fields: [keyof TermSettings, string][] = [['revisionRounds', 'Included review rounds'], ['reviewDays', 'Feedback window (working days)'], ['paymentDays', 'Payment window (days)'], ['supportPeriod', 'Included support period / allowance'], ['cancellationNotice', 'Recurring cancellation notice']];
+  return <div className="admin-grid">{fields.map(([key, label]) => <Field key={key} label={label} value={value[key]} onChange={v => onChange({ ...value, [key]: v })} />)}</div>;
+}
+export function MilestoneEditor({ value, onChange }: { value: Milestone[]; onChange: (value: Milestone[]) => void }) {
+  return <><div className="admin-row-actions"><span>Quick schedule</span><button type="button" className="admin-small-button" onClick={() => onChange(paymentPreset('50/50'))}>50 / 50</button><button type="button" className="admin-small-button" onClick={() => onChange(paymentPreset('40/40/20'))}>40 / 40 / 20</button></div>
+    {value.map((item, index) => <div className="admin-card" key={item.id}><OrderButtons label={item.name || 'milestone'} index={index} total={value.length} reorder={delta => onChange(move(value, index, delta))} remove={() => onChange(value.filter(m => m.id !== item.id))} /><div className="admin-grid"><Field label="Milestone name" value={item.name} maxLength={100} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, name: v } : m))} /><SelectField label="Amount type" value={item.mode} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, mode: v as Milestone['mode'] } : m))}><option value="percent">Percentage of final one-time payable</option><option value="fixed">Fixed amount (₹)</option><option value="balance">Remaining balance</option></SelectField>{item.mode !== 'balance' && <Field label={item.mode === 'fixed' ? 'Amount (₹)' : 'Percentage (%)'} type="number" value={item.value} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, value: v } : m))} />}<Field label="Due date (optional)" type="date" value={item.dueDate} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, dueDate: v } : m))} /></div><Field label="Payment trigger" value={item.trigger} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, trigger: v } : m))} /><TextField label="Milestone note" rows={2} value={item.note} onChange={v => onChange(value.map(m => m.id === item.id ? { ...item, note: v } : m))} /></div>)}
+    <button type="button" className="admin-small-button" disabled={value.length >= 20} onClick={() => onChange([...value, { id: uid(), name: 'New milestone', mode: 'balance', value: '', trigger: '', dueDate: '', note: '' }])}>+ Add milestone</button><p className="admin-help">Every displayed scenario uses this schedule against its own final total. Rounding residue goes to the last percentage milestone; a remaining-balance row receives the exact remainder.</p>
+  </>;
+}
+export function BrandEditor({ value, onChange, onError }: { value: Brand; onChange: (value: Brand) => void; onError: (error: string) => void }) {
+  const fields: [keyof Brand, string, number][] = [['company', 'Company name', 80], ['wordmark', 'Text wordmark', 40], ['email', 'Contact email', 100], ['phone', 'Contact phone', 40], ['address', 'Company address', 180], ['signatory', 'Default prepared-by / signatory', 100]];
+  async function upload(file?: File) {
+    if (!file) return;
+    if (!['image/png', 'image/jpeg'].includes(file.type) || file.size > 1000000) { onError('Choose a PNG or JPEG logo smaller than 1 MB.'); return; }
+    const reader = new FileReader(); reader.onload = () => { const image = new Image(); image.onload = () => onChange({ ...value, logo: String(reader.result) }); image.onerror = () => onError('This logo image could not be read.'); image.src = String(reader.result); }; reader.onerror = () => onError('The logo file could not be read.'); reader.readAsDataURL(file);
+  }
+  return <><div className="admin-grid">{fields.map(([key, label, maxLength]) => <Field key={key} label={label} value={value[key]} maxLength={maxLength} onChange={v => onChange({ ...value, [key]: v })} />)}{(['cream', 'ink', 'gold'] as const).map(key => <Field key={key} label={`${key[0].toUpperCase() + key.slice(1)} colour`} type="color" value={value[key]} onChange={v => onChange({ ...value, [key]: v })} />)}</div><label className="admin-field"><span>Local logo (PNG / JPEG, under 1 MB)</span><input type="file" accept="image/png,image/jpeg" onChange={event => { void upload(event.target.files?.[0]); event.target.value = ''; }} /></label>{value.logo && <div className="admin-logo-sample"><img src={value.logo} alt="Document logo" /><button type="button" className="admin-small-button" onClick={() => onChange({ ...value, logo: '' })}>Remove logo</button></div>}</>;
+}

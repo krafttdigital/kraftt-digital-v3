@@ -84,6 +84,7 @@ function sanitize(key: string, value: unknown): string {
 }
 export function trackEvent(event: EventName, params: Params = {}) {
   if (typeof window === 'undefined' || !Array.isArray(window.dataLayer) || !EVENTS.includes(event)) return;
+  if (/^\/admin(?:\/|$)/.test(window.location.pathname)) return;
   try {
     const context = pageContext(window.location.pathname);
     const input = { ...attribution, ...context, page_location: window.location.href,

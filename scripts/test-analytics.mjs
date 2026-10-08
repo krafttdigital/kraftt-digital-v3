@@ -192,7 +192,7 @@ const layout = fs.readFileSync('app/layout.tsx', 'utf8');
 assert.equal((layout.match(/id="kraftt-gtm"/g) || []).length, 1);
 assert.ok(layout.includes('strategy="beforeInteractive"'));
 assert.ok(!layout.includes('gtag(') && !layout.includes('/gtag/js'));
-assert.match(layout, /<body[^>]*>\s*\{analyticsConfig.gtmId && <noscript>/);
+assert.match(layout, /<body[^>]*>\s*<PublicRouteOnly>\{analyticsConfig.gtmId && <noscript>/);
 const configSource = 'lib/analytics/config.ts';
 for (const env of [{}, { NEXT_PUBLIC_GTM_ID: '', NEXT_PUBLIC_GA_MEASUREMENT_ID: '', NEXT_PUBLIC_GOOGLE_ADS_ID: '', NEXT_PUBLIC_CLARITY_PROJECT_ID: '' }, { NEXT_PUBLIC_GTM_ID: "unsafe'", NEXT_PUBLIC_CLARITY_PROJECT_ID: 'unsafe<script>' }]) {
   const { analyticsConfig } = compile(configSource, {}, { process: { env } });

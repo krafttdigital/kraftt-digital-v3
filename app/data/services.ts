@@ -132,8 +132,6 @@ export const services: Service[] = [
     ],
     "notIncluded": [
       "Domain, hosting and third-party subscriptions are separate.",
-      "Ongoing monthly SEO and optional maintenance are separate unless named in the proposal.",
-      "Content production and features beyond the chosen tier are separately scoped."
     ],
     "goodFitWhen": [
       "No website yet, or one built years ago that no longer represents the business",
@@ -275,8 +273,8 @@ export const services: Service[] = [
       "Brand voice, application guidance and handover"
     ],
     "notIncluded": [
-      "Printing, manufacturing and legal trademark work are separate.",
-      "Website, store and ongoing social management are not included unless bundled.",
+      // "Printing, manufacturing and legal trademark work are separate.",
+      // "Website, store and ongoing social management are not included unless bundled.",
       "Revisions and final files are confirmed in the proposal."
     ],
     "goodFitWhen": [

@@ -1,0 +1,30 @@
+import { loadProjectModule } from './quotation-test-modules.mjs';
+const p = loadProjectModule('lib/documents/proposal-template.ts');
+export function fillProposal(doc, { bundle = false, components = true, beyond = false } = {}) {
+  const data=p.readProposal(doc);
+  doc.client.business ||= 'Example Studio';doc.client.contact ||= 'Alex Smith';doc.project ||= 'Digital Presence Project';
+  const copy={cover:['A clear digital presence, built around your business.','A tailored proposal for {{CLIENT_NAME}}, following our conversation with {{CONTACT_NAME}}.'],overview:['Build on the strengths you already have.','The business has a clear service offer and an established customer base. This proposal connects those foundations with a clearer online journey.'],observations:['What is working, and where we can build next.','These observations are supplied from the agreed discovery and review.'],recommendation:['One direction across brand, website and content.','We recommend a connected digital presence that makes the business easier to understand, trust and contact.'],scope:['The modules that bring the plan together.','The following scope and investment use the same service list.'],timeline:['From approval to launch.','Timing starts after the agreed advance, access and approved materials are received.'],investment:['A clear investment for the recommended scope.','Recommended services are included in the total. Alternatives and ongoing services remain separate.'],terms:['The practical details.','Please supply approved assets and consolidate review feedback. Third-party subscriptions and provider fees are paid by the client. The schedule depends on timely inputs and approvals.'],beyond:['Your questions deserve a direct answer.','Additional strategy and ongoing support can be discussed separately from this project.'],closing:['Let us build your next chapter together.','We would be pleased to walk through this proposal, answer questions and agree the next steps.']};
+  data.sections.forEach(s=>{[s.headline,s.body]=copy[s.kind]||['Additional details','Verified client-specific information.'];if(s.kind==='beyond')s.enabled=beyond;for(const c of s.components){c.rows.forEach(r=>{r.label ||= 'Strength';r.value='Agreed timing';r.detail='Verified project information, responsibilities and activities.';});}});
+  data.services = [
+    {...p.proposalService(),name:bundle?'Digital Presence Bundle':'Responsive Website',kind:bundle?'bundle':'priced',fee:bundle?'30000':'22000',description:'Five responsive pages, enquiry integration, mobile review and editable handover.',delivery:'10-14 working days'},
+    {...p.proposalService(),name:'Brand Alignment',kind:bundle?'included':'priced',fee:bundle?'0':'8000',description:'An agreed colour palette, typography and practical brand usage guidance.'},
+    {...p.proposalService(),name:'Launch SEO Foundations',kind:'complimentary',fee:'4000',referenceValue:'4000',description:'Page titles, descriptions and agreed indexing setup. Rankings are not guaranteed.'},
+    {...p.proposalService(),name:'Product Catalogue Setup',kind:'optional',pricing:'quantity',quantity:'30',unitRate:'150',description:'Upload, titles and descriptions for 30 additional products.'},
+    {...p.proposalService(),name:'Lighter Website Alternative',kind:'alternative',fee:'15000',description:'Three-page website with a smaller launch scope.'},
+    {...p.proposalService(),name:'Ongoing Content Support',kind:'recurring',fee:'12000',period:'month',description:'A separate monthly content engagement, when approved.'}
+  ];
+  data.services.forEach(service=>{service.summary=service.name+' - agreed deliverables.';});
+  data.settings.packageName='Recommended Digital Presence';data.settings.discount={kind:'percent',value:'15'};data.settings.discountLabel='Partnership benefit';data.settings.investmentNote='Third-party costs are paid separately by the client.';data.settings.showValueBar=true;data.settings.preparedBy='The Kraftt Digital team';
+  if(components){
+    data.sections.find(s=>s.kind==='recommendation').components=[];
+    const add=(kind,type,rows)=>{const c=p.proposalComponent(type);c.title={stats:'Business foundations',journey:'The journey we are shortening',comparison:'Options to consider',callout:'A considered direction',text:'Additional context',checklist:'Client inputs'}[type]||type;c.rows=rows.map(r=>({...p.proposalRow(),...r}));const section=data.sections.find(s=>s.kind===kind);section.components=section.components.filter(existing=>existing.type!==type);section.components.push(c);};
+    add('overview','stats',[{label:'Years of service',value:'12',detail:'Client-supplied history'},{label:'Core offers',value:'4',detail:'Agreed priority services'},{label:'Launch direction',value:'1',detail:'One connected presence'}]);
+    add('recommendation','journey',[{label:'Today',value:'Discover\nSearch\nLook for proof\nEnquire',detail:'Customers assemble information across separate touchpoints.'},{label:'With Kraftt',value:'Discover\nUnderstand & trust\nEnquire',detail:'A clearer path through the agreed website.',highlight:true}]);
+    add('recommendation','callout',[{label:'The goal',detail:'Make the strengths of the business easier to understand online.'}]);
+    add('beyond','comparison',[{label:'In-house',value:'Option A',detail:'Managed by your own team.'},{label:'Hybrid',value:'Option B',detail:'Shared responsibilities.',highlight:true},{label:'Retainer',value:'Option C',detail:'A separately approved ongoing engagement.'}]);
+    add('terms','text',[{label:'Coordination',detail:'Nominate one point of contact for approvals.'}]);
+  }
+  doc.fields=doc.fields.filter(f=>f.placeholder===p.proposalTemplateKey);
+  doc.fields.push({id:crypto.randomUUID(),label:'Settings',placeholder:'PROPOSAL_SETTINGS',value:JSON.stringify(data.settings)},...data.sections.map(s=>({id:s.id,label:s.eyebrow,placeholder:'PROPOSAL_SECTION_'+s.id,value:JSON.stringify(s)})),...data.services.map(s=>({id:s.id,label:s.name,placeholder:'PROPOSAL_SERVICE_'+s.id,value:JSON.stringify(s)})));
+  return doc;
+}

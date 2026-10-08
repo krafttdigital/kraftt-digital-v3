@@ -16,7 +16,10 @@
     "validate:geo": "node scripts/validate-geo.mjs",
     "indexnow": "node scripts/submit-indexnow.mjs",
     "test:analytics": "node --experimental-strip-types scripts/test-analytics.mjs",
-    "utm": "node --experimental-strip-types scripts/build-utm.mjs"
+    "test:quotations": "node scripts/test-quotations.mjs",
+    "test:quotations:pdf": "node scripts/test-quotation-pdfs.mjs",
+    "utm": "node --experimental-strip-types scripts/build-utm.mjs",
+    "postinstall": "node scripts/sync-pdf-worker.mjs"
   },
   "dependencies": {
     "@netlify/functions": "^6.0.0",
@@ -28,6 +31,7 @@
     "lucide-react": "^1.34.0",
     "motion": "^13.1.1",
     "next": "16.2.6",
+    "pdfjs-dist": "6.4.299",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "react-wrap-balancer": "^1.1.1",

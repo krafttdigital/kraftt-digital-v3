@@ -98,7 +98,7 @@ function click(event: MouseEvent) {
 export function AnalyticsRuntime({ paths, services }: { paths: string[]; services: Record<string, string> }) {
   const pathname = usePathname();
   useEffect(() => {
-    if (!analyticsConfig.gtmId) return;
+    if (!analyticsConfig.gtmId || /^\/admin(?:\/|$)/.test(pathname || '')) return;
     configurePaths(paths);
     configureServiceNames(services);
     store ??= new AttributionStore(storage('localStorage'), storage('sessionStorage'));
@@ -115,7 +115,7 @@ export function AnalyticsRuntime({ paths, services }: { paths: string[]; service
     }
   }, [pathname, paths, services]);
   useEffect(() => {
-    if (!analyticsConfig.gtmId) return;
+    if (!analyticsConfig.gtmId || /^\/admin(?:\/|$)/.test(pathname || '')) return;
     document.addEventListener('click', click, true);
     document.addEventListener('input', interaction, true);
     document.addEventListener('change', interaction, true);
@@ -124,6 +124,6 @@ export function AnalyticsRuntime({ paths, services }: { paths: string[]; service
       document.removeEventListener('input', interaction, true);
       document.removeEventListener('change', interaction, true);
     };
-  }, []);
+  }, [pathname]);
   return null;
 }
