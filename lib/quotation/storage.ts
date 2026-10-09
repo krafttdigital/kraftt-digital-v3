@@ -1,5 +1,6 @@
 import { copy, validateQuotation, type Workspace, type Quotation } from './model';
 import { documentErrors, documentKinds } from '../documents/model';
+import { invoiceItems } from '../documents/invoice-template';
 
 export const STORAGE_KEY = 'kraftt_document_workspace_v1';
 export const SESSION_KEY = 'kraftt_document_workspace_session_v1';
@@ -21,7 +22,8 @@ const milestone = object({ ...textFields('id', 'name', 'value', 'trigger', 'dueD
 const quote = object({
   ...textFields('id', 'number', 'createdAt', 'modifiedAt', 'finalisedAt', 'revisionOf', 'project', 'issueDate', 'validUntil', 'headline', 'introduction', 'delivery', 'scopeReference', 'preparedBy', 'selectedPackageId', 'discountLabel', 'adjustment', 'adjustmentLabel'),
   status: choice('draft', 'finalised'), revision: num, mode: choice('selected', 'comparison'), client, packages: array(pkg),
-  addOns: array(object({ ...lineFields, selected: bool, appliesTo: array(str) })),
+  includedServicesHeading: { kind: 'string', optional: true },
+  addOns: array(object({ ...lineFields, selected: bool, appliesTo: array(str), note: { kind: 'string', optional: true } })),
   recurring: array(object({ ...textFields('id', 'name', 'coverage', 'fee', 'period', 'alternativeGroup', 'start', 'notice', 'notes'), selected: bool })),
   scenarios: array(object({ ...textFields('id', 'name', 'packageId'), addOnIds: array(str), display: bool })),
   orderDiscount: discount, tax: object({ enabled: bool, label: str, rate: str, treatment: choice('exclusive', 'inclusive') }),
@@ -68,6 +70,7 @@ export function validateWorkspace(value: unknown): Workspace {
   if (new Set(state.documents.map(d => d.number.trim().toLowerCase())).size !== state.documents.length) throw new Error('Duplicate document numbers.');
   for (const doc of [...state.documents, ...state.documentTrash]) {
     uniqueIds(doc.fields, 'Document sections');
+    if (doc.kind === 'invoice') uniqueIds(invoiceItems(doc), 'Invoice services');
     if (doc.status === 'finalised' && (!doc.finalisedAt || documentErrors(doc).length)) throw new Error('Finalised document is incomplete.');
   }
   const numbers = state.quotations.map(q => q.number.trim().toLowerCase());

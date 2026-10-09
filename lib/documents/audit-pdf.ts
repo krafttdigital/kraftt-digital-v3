@@ -19,7 +19,7 @@ class AuditCanvas {
     this.dark = dark && !this.print; this.section = section; this.themes.push(this.dark);
     this.rect(0, 0, 596, 843, this.print ? '#FFFFFF' : this.dark ? '#0D0D0D' : '#F6F3ED');
     this.text('Kraftt.', LEFT, 58.5, 21.75, false, true, this.ink);
-    this.text('Perpared for', RIGHT, 48, 7.5, true, false, this.ink, 'right');
+    this.text('Prepared for', RIGHT, 48, 7.5, true, false, this.ink, 'right');
     const name = this.wrap(this.doc.client.business || '{{CLIENT_NAME}}', 260, 7.5);
     name.forEach((line, index) => this.text(line, RIGHT, 60 + index * 9, 7.5, false, false, this.body, 'right'));
     const titleLines = this.wrap(this.doc.title || 'Business Transformation Audit', 235, 6.5);

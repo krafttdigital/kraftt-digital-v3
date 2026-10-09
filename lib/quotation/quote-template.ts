@@ -1,5 +1,5 @@
 import type { jsPDF } from 'jspdf';
-import { calculateLine, decimal, inr, standardClauses, type Calculation, type LineItem, type Quotation } from './model';
+import { calculateLine, decimal, defaultIncludedServicesHeading, inr, optionalServiceNote, standardClauses, type Calculation, type LineItem, type Quotation } from './model';
 
 // Reference PDF measurements are in points. Keep this renderer isolated from the
 // shared writer used by the other six company document modules.
@@ -63,7 +63,7 @@ export class Template {
   header() {
     this.rect(0, 0, 596, 843, this.options.blackAndWhite ? '#FFFFFF' : PAPER);
     this.pdf.setCharSpace(-.75 / K); this.text('Kraftt.', LEFT, 58.5, 21.75, false, INK, 'left', 'serif'); this.pdf.setCharSpace(0);
-    this.text('Perpared for', RIGHT, 48, 7.5, true, '#231F1A', 'right');
+    this.text('Prepared for', RIGHT, 48, 7.5, true, '#231F1A', 'right');
     const name = this.q.client.business || '{{CLIENT_BUSINESS_NAME}}';
     const lines = this.wrap(name, 260, 7.5);
     lines.forEach((line, i) => this.text(line, RIGHT, 60 + i * 9, 7.5, false, '#5C574E', 'right'));
@@ -80,7 +80,7 @@ export class Template {
     const count = this.pdf.getNumberOfPages();
     for (let page = 1; page <= count; page++) {
       this.pdf.setPage(page); this.rule(793.125);
-      const client = this.options.blank ? '{{CLIENT_BUSINESS}}' : this.q.client.business;
+      const client = this.q.client.business || '{{CLIENT_BUSINESS}}';
       const text = 'KRAFTT DIGITAL × ' + client;
       let size = 5.55; while (size > 4 && this.width(text, size) > 235) size -= .15;
       this.pdf.setCharSpace(.2775 / K); this.text(text, LEFT, 806.25, size, false, '#9C9186');
@@ -119,22 +119,23 @@ function scopeDescription(line: LineItem) {
 
 export function renderQuoteTemplate(pdf: jsPDF, q: Quotation, results: Calculation[], options: Options) {
   const t = new Template(pdf, q, options), blank = options.blank && options.preview;
-  if (blank) q.client.business = '{{CLIENT_BUSINESS_NAME}}';
   // Repaint the shared writer's first page with the quotation-only reference design.
   t.header(); t.label('01 — QUOTATION', 99); t.headline('Your project. ', 'A clear investment.');
-  const introEnd = t.paragraph(`${blank ? '{{PROJECT_NAME}}' : q.project} — defined scope, transparent pricing and a clear way forward.`, LEFT, 153.75, WIDTH, 8.25, 12);
+  const introEnd = t.paragraph(`${q.project || '{{PROJECT_NAME}}'} — defined scope, transparent pricing and a clear way forward.`, LEFT, 153.75, WIDTH, 8.25, 12);
   const clientTop = Math.max(171.375, introEnd + 5.625);
   t.rule(clientTop); t.label('PREPARED FOR', clientTop + 17.625, LEFT, GOLD, 6); t.label('PROJECT DETAILS', clientTop + 17.625, 332.83, GOLD, 6);
   const nameEnd = t.paragraph(q.client.business, LEFT, clientTop + 34.875, 267, 9, 12, true, INK);
-  const projectEnd = t.paragraph(blank ? '{{PROJETC_TITLE}}' : q.project, 332.83, clientTop + 34.125, RIGHT - 332.83, 7.875, 11, false, INK);
-  const contact = blank ? '{{CONTACT_NAME}} · {{CONTACT_ROLE}}' : [q.client.contact, q.client.role].filter(Boolean).join(' · ');
+  const projectEnd = t.paragraph(q.project || '{{PROJECT_TITLE}}', 332.83, clientTop + 34.125, RIGHT - 332.83, 7.875, 11, false, INK);
+  const contact = [q.client.contact, q.client.role].filter(Boolean).join(' · ') || (options.preview ? '{{CONTACT_NAME}} · {{CONTACT_ROLE}}' : '');
   const contactEnd = t.paragraph(contact, LEFT, Math.max(clientTop + 48.375, nameEnd + 1.5), 267, 7.875, 11);
   const packages = q.mode === 'comparison' ? q.packages : q.packages.filter(p => p.id === q.selectedPackageId);
   const serviceCount = packages.reduce((n, p) => n + p.lines.length, 0);
   const countEnd = t.paragraph(blank ? '{{NUMBER_OF_SERVICES}}' : `${serviceCount} service${serviceCount === 1 ? '' : 's'}${q.mode === 'comparison' ? ' across alternative options' : ''}`, 332.83, Math.max(clientTop + 47.625, projectEnd + 2.5), RIGHT - 332.83, 7.875, 11, false, INK);
   const clientBottom = Math.max(clientTop + 63, contactEnd + 3.625, countEnd + 4.375);
-  t.rule(clientBottom); t.label('INCLUDED SERVICES · ONE-TIME INVESTMENT', clientBottom + 20.625, LEFT, INK);
-  t.y = clientBottom + 28.875;
+  t.rule(clientBottom);
+  const headingLines = t.wrap((q.includedServicesHeading?.trim() || defaultIncludedServicesHeading).toUpperCase(), WIDTH - 110, 6.75, true);
+  headingLines.forEach((line, index) => t.label(line, clientBottom + 20.625 + index * 12, LEFT, INK));
+  t.y = clientBottom + 28.875 + (headingLines.length - 1) * 12;
   const lineRows = blank ? Array.from({ length: 3 }, (_, index) => ({ ...q.packages[0].lines[0], name: `{{SERVICE_${index + 1}}}`, description: `{{DELIVERABLES_${index + 1} — specify quantities, features and handover format}}`, deliverables: [], included: [], delivery: '', fee: '0' })) : null;
   const sourceFeeBlank = (line: LineItem) => options.preview && [...options.source.packages.flatMap(p => p.lines), ...options.source.addOns].some(l => l.id === line.id && l.fee === '');
   let amountIndex = 0, firstTableRow = false;
@@ -180,7 +181,7 @@ export function renderQuoteTemplate(pdf: jsPDF, q: Quotation, results: Calculati
     t.y += q.mode === 'comparison' ? 15 : 0;
   }
   t.y += 21; t.ensure(85); t.label('ONGOING / OPTIONAL SERVICES', t.y, LEFT, INK); t.y += 24;
-  const offers = [...q.addOns.map(item => ({ name: item.name, price: options.preview && options.source.addOns.some(a => a.id === item.id && a.fee === '') ? '₹{{FEE}}' : inr(calculateLine(item).net), description: [item.description, ...item.deliverables].filter(Boolean).join('; '), notes: results.some(r => r.scenario.addOnIds.includes(item.id)) ? 'Included only in the selected payment scenario(s).' : 'Optional one-time service; excluded until approved.' })), ...q.recurring.map(item => ({ name: item.name, price: `${options.preview && options.source.recurring.some(r => r.id === item.id && r.fee === '') ? '₹{{FEE}}' : inr(decimal(item.fee, 2, 'Recurring fee'))} / ${item.period}`, description: [item.coverage, item.start].filter(Boolean).join(' · '), notes: item.notes }))];
+  const offers = [...q.addOns.map(item => ({ name: item.name, price: options.preview && options.source.addOns.some(a => a.id === item.id && a.fee === '') ? '₹{{FEE}}' : inr(calculateLine(item).net), description: [item.description, ...item.deliverables].filter(Boolean).join('; '), notes: optionalServiceNote(q, item) })), ...q.recurring.map(item => ({ name: item.name, price: `${options.preview && options.source.recurring.some(r => r.id === item.id && r.fee === '') ? '₹{{FEE}}' : inr(decimal(item.fee, 2, 'Recurring fee'))} / ${item.period}`, description: [item.coverage, item.start].filter(Boolean).join(' · '), notes: item.notes }))];
   if (!offers.length) offers.push({ name: blank ? '{{SERVICE_OR_NOT_INCLUDED}}' : 'Not included', price: blank ? '₹{{FEE}} / {{PERIOD}}' : 'Not applicable', description: blank ? '{{COVERAGE_AND_START_DATE_OR_NA}}' : 'No ongoing or optional services have been selected.', notes: '' });
   for (const offer of offers) {
     t.ensure(60); const nameBottom = t.paragraph(offer.name, LEFT, t.y, WIDTH - 160, 7.5, 11, true, INK); t.text(offer.price, RIGHT, t.y, 7.5, true, INK, 'right'); t.y = Math.max(t.y + 12, nameBottom);
@@ -200,7 +201,7 @@ export function renderQuoteTemplate(pdf: jsPDF, q: Quotation, results: Calculati
   }
 
   t.section = 'Payment & terms'; pdf.addPage(); t.header(); t.label('02 — PAYMENT & TERMS', 99); t.headline('The practical ', 'details.');
-  t.paragraph(`These terms apply to quotation created for ${blank ? '{{CLIENT_BUSINESS}}' : q.client.business}.`, LEFT, 153.75, WIDTH, 8.25, 12); t.y = 181.5;
+  t.paragraph(`These terms apply to quotation created for ${q.client.business || '{{CLIENT_BUSINESS}}'}.`, LEFT, 153.75, WIDTH, 8.25, 12); t.y = 181.5;
   t.label('PAYMENT SCHEDULE', t.y, LEFT, INK, 7.275); t.y = 189.75;
   for (const result of results) {
     if (results.length > 1) { t.ensure(30); t.text(result.scenario.name + ' · ' + inr(result.total), LEFT, t.y + 10, 8.25, true); t.y += 23; }

@@ -1,3 +1,4 @@
+import { fillInvoice } from './invoice-fixtures.mjs';
 import { fillProposal } from './proposal-fixtures.mjs';
 import assert from 'node:assert/strict';
 import { loadQuotationModule, loadProjectModule } from './quotation-test-modules.mjs';
@@ -53,7 +54,18 @@ const changedTerms = m.copy(base); changedTerms.clauses[0].body = 'Manually agre
 const c = loadQuotationModule('catalogue');
 const { services } = loadProjectModule('app/data/services.ts'), { bundles } = loadProjectModule('app/data/bundles.ts');
 const catalogue = c.buildCatalogue(services, bundles);
-assert.equal(catalogue.length, services.reduce((n, service) => n + service.tiers.length, 0) + bundles.length);
+assert.equal(catalogue.filter(item => !item.id.startsWith('addon-')).length, services.reduce((n, service) => n + service.tiers.length, 0) + bundles.length);
+assert.equal(new Set(catalogue.map(item => item.id)).size, catalogue.length, 'Catalogue IDs must be unique');
+for (const service of services) for (const tier of service.tiers) for (const raw of tier.addOns || []) {
+  const name = raw.replace(/\s+—\s+₹.*$/, '');
+  assert.ok(catalogue.some(item => item.id.startsWith('addon-') && item.name === name), `Missing add-on: ${name}`);
+}
+const maintenance = catalogue.filter(item => /^(Monthly|Annual) maintenance \/ support$/.test(item.name));
+assert.equal(maintenance.length, 2, 'Shared maintenance add-ons are deduplicated across tiers and service families');
+assert.deepEqual(maintenance.map(item => [item.fee, item.period]), [['1500', 'month'], ['12000', 'year']]);
+assert.equal(maintenance[0].recurringGroup, maintenance[1].recurringGroup);
+assert.equal(catalogue.filter(item => item.name === 'Extra product upload — per product').length, 1, 'USD display variations do not duplicate an INR-priced add-on');
+assert.equal(catalogue.find(item => item.name === 'Extra product upload — per product').fee, '150');
 services.forEach(service => assert.ok(catalogue.some(item => item.group === service.name), service.name));
 const fresh = m.createQuotation(m.emptyWorkspace()); assert.equal(fresh.client.business, ''); assert.equal(fresh.packages[0].lines[0].fee, ''); assert.equal(m.emptyWorkspace().presets.length, 0);
 const brand = catalogue.find(item => item.id.startsWith('service-brand-identity-') && item.fee === '12000');
@@ -79,20 +91,58 @@ const custom = catalogue.find(item => item.group === 'App Development'); assert.
 const customQuote = c.addCatalogueItem(fresh, custom, 'scope', fresh.selectedPackageId); assert.ok(m.calculations(customQuote)[0].errors.some(e => e.includes('valid non-negative number')));
 assert.equal(fresh.packages[0].lines[0].name, '', 'Catalogue changes are immutable');
 assert.equal(store.fee, '22000', 'Editing quotation fees does not alter the catalogue');
+const wording = m.copy(aggarwal);
+wording.mode = 'selected'; wording.selectedPackageId = wording.packages[0].id;
+wording.includedServicesHeading = 'Included Services - Monthly Retainer';
+wording.addOns[0].selected = false;
+wording.addOns[0].appliesTo = [];
+assert.equal(m.optionalServiceNote(wording, wording.addOns[0]), 'Optional one-time service; excluded until approved.');
+wording.addOns[0].note = 'Optional monthly service; begins after written confirmation.';
+wording.addOns[1].note = 'Available from the second month.';
+assert.equal(m.optionalServiceNote(wording, wording.addOns[0]), wording.addOns[0].note);
+wording.addOns[0].selected = true;
+assert.equal(m.optionalServiceNote(wording, wording.addOns[0]), wording.addOns[0].note, 'Selecting an add-on must preserve its custom wording');
+wording.addOns[0].note = '';
+assert.equal(m.optionalServiceNote(wording, wording.addOns[0]), '', 'An intentionally empty note is hidden');
+const wordingWorkspace = m.emptyWorkspace(); wordingWorkspace.quotations.push(wording);
+assert.deepEqual(s.importBackup(JSON.stringify(wordingWorkspace)), wordingWorkspace);
+const wordingRevision = m.duplicateQuotation(wording, wordingWorkspace, true);
+assert.equal(wordingRevision.includedServicesHeading, wording.includedServicesHeading);
+assert.equal(wordingRevision.addOns[1].note, wording.addOns[1].note);
+delete wording.addOns[0].note;
+assert.ok(m.optionalServiceNote(wording, wording.addOns[0]).startsWith('Included only'), 'Reset returns to automatic wording');
 console.log('Quotation tests passed: exact fees, discounts, tax, rounding, alternatives, recurring exclusions, backups, storage failures and immutable snapshots.');
 console.log(`Catalogue tests passed: ${services.length} service families, ${bundles.length} bundles, ${catalogue.length} entries; joint services, arbitrary alternatives, add-ons, included components and recurring pricing.`);
 
 // ERP templates, checkbox selections, migration and payment schedules.
 const d = loadProjectModule('lib/documents/model.ts'), selections = loadQuotationModule('selections');
+for (const slug of ['social-media-management', 'ecommerce-seo']) {
+  const item = catalogue.find(entry => entry.id.startsWith(`service-${slug}-`));
+  const quoted = selections.toggleService(fresh, item, fresh.selectedPackageId, true);
+  assert.equal(quoted.packages[0].lines[0].name, `${item.name} — first ${item.period}`);
+  assert.equal(m.calculations(quoted)[0].total, Number(item.fee) * 100, 'Initial monthly scope must contribute to the quoted total');
+  assert.equal(quoted.recurring.length, 0, 'Main scope must not silently create a renewal');
+  assert.equal(selections.toggleService(quoted, item, quoted.selectedPackageId, false).packages[0].lines.length, 0);
+}
+const geoAddon = catalogue.find(item => item.name === 'GEO & AEO optimisation');
+let extraQuote = selections.toggleService(fresh, geoAddon, fresh.selectedPackageId, true);
+assert.equal(m.calculations(extraQuote)[0].total, 400000);
+extraQuote = selections.toggleOngoing(extraQuote, maintenance[0], true);
+const ongoingGeo = catalogue.find(item => item.name === 'GEO & AEO layer');
+extraQuote = selections.toggleOngoing(extraQuote, ongoingGeo, true);
+extraQuote.recurring.forEach(item => { item.selected = true; });
+assert.notEqual(extraQuote.recurring[0].alternativeGroup, extraQuote.recurring[1].alternativeGroup, 'Independent ongoing add-ons can be agreed together');
+assert.equal(m.calculations(extraQuote)[0].total, 400000, 'Ongoing add-ons stay outside the one-time total');
 const legacy = m.copy(workspace); legacy.schemaVersion = 1; delete legacy.documents; delete legacy.documentTrash;
 const migrated = s.importBackup(JSON.stringify(legacy)); assert.equal(migrated.schemaVersion, 2); assert.deepEqual(migrated.quotations, workspace.quotations); assert.deepEqual(migrated.documents, []);
 assert.throws(() => s.importBackup(JSON.stringify({ ...legacy, documents: [] })), /Unexpected/);
 let erp = m.emptyWorkspace(); erp.clients.push({ ...m.blankClient(), business: 'Acme Client' });
 for (const kind of d.documentKinds) {
-  const doc = d.createBusinessDocument(kind, erp); assert.ok(kind === 'audit' || kind === 'proposal' || doc.fields.every(f => f.value === '' || (kind === 'agreement' || kind === 'report') && f.value === '1')); assert.equal(doc.client.business, '');
-  assert.ok(d.documentErrors(doc).length); doc.client = m.copy(erp.clients[0]); doc.project = 'Client engagement'; doc.fields.filter(f => kind !== 'proposal' && f.placeholder !== 'KRAFTT_CLIENT_AGREEMENT_V1').forEach(f => { f.value = 'Agreed information for this section.'; });
+  const doc = d.createBusinessDocument(kind, erp); assert.ok(kind === 'invoice' || kind === 'audit' || kind === 'proposal' || doc.fields.every(f => f.value === '' || (kind === 'agreement' || kind === 'report') && f.value === '1')); assert.equal(doc.client.business, '');
+  assert.ok(d.documentErrors(doc).length); doc.client = m.copy(erp.clients[0]); doc.project = 'Client engagement'; doc.fields.filter(f => kind !== 'invoice' && kind !== 'proposal' && f.placeholder !== 'KRAFTT_CLIENT_AGREEMENT_V1').forEach(f => { f.value = 'Agreed information for this section.'; });
   if (kind === 'agreement') { doc.client.contact = 'Alex Smith'; doc.client.address = 'Bathinda, Punjab'; doc.fields.find(f => f.placeholder === 'START_DATE').value = '2026-10-06'; doc.fields.find(f => f.placeholder === 'NUMBER_OF_SERVICES').value = '4'; }
   if (kind === 'audit') doc.fields.forEach(f => { if (f.placeholder.endsWith('_SCORE')) f.value = '50'; if (f.placeholder === 'KRAFTT_AUDIT_V1' || f.placeholder === 'INCLUDE_SCORES') f.value = '1'; });
+  if (kind === 'invoice') { fillInvoice(doc); doc.client.business = 'Acme Client'; }
   if (kind === 'proposal') fillProposal(doc);
   if (kind === 'report') doc.fields.forEach(f => { if (f.placeholder === 'KRAFTT_MONTHLY_REPORT_V2') f.value = '1'; if (['TOTAL_IMPRESSIONS','TOTAL_CLICKS','UNKNOWN_TRAFFIC','SEARCH_TRAFFIC','SOCIAL_TRAFFIC'].includes(f.placeholder)) f.value = '100'; if (['AVG_CTR','AVG_SCROLL_DEPTH'].includes(f.placeholder)) f.value = '10'; });
   assert.deepEqual(d.documentErrors(doc), []); const final = d.finaliseDocument(doc); erp.documents.push(final);

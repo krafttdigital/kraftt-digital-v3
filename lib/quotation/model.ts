@@ -7,7 +7,7 @@ export type LineItem = {
   included: string[]; delivery: string; exclusions: string; handover: string;
 };
 export type Package = { id: string; name: string; description: string; recommended: boolean; why: string; delivery: string; lines: LineItem[] };
-export type AddOn = LineItem & { selected: boolean; appliesTo: string[] };
+export type AddOn = LineItem & { selected: boolean; appliesTo: string[]; note?: string };
 export type Recurring = { id: string; name: string; coverage: string; fee: string; period: string; alternativeGroup: string; selected: boolean; start: string; notice: string; notes: string };
 export type Milestone = { id: string; name: string; mode: 'percent' | 'fixed' | 'balance'; value: string; trigger: string; dueDate: string; note: string };
 export type Scenario = { id: string; name: string; packageId: string; addOnIds: string[]; display: boolean };
@@ -19,6 +19,7 @@ export type Quotation = {
   id: string; number: string; status: 'draft' | 'finalised'; createdAt: string; modifiedAt: string; finalisedAt: string;
   revisionOf: string; revision: number; mode: 'selected' | 'comparison'; client: Client; project: string;
   issueDate: string; validUntil: string; headline: string; introduction: string; delivery: string; scopeReference: string; preparedBy: string;
+  includedServicesHeading?: string;
   packages: Package[]; selectedPackageId: string; addOns: AddOn[]; recurring: Recurring[]; scenarios: Scenario[];
   orderDiscount: Discount; discountLabel: string; adjustment: string; adjustmentLabel: string;
   tax: { enabled: boolean; label: string; rate: string; treatment: 'exclusive' | 'inclusive' };
@@ -90,6 +91,10 @@ export function paymentSchedule(total: number, milestones: Milestone[]): { miles
 export function quotationScenarios(q: Quotation): Scenario[] {
   return q.mode === 'comparison' ? q.scenarios.filter(s => s.display) : [{ id: 'selected', name: q.packages.find(p => p.id === q.selectedPackageId)?.name || 'Selected scope', packageId: q.selectedPackageId, addOnIds: q.addOns.filter(a => a.selected && (!a.appliesTo.length || a.appliesTo.includes(q.selectedPackageId))).map(a => a.id), display: true }];
 }
+export const defaultIncludedServicesHeading = 'Included Services · One-Time Investment';
+export function optionalServiceNote(q: Quotation, item: AddOn): string {
+  return item.note ?? (quotationScenarios(q).some(scenario => scenario.addOnIds.includes(item.id)) ? 'Included only in the selected payment scenario(s).' : 'Optional one-time service; excluded until approved.');
+}
 export function calculateScenario(q: Quotation, scenario: Scenario): Calculation {
   const result: Calculation = { scenario, package: null, lines: [], subtotal: 0, itemDiscount: 0, orderDiscount: 0, adjustment: 0, quotedNet: 0, taxBase: 0, taxAmount: 0, total: 0, reference: 0, savings: 0, complimentaryValue: 0, payments: [], errors: [] };
   try {
@@ -154,6 +159,7 @@ export function validateQuotation(q: Quotation): string[] {
     if (!item.name.trim()) errors.push('Name every service and optional add-on.');
   }
   const shortFields: [string, string, number][] = [
+    ['Included services heading', q.includedServicesHeading || '', 180],
     ['Quotation number', q.number, 40], ['Business name', q.client.business, 140],
     ['Brand company', q.brand.company, 80], ['Wordmark', q.brand.wordmark, 40],
     ...q.packages.map(p => ['Package name', p.name, 100] as [string, string, number]),

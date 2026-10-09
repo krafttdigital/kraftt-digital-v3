@@ -12,6 +12,12 @@ export async function generateBusinessPdf(document: BusinessDocument, options: {
   context.introduction = document.fields.filter(f => !f.placeholder.endsWith('_IMAGE')).map(f => [f.label, f.placeholder, f.value].join('\n')).join('\n') + document.terms;
   const { pdf, writer } = await createPdfCanvas(context, { ...options, pageFormat: isReferenceAgreement(document) ? [595.2 / (72 / 25.4), 841.92 / (72 / 25.4)] : undefined });
   pdf.setProperties({ title: `${document.number} - ${document.title}`, author: 'Kraftt Digital', subject: document.project });
+  if (document.kind === 'invoice') {
+    const { renderInvoice } = await import('./invoice-pdf');
+    pdf.addPage(); pdf.deletePage(1); await renderInvoice(pdf, document, context, options);
+    const part = (text: string) => text.replace(/[^a-zA-Z0-9_-]+/g, '_').slice(0, 70) || 'Client';
+    return { pdf, blob: pdf.output('blob'), filename: `Kraftt_Invoice_${part(document.client.business)}_${part(document.number)}${options.blackAndWhite ? '_BW_Print' : ''}.pdf`, pages: pdf.getNumberOfPages() };
+  }
   if (isReferenceAgreement(document)) {
     const { renderAgreementTemplate } = await import('./agreement-pdf'); await renderAgreementTemplate(pdf, document, options);
     const part = (text: string) => text.replace(/[^a-zA-Z0-9_-]+/g, '_').slice(0, 70) || 'Client';

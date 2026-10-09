@@ -1,3 +1,4 @@
+import { fillInvoice } from './invoice-fixtures.mjs';
 import { fillProposal } from './proposal-fixtures.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
@@ -26,9 +27,10 @@ const d = loadProjectModule('lib/documents/model.ts'), { generateBusinessPdf } =
 for (const kind of d.documentKinds) {
   const doc = d.createBusinessDocument(kind, workspace); const blank = await generateBusinessPdf(doc, { fontData, templateData: fs.readFileSync('public/admin-assets/templates/client-agreement-v1.png'), preview: true });
   fs.writeFileSync('outputs/quotation-qa/' + kind + '-blank.pdf', Buffer.from(blank.pdf.output('arraybuffer')));
-  doc.client.business = 'Acme Client'; doc.project = 'Digital engagement'; doc.fields.filter(f => kind !== 'proposal' && f.placeholder !== 'KRAFTT_CLIENT_AGREEMENT_V1').forEach(f => { f.value = 'Agreed project details, verified observations and next actions for the client.'; });
+  doc.client.business = 'Acme Client'; doc.project = 'Digital engagement'; doc.fields.filter(f => kind !== 'invoice' && kind !== 'proposal' && f.placeholder !== 'KRAFTT_CLIENT_AGREEMENT_V1').forEach(f => { f.value = 'Agreed project details, verified observations and next actions for the client.'; });
   if (kind === 'agreement') { doc.client.contact = 'Alex Smith'; doc.client.address = 'Bathinda, Punjab, India'; doc.fields.find(f => f.placeholder === 'START_DATE').value = '2026-10-06'; doc.fields.find(f => f.placeholder === 'NUMBER_OF_SERVICES').value = '4'; }
   if (kind === 'audit') doc.fields.forEach(f => { if (f.placeholder.endsWith('_SCORE')) f.value = '50'; if (f.placeholder === 'KRAFTT_AUDIT_V1' || f.placeholder === 'INCLUDE_SCORES') f.value = '1'; });
+  if (kind === 'invoice') { fillInvoice(doc); doc.client.business = 'Acme Client'; }
   if (kind === 'proposal') fillProposal(doc);
   if (kind === 'report') doc.fields.forEach(f => { if (f.placeholder === 'KRAFTT_MONTHLY_REPORT_V2') f.value = '1'; if (['TOTAL_IMPRESSIONS','TOTAL_CLICKS','UNKNOWN_TRAFFIC','SEARCH_TRAFFIC','SOCIAL_TRAFFIC'].includes(f.placeholder)) f.value = '100'; if (['AVG_CTR','AVG_SCROLL_DEPTH'].includes(f.placeholder)) f.value = '10'; });
   const result = await generateBusinessPdf(doc, { fontData, templateData: fs.readFileSync('public/admin-assets/templates/client-agreement-v1.png') }); assert.ok(result.pages >= 1);
@@ -42,6 +44,14 @@ const result = await generateQuotationPdf(compact, { fontData }); fs.writeFileSy
 
 assert.equal(blankQuote.pages, 2, 'Reference blank template is two A4 pages');
 assert.equal(result.pages, 2, 'Ordinary filled quotation is two A4 pages');
+const customWording = m.copy(compact);
+customWording.includedServicesHeading = 'Included Services - Monthly Retainer';
+customWording.addOns = [
+  { ...m.blankLine('Social Content', '5000'), selected: false, appliesTo: [], description: 'Monthly creative support.', note: 'Optional monthly service; begins after written confirmation.' },
+  { ...m.blankLine('SEO Reporting', '1500'), selected: false, appliesTo: [], description: 'Monthly performance report.', note: 'Available from the second month.' },
+];
+const customWordingPdf = await generateQuotationPdf(customWording, { fontData });
+fs.writeFileSync('outputs/quotation-qa/quote-custom-wording.pdf', Buffer.from(customWordingPdf.pdf.output('arraybuffer')));
 
 const printDoc = d.createBusinessDocument('agreement', workspace);
 const printPdf = await generateBusinessPdf(printDoc, { fontData, preview: true, blackAndWhite: true, templateData: fs.readFileSync('public/admin-assets/templates/client-agreement-v1-print.png') });

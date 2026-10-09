@@ -4,18 +4,36 @@ export type CatalogueItem = {
   id: string; name: string; group: string; kind: 'service' | 'bundle'; fee: string;
   priceLabel: string; period: string; description: string; deliverables: string[];
   components: string[]; delivery: string; exclusions: string; notes: string;
+  recurringGroup?: string;
 };
-type ServiceSource = { slug: string; name: string; headline: string; notIncluded: string[]; tiers: { name: string; price: string; timeline: string; deliverables: string[]; notIncluded: string[] }[] };
+type ServiceSource = { slug: string; name: string; headline: string; notIncluded: string[]; tiers: { name: string; price: string; timeline: string; deliverables: string[]; notIncluded: string[]; addOns?: string[] }[] };
 type BundleSource = { slug: string; name: string; headline: string; price: string; timeline: string; deliverables: string[]; inclusions: { title: string; items: string[] }[]; notIncluded: string[]; scopeNote: string; continuation: string };
 export function buildCatalogue(services: ServiceSource[], bundles: BundleSource[]): CatalogueItem[] {
   const fee = (value: string) => value.match(/₹\s*([\d,]+(?:\.\d{1,2})?)/)?.[1].replaceAll(',', '') || '';
+  const period = (value: string) => /\/month|per month/i.test(value) ? 'month' : /\/year|per year/i.test(value) ? 'year' : '';
+  // Add-ons repeat across tiers and services. Keep one entry for each name and INR price.
+  const extras = new Map<string, CatalogueItem>();
+  for (const service of services) for (const tier of service.tiers) for (const raw of tier.addOns || []) {
+    const match = raw.match(/^(.*?)\s+—\s+(₹.*)$/);
+    const name = (match?.[1] || raw).trim(), price = match?.[2] || 'Custom quote';
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const amount = fee(price), billingPeriod = period(price);
+    const id = `addon-${slug}-${amount || 'custom'}-${billingPeriod || 'once'}`;
+    if (!extras.has(id)) extras.set(id, {
+      id, name, group: 'Service add-ons', kind: 'service', fee: amount, priceLabel: price, period: billingPeriod,
+      description: name, deliverables: [], components: [], delivery: '', exclusions: '', notes: '',
+      // Independent add-ons can be agreed together; monthly/annual maintenance are alternatives.
+      recurringGroup: /^(Monthly|Annual) maintenance \/ support$/i.test(name) ? 'Maintenance / Support' : name,
+    });
+  }
   return [
     ...services.flatMap(service => service.tiers.map((tier, index) => ({
       id: `service-${service.slug}-${index}`, name: `${service.name} — ${tier.name}`, group: service.name, kind: 'service' as const,
-      fee: fee(tier.price), priceLabel: tier.price, period: /\/month|per month/i.test(tier.price) ? 'month' : /\/year|per year/i.test(tier.price) ? 'year' : '',
+      fee: fee(tier.price), priceLabel: tier.price, period: period(tier.price),
       description: service.headline, deliverables: [...tier.deliverables], components: [], delivery: tier.timeline,
       exclusions: [...new Set([...service.notIncluded, ...tier.notIncluded])].join('\n'), notes: '',
     }))),
+    ...extras.values(),
     ...bundles.map(bundle => ({
       id: `bundle-${bundle.slug}`, name: bundle.name, group: 'Bundles', kind: 'bundle' as const, fee: fee(bundle.price), priceLabel: bundle.price,
       period: '', description: bundle.headline, deliverables: [],
@@ -31,7 +49,7 @@ export function addCatalogueItem(quotation: Quotation, item: CatalogueItem, dest
   const q = copy(quotation); q.modifiedAt = new Date().toISOString();
   if (destination === 'recurring') {
     if (!item.period) throw new Error('This catalogue entry is a one-time service.');
-    q.recurring.push({ id: uid(), name: item.name, fee: item.fee, period: item.period, alternativeGroup: item.group, selected: false, coverage: [item.description, ...item.deliverables, item.exclusions && `Not included: ${item.exclusions}`].filter(Boolean).join('\n'), start: '', notice: q.termSettings.cancellationNotice, notes: item.notes }); return q;
+    q.recurring.push({ id: uid(), name: item.name, fee: item.fee, period: item.period, alternativeGroup: item.recurringGroup ?? item.group, selected: false, coverage: [item.description, ...item.deliverables, item.exclusions && `Not included: ${item.exclusions}`].filter(Boolean).join('\n'), start: '', notice: q.termSettings.cancellationNotice, notes: item.notes }); return q;
   }
   const line = { ...blankLine(item.name, item.fee), description: [item.description, item.notes].filter(Boolean).join('\n'), deliverables: [...item.deliverables], included: [...item.components], pricing: item.kind === 'bundle' ? 'bundle' as const : 'fixed' as const, delivery: item.delivery, exclusions: item.exclusions };
   if (destination === 'addon') { q.addOns.push({ ...line, selected: false, appliesTo: [] }); return q; }

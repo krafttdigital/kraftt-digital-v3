@@ -637,8 +637,8 @@ export const services: Service[] = [
           "10 stories/month — distribution agreed in the calendar",
           "SEO captions + hashtags",
           "1 platform",
-          "Engagement and comment replies",
-          "Monthly performance report"
+          // "Engagement and comment replies",
+          // "Monthly performance report"
         ],
         "addOns": [
           "Additional platform — ₹4,000/month / $99/month",
@@ -661,10 +661,13 @@ export const services: Service[] = [
           "Monthly content calendar",
           "SEO Captions + hashtags",
           "Profile integration",
-          "Engagement and comment replies",
-          "Monthly performance report"
+          // "Engagement and comment replies",
+          // "Monthly performance report"
         ],
-        "addOns": [],
+        "addOns": [
+          "Additional platform — ₹4,000/month / $99/month",
+          "AI-generated reel/short — per reel — ₹1,000 / $19"
+        ],
         "notIncluded": []
       },
       {
@@ -682,10 +685,13 @@ export const services: Service[] = [
           "5 AI-generated Reels",
           "SEO Captions + hashtags",
           "Profile integration",
-          "Engagement and comment replies",
-          "Monthly performance report"
+          // "Engagement and comment replies",
+          // "Monthly performance report"
         ],
-        "addOns": [],
+        "addOns": [
+          "Additional platform — ₹4,000/month / $99/month",
+          "AI-generated reel/short — per reel — ₹1,000 / $19"
+        ],
         "notIncluded": []
       }
     ],

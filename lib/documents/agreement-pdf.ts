@@ -28,7 +28,7 @@ export async function renderAgreementTemplate(pdf: jsPDF, document: BusinessDocu
   // Replace the reference masthead, fixed metadata and black footer only.
   rect(0, 0, 595.2, 145);
   pdf.setFont('Cormorant', 'normal'); pdf.setFontSize(21.75); pdf.setTextColor('#1A1712'); pdf.text('Kraftt.', 49 / K, 58.5 / K);
-  pdf.setFont('Outfit', 'bold'); pdf.setFontSize(7.5); pdf.text('Perpared for', 560 / K, 48 / K, { align: 'right' });
+  pdf.setFont('Outfit', 'bold'); pdf.setFontSize(7.5); pdf.text('Prepared for', 560 / K, 48 / K, { align: 'right' });
   pdf.setFont('Outfit', 'normal');
   const headerName = pdf.splitTextToSize(client, 260 / K) as string[];
   pdf.text(headerName, 560 / K, 60 / K, { align: 'right', lineHeightFactor: 1.2 }); rule(Math.max(75.375, 65 + headerName.length * 9));
