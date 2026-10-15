@@ -11439,6 +11439,47 @@ p { line-height: 1.65; }
   .services-flow-faq-answer { padding: 0 14px 19px 48px; }
 }
 
+/* Keep the services index in two complete, scannable rows instead of sparse groups. */
+.services-clarity-page .services-flow-hero { min-height: 0; padding-block: clamp(58px, 6vw, 78px); }
+.services-clarity-page .services-flow-catalogue,
+.services-clarity-page .services-flow-specialists,
+.services-clarity-page .services-flow-bundles { padding-block: clamp(58px, 6vw, 78px); }
+.services-clarity-page .services-flow-services-heading { width: min(100%, 1460px); grid-template-columns: minmax(0, 1fr) minmax(250px, .42fr); gap: 14px clamp(30px, 5vw, 78px); margin-inline: auto; }
+.services-clarity-page .services-flow-services-heading h2,
+.services-clarity-page .services-flow-bundles-heading h2 { font-size: clamp(42px, 4.2vw, 61px); line-height: 1; }
+.services-clarity-page .services-flow-services-heading > div { gap: 11px; }
+.services-clarity-page .services-flow-card-grid { width: min(100%, 1460px); gap: 12px; margin: 30px auto 0; }
+.services-clarity-page .services-flow-card { padding: clamp(22px, 2vw, 28px); border-radius: 18px; }
+.services-clarity-page .services-flow-card-heading { grid-template-columns: 48px minmax(0, 1fr); gap: 13px; }
+.services-clarity-page .services-flow-card-icon { width: 48px; height: 48px; border-radius: 13px; }
+.services-clarity-page .services-flow-card-heading h3 { font-size: clamp(21px, 1.65vw, 25px); line-height: 1.1; }
+.services-clarity-page .services-flow-card > strong { margin-top: 18px; font-size: 13px; line-height: 1.42; }
+.services-clarity-page .services-flow-card-copy { margin-top: 9px; }
+.services-clarity-page .services-flow-card-copy > p { font-size: 11.5px; line-height: 1.5; }
+.services-clarity-page .services-flow-card dl { padding-top: 18px; }
+.services-clarity-page .services-flow-card-action { margin-top: 18px; padding-top: 13px; }
+.services-clarity-page .services-flow-product-card { border-color: rgb(139 115 85 / 45%); background: var(--parchment); }
+.services-clarity-page .services-flow-product-capabilities { display: grid; gap: 0; margin: 17px 0 18px; padding: 0; list-style: none; }
+.services-clarity-page .services-flow-product-capabilities li { padding: 7px 0; border-top: 1px solid var(--bone); color: var(--dusk); font-size: 11px; }
+.services-clarity-page .services-flow-product-capabilities li::before { display: inline-block; width: 5px; height: 5px; margin-right: 9px; border-radius: 50%; background: var(--raw-umber); content: ''; vertical-align: 2px; }
+.services-clarity-page .services-flow-product-card .services-flow-card-action { margin-top: auto; }
+.services-clarity-page .services-flow-bundle-grid { gap: 12px; margin-top: 32px; }
+.services-clarity-page .services-flow-bundle-card { padding: clamp(24px, 2.6vw, 34px); }
+
+@media (max-width: 760px) {
+  .services-clarity-page .services-flow-hero { gap: 30px; padding: 48px 20px 54px; }
+  .services-clarity-page .services-flow-catalogue,
+  .services-clarity-page .services-flow-specialists,
+  .services-clarity-page .services-flow-bundles { padding: 52px 20px 58px; }
+  .services-clarity-page .services-flow-services-heading { grid-template-columns: 1fr; gap: 13px; }
+  .services-clarity-page .services-flow-services-heading h2,
+  .services-clarity-page .services-flow-bundles-heading h2 { font-size: clamp(36px, 9vw, 46px); }
+  .services-clarity-page .services-flow-services-heading > div { gap: 8px; }
+  .services-clarity-page .services-flow-card-grid { grid-template-columns: 1fr; gap: 11px; margin-top: 24px; }
+  .services-clarity-page .services-flow-card { padding: 21px; }
+  .services-clarity-page .services-flow-bundle-grid { margin-top: 26px; }
+}
+
 /* Service detail system */
 .service-detail-v2 {
   overflow: clip;

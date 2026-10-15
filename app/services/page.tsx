@@ -8,7 +8,7 @@ import { RegionalPriceCopy } from '../components/PricingCurrencyProvider';
 import { Reveal } from '../components/Reveal';
 import { SiteHeader } from '../components/SiteHeader';
 import { createPageMetadata, createPageSchema, faqSchema } from '../data/seo';
-import { services } from '../data/services';
+import { coreServiceSlugs, services } from '../data/services';
 import { RegionalBundleCount, RegionalBundleList } from './RegionalBundleList';
 import { PageFaq } from '@/components/ui/faq-6';
 
@@ -27,42 +27,47 @@ const toServiceCard = (service: (typeof services)[number]) => ({
 
 const serviceCards = services.map(toServiceCard);
 
-const serviceShowcases = [
-  {
-    number: '01',
-    eyebrow: 'Primary services',
-    title: 'Websites and SEO',
-    copy: 'Build a clear website and choose the search work that fits its stage.',
-    slugs: ['web-design-development', 'ecommerce-seo'],
-  },
-  {
-    number: '02',
-    eyebrow: 'Primary services',
-    title: 'Branding',
-    copy: 'Create a visual and verbal identity that people can recognise.',
-    slugs: ['brand-identity'],
-  },
-  {
-    number: '03',
-    eyebrow: 'Primary services',
-    title: 'E-commerce and marketplaces',
-    copy: 'Create a store or prepare product catalogues for the marketplaces that fit your business.',
-    slugs: ['ecommerce-store-development', 'marketplace-catalogue-building'],
-  },
-  {
-    number: '04',
-    eyebrow: 'Primary services',
-    title: 'Social media',
-    copy: 'Plan, design and publish a consistent presence with reporting.',
-    slugs: ['social-media-management'],
-  },
+const specialistServiceSlugs = [
+  'app-development',
+  'dashboards-internal-tools',
+  'landing-pages',
+  'ai-powered-creative',
+  'content-copywriting',
 ];
 
-const secondaryGroups = [
-  { number: '05', title: 'Software and products', slugs: ['app-development', 'dashboards-internal-tools'] },
-  { number: '06', title: 'Ad creatives and landing pages', slugs: ['landing-pages', 'ai-powered-creative'] },
-  { number: '07', title: 'Content writing', slugs: ['content-copywriting'] },
-];
+const cardFor = (slug: string) => {
+  const service = serviceCards.find((item) => item.slug === slug);
+  if (!service) throw new Error(`Missing service card: ${slug}`);
+  return service;
+};
+
+const coreCards = coreServiceSlugs.map(cardFor);
+const specialistCards = specialistServiceSlugs.map(cardFor);
+
+function ServiceCard({ service, index, actionLabel }: {
+  service: (typeof serviceCards)[number];
+  index: number;
+  actionLabel: string;
+}) {
+  return <Reveal className="services-flow-card-wrap" delay={(index % 3) * 0.04}>
+    <Link className="services-flow-card" href={service.href} id={`service-${service.slug}`}>
+      <div className="services-flow-card-heading">
+        <div className="services-flow-card-icon" aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={42} /></div>
+        <div><p>{service.category}</p><h3>{service.name}</h3></div>
+      </div>
+      <strong>{service.headline}</strong>
+      <div className="services-flow-card-copy">
+        <p>{service.summary}</p>
+        {service.productProof && <small>{service.productProof.name} · Kraftt product proof</small>}
+      </div>
+      <dl>
+        <div><dt>Starts at</dt><dd><RegionalPriceCopy>{service.price}</RegionalPriceCopy></dd></div>
+        <div><dt>First delivery</dt><dd>{service.timeline}</dd></div>
+      </dl>
+      <div className="services-flow-card-action"><span>{actionLabel}</span><ArrowRight size={17} /></div>
+    </Link>
+  </Reveal>;
+}
 
 const visitorPaths = [
   { number: '01', title: 'Clarify the brand', copy: 'Identity, positioning and a consistent visual system.', href: '#service-brand-identity' },
@@ -173,114 +178,43 @@ export default function ServicesPage() {
         </Reveal>
       </section>
 
-      {/* <section className="services-flow-promises" aria-label="What visitors can expect">
-        <div><strong>06</strong><span>Focused services</span><small>Choose one clear need</small></div>
-        <div><strong>04</strong><span>Connected bundles</span><small>Combine related scopes</small></div>
-        <div><strong>Free</strong><span>First conversation</span><small>Discuss fit without obligation</small></div>
-        <div><strong>Written</strong><span>Scope before work</span><small>Know the price and responsibilities</small></div>
-      </section> */}
-
-      <section className="services-flow-catalogue" id="service-menu" aria-label="Services catalogue">
-        {/* <Reveal className="services-flow-catalogue-intro" direction="left">
-          <div>
-            <p className="eyebrow eyebrow-dark">Core service catalogue · six focused scopes</p>
-            <h2 id="services-catalogue-title">Start with the system<br /><em>your business needs next.</em></h2>
-          </div>
-          <div>
-            <p>Each service is presented with its purpose, starting price and first delivery window. Open a service to review tiers, exact deliverables, exclusions and related work.</p>
-            <Link href="#compare-bundles">Need several services? Compare bundles <ArrowRight size={15} /></Link>
-          </div>
-        </Reveal> */}
-
-        <div className="services-flow-showcase-list">
-          {serviceShowcases.map((showcase, groupIndex) => {
-            const groupedServices = showcase.slugs.map((slug) => serviceCards.find((service) => service.slug === slug)!);
-            return (
-              <section className={`services-flow-showcase-group services-flow-showcase-group-${groupIndex + 1}`} key={showcase.number} aria-labelledby={`service-group-${showcase.number}`}>
-                <Reveal className="services-flow-showcase-heading" direction="left">
-                  <p><span>{showcase.number}</span> — {showcase.eyebrow}</p>
-                  <h2 id={`service-group-${showcase.number}`}>{showcase.title}</h2>
-                  <div><p>{showcase.copy}</p><span>{groupedServices.length} focused services</span></div>
-                </Reveal>
-
-                <div className="services-flow-card-grid">
-                  {groupedServices.map((service, index) => {
-                    return (
-                      <Reveal className="services-flow-card-wrap" delay={index * 0.04} key={service.slug}>
-                        <Link className="services-flow-card" href={service.href} id={`service-${service.slug}`}>
-                          <div className="services-flow-card-heading">
-                            <div className="services-flow-card-icon" aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={42} /></div>
-                            <div><p>{service.category}</p><h3>{service.name}</h3></div>
-                          </div>
-                          <strong>{service.headline}</strong>
-                          <div className="services-flow-card-copy">
-                            <p>{service.summary}</p>
-                            {service.productProof && <small>{service.productProof.name} · Kraftt product proof</small>}
-                          </div>
-                          <dl>
-                            <div><dt>Starts at</dt><dd><RegionalPriceCopy>{service.price}</RegionalPriceCopy></dd></div>
-                            <div><dt>First delivery</dt><dd>{service.timeline}</dd></div>
-                          </dl>
-                          <div className="services-flow-card-action"><span>See what&apos;s included</span><ArrowRight size={17} /></div>
-                        </Link>
-                      </Reveal>
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })}
+      <section className="services-flow-catalogue" id="service-menu" aria-labelledby="services-catalogue-title">
+        <Reveal className="services-flow-showcase-heading services-flow-services-heading" direction="left">
+          <p><span>01</span> — Core services</p>
+          <h2 id="services-catalogue-title">Choose what your business needs next.</h2>
+          <div><p>Explore the focused services below. Each card shows its purpose, starting price and first delivery window; the service page gives you the full scope.</p><span>Six focused services</span></div>
+        </Reveal>
+        <div className="services-flow-card-grid">
+          {coreCards.map((service, index) => <ServiceCard service={service} index={index} actionLabel="See what's included" key={service.slug} />)}
         </div>
       </section>
 
       <section className="services-flow-specialists" id="specialist-scopes" aria-labelledby="specialist-scopes-title">
-        <Reveal className="services-flow-showcase-heading services-flow-specialists-heading" direction="left">
-          <p><span>05–07</span> — Secondary services</p>
-          <h2 id="specialist-scopes-title">Focused work for a defined requirement.</h2>
+        <Reveal className="services-flow-showcase-heading services-flow-services-heading" direction="left">
+          <p><span>02</span> — Specialist services</p>
+          <h2 id="specialist-scopes-title">More ways to solve a specific need.</h2>
           <div>
-            <p>Choose a software build, creative support or content writing when one need calls for its own scope.</p>
-            <span>Three specialist groups</span>
+            <p>Software, landing pages, campaign creative and content can each be scoped on their own or connected to a larger project.</p>
+            <span>Five specialist services</span>
           </div>
         </Reveal>
-
-        <div className="services-flow-showcase-list" id="other-professional-services">
-          {secondaryGroups.map((group) => <section className="services-flow-showcase-group" key={group.number} aria-labelledby={`service-group-${group.number}`}>
-            <Reveal className="services-flow-showcase-heading" direction="left">
-              <p><span>{group.number}</span> — Secondary services</p>
-              <h2 id={`service-group-${group.number}`}>{group.title}</h2>
-            </Reveal>
-            <div className="services-flow-card-grid services-flow-other-card-grid">
-              {group.slugs.map((slug, index) => {
-                const service = serviceCards.find((item) => item.slug === slug)!;
-                return <Reveal className="services-flow-card-wrap" delay={index * 0.04} key={slug}>
-                  <Link className="services-flow-card" href={service.href} id={`service-${service.slug}`}>
-                    <div className="services-flow-card-heading">
-                      <div className="services-flow-card-icon" aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={42} /></div>
-                      <div><p>{service.category}</p><h3>{service.name}</h3></div>
-                    </div>
-                    <strong>{service.headline}</strong>
-                    <div className="services-flow-card-copy"><p>{service.summary}</p></div>
-                    <dl><div><dt>Pricing</dt><dd><RegionalPriceCopy>{service.price}</RegionalPriceCopy></dd></div><div><dt>Delivery</dt><dd>{service.timeline}</dd></div></dl>
-                    <div className="services-flow-card-action"><span>See service scope</span><ArrowRight size={17} /></div>
-                  </Link>
-                </Reveal>;
-              })}
-              {group.number === '05' && <Reveal className="services-flow-card-wrap" delay={0.08}>
-                <Link className="services-flow-card" href="/work/employee-os" id="service-employee-os">
-                  <div className="services-flow-card-heading"><div className="services-flow-card-icon" aria-hidden="true"><AnimatedServiceIcon slug="dashboards-internal-tools" size={42} /></div><div><p>Kraftt product</p><h3>EmployeeOS</h3></div></div>
-                  <strong>Offline-first Windows product for employee records, attendance, payroll, salary slips and reporting.</strong>
-                  <div className="services-flow-card-copy"><p>Explore the working product and its verified capabilities.</p></div>
-                  <div className="services-flow-card-action"><span>Explore EmployeeOS</span><ArrowRight size={17} /></div>
-                </Link>
-              </Reveal>}
-            </div>
-          </section>)}
+        <div className="services-flow-card-grid" id="other-professional-services">
+          {specialistCards.map((service, index) => <ServiceCard service={service} index={index} actionLabel="See service scope" key={service.slug} />)}
+          <Reveal className="services-flow-card-wrap" delay={0.08}>
+            <Link className="services-flow-card services-flow-product-card" href="/work/employee-os" id="service-employee-os">
+              <div className="services-flow-card-heading"><div className="services-flow-card-icon" aria-hidden="true"><AnimatedServiceIcon slug="dashboards-internal-tools" size={42} /></div><div><p>Kraftt product</p><h3>EmployeeOS</h3></div></div>
+              <strong>Offline-first Windows product for employee records, attendance, payroll, salary slips and reporting.</strong>
+              <div className="services-flow-card-copy"><p>Explore the working product and its verified capabilities.</p></div>
+              <ul className="services-flow-product-capabilities"><li>Employee records</li><li>Attendance and payroll</li><li>Salary slips and reporting</li></ul>
+              <div className="services-flow-card-action"><span>Explore EmployeeOS</span><ArrowRight size={17} /></div>
+            </Link>
+          </Reveal>
         </div>
       </section>
 
       <section className="services-flow-bundles" id="compare-bundles" aria-labelledby="services-bundles-title">
         <Reveal className="services-flow-showcase-heading services-flow-bundles-heading" direction="left">
-          <p><span>08</span> — Connected service bundles</p>
+          <p><span>03</span> — Connected service bundles</p>
           <h2 id="services-bundles-title">One direction for work that needs to move together.</h2>
           <div>
             <p>Bundles connect related services under one scope. Use them when the brand, platform and ongoing visibility need coordinated decisions and delivery.</p>
