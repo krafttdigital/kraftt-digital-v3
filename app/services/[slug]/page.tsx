@@ -153,7 +153,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <a href={whatsappUrl(`Hi Kraftt, I would like to discuss the ${tier.name} option for ${service.name}.`)}>Discuss this option <ArrowRight size={15} /></a>
             </Reveal>)}
           </div>
-          <Reveal className="service-simple-scope-note"><strong>Not included by default</strong><div>{service.notIncluded.map((item) => <p key={item}>{item}</p>)}</div></Reveal>
+          <Reveal className="service-simple-scope-note"><strong>{service.slug === 'brand-identity' ? 'Scope to confirm' : 'Not included by default'}</strong><div>{service.notIncluded.map((item) => <p key={item}>{item}</p>)}</div></Reveal>
         </div>
       </section>
 

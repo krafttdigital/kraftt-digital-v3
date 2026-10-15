@@ -106,7 +106,7 @@ export default function ContactPage() {
               <p className="eyebrow eyebrow-dark">Skip the form</p>
               <h2 id="contact-direct-title">Choose the quickest route.</h2>
             </div>
-            <p>Use the channel that is easiest right now. A short message is enough; we can ask the useful questions from there.</p>
+            <p>Use the channel that is easiest right now. A short message is enough; we can ask the useful questions from there. Based in Bathinda, Punjab. Meetings in person can be arranged.</p>
           </Reveal>
 
           <div className="contact-direct-grid" aria-label="Direct contact options">

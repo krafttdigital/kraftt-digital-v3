@@ -57,6 +57,7 @@ export default function AuditPage() {
           <p className="eyebrow eyebrow-dark">Digital Presence Audit</p>
           <h1>Know what deserves attention in your digital presence.</h1>
           <p>This paid review examines your business, competitors and current online presence, then explains the gaps and priorities. A free introductory call is available if you prefer to talk first.</p>
+          <p>Optional. Best if you already have a website or social presence and want an honest review before you spend. It helps us find the best service for your business.</p>
           <div className="audit-hero-price">
             <div><span>Fixed audit</span><strong><RegionalPriceCopy>₹999</RegionalPriceCopy></strong></div>
             <p>A separate paid service. You do not need an audit to discuss a project.</p>
