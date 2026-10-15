@@ -44,7 +44,7 @@ export default function ProcessPage() {
       <section className="process-clarity-hero" aria-labelledby="process-page-title">
         <div className="process-clarity-hero-inner">
           <Reveal className="process-clarity-hero-copy" direction="left">
-            <p className="eyebrow eyebrow-dark">Our process · 01—05</p>
+            <p className="eyebrow eyebrow-dark">Our process · 01—{String(stages.length).padStart(2, '0')}</p>
             <h1 id="process-page-title">Clarity before<br /><em>commitment.</em></h1>
             <p>Start with a free conversation. We clarify the requirement, explain the recommended scope and document the terms before delivery begins.</p>
             <div className="process-clarity-actions">
@@ -85,7 +85,7 @@ export default function ProcessPage() {
         <div className="process-clarity-body-inner">
           <aside className="process-clarity-guide">
             <p className="eyebrow eyebrow-dark">The complete path</p>
-            <h2>Seven steps.<br />No hidden jumps.</h2>
+            <h2>{stages.length} steps.<br />No hidden jumps.</h2>
             <p>The free introduction comes first. Any optional paid research and the later project commitment are labelled clearly.</p>
             <div>
               <span><b>Free</b> introductory call</span>

@@ -134,11 +134,8 @@ export default function AboutPage() {
       <nav className="about-clarity-journey" aria-label="About Kraftt page sections">
         <span>Explore Kraftt</span>
         <Link href="#proof">Real outcomes <i>01</i></Link>
-        <Link href="#why-kraftt">Why Kraftt <i>02</i></Link>
-        <Link href="#capabilities">What we do <i>03</i></Link>
-        <Link href="#approach">How we work <i>04</i></Link>
-        <Link href="#founder">Who leads it <i>05</i></Link>
-        <Link href="#fit">Is it a fit? <i>06</i></Link>
+        <Link href="#capabilities">What we do <i>02</i></Link>
+        <Link href="#approach">How we work <i>03</i></Link>
       </nav>
 
       <section className="about-clarity-proof" id="proof" aria-labelledby="about-proof-title">

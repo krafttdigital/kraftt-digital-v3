@@ -27,7 +27,7 @@ const toServiceCard = (service: (typeof services)[number]) => ({
 
 const serviceCards = coreServices.map(toServiceCard);
 
-const otherProfessionalServices = ['landing-pages', 'app-development', 'dashboards-internal-tools']
+const otherProfessionalServices = ['landing-pages', 'app-development', 'dashboards-internal-tools', 'content-copywriting', 'ai-powered-creative']
   .map((slug) => services.find((service) => service.slug === slug)!)
   .map(toServiceCard);
 
@@ -221,11 +221,11 @@ export default function ServicesPage() {
 
       <section className="services-flow-specialists" id="specialist-scopes" aria-labelledby="specialist-scopes-title">
         <Reveal className="services-flow-showcase-heading services-flow-specialists-heading" direction="left">
-          <p><span>03</span> — Other professional services</p>
+          <p><span>03</span> — More services</p>
           <h2 id="specialist-scopes-title">Focused digital builds for a defined requirement.</h2>
           <div>
-            <p>Choose a focused landing page, a customer-facing application or a custom internal system. Every service now has its own scope and detail page.</p>
-            <span>3 individual services</span>
+            <p>Choose a focused landing page, application, internal system, content writing or AI-powered creative. Each service has its own scope and detail page.</p>
+            <span>{otherProfessionalServices.length} individual services</span>
           </div>
         </Reveal>
 
