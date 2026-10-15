@@ -14,11 +14,13 @@ const trustPillars = [
 type HomeShowcaseProps = {
   eyebrow?: string;
   intro?: string;
+  isHomepage?: boolean;
 };
 
 export function HomeShowcase({
-  eyebrow = 'Branding · Websites · E-commerce · SEO · Social Media',
-  intro = 'We help businesses clarify their brand, showcase their work and build a digital presence that makes it easier for people to understand, trust and contact them.',
+  eyebrow = 'Founder-led · Working across India and abroad',
+  intro = 'A founder-led studio that explains what you need before you pay for it, then builds it.',
+  isHomepage = true,
 }: HomeShowcaseProps = {}) {
   return (
     <section className="kraftt-hero" aria-labelledby="home-showcase-title">
@@ -27,16 +29,12 @@ export function HomeShowcase({
       <div className="kraftt-hero-main">
         <div className="kraftt-hero-copy">
           <p className="kraftt-hero-eyebrow">{eyebrow}</p>
-          <h1 id="home-showcase-title">
-            Be trusted.<br />
-            Be discovered.<br />
-            <span className="kraftt-hero-chosen"><span>Be chosen.</span></span>
-          </h1>
-          <p className="kraftt-hero-tagline"><em>“Digital presence for brands who take themselves seriously.”</em></p>
+          <h1 id="home-showcase-title">{isHomepage ? 'Websites, branding and SEO that bring enquiries.' : <>Be trusted.<br />Be discovered.<br /><span className="kraftt-hero-chosen"><span>Be chosen.</span></span></>}</h1>
+          <p className="kraftt-hero-tagline"><em>{isHomepage ? 'Be trusted. Be discovered. Be chosen.' : '“Digital presence for brands who take themselves seriously.”'}</em></p>
           <p className="kraftt-hero-intro">{intro}</p>
           <div className="kraftt-hero-actions">
             <Link href="/contact">Request a free call <span aria-hidden="true">→</span></Link>
-            <Link href="/work">Explore Our Work <span aria-hidden="true">↗</span></Link>
+            <Link href="/work">{isHomepage ? 'See our work' : 'Explore Our Work'} <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="kraftt-hero-note" aria-label="Kraftt approach">
             <span>01</span><span>02</span><span>03</span>

@@ -10,6 +10,8 @@ import { Reveal } from './Reveal';
 import { ReviewsSection } from './ReviewsSection';
 import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 import { SiteHeader } from './SiteHeader';
+import { HomePackages } from './HomePackages';
+import { SHOW_ELIXIR_STORY, industryPagesLive } from '../data/site';
 import { projects } from '../data/projects';
 import { featuredReviews } from '../data/reviews';
 import { createPageSchema, faqSchema, reviewSchemas } from '../data/seo';
@@ -111,10 +113,10 @@ const homepageFaqData = {
 } satisfies Faq6Data;
 
 const processJourney = [
-  { number: '01', phase: 'Introduce', status: 'Free first call', title: 'Introductory call', copy: 'Share what you want to improve. We listen, ask the useful questions and confirm the best next step.' },
-  { number: '02', phase: 'Discover', status: 'Audit optional', title: 'Discovery meeting', copy: 'We clarify your audience, goals and priorities. If deeper research would help, we recommend the optional paid audit.' },
-  { number: '03', phase: 'Quote', status: 'Everything in writing', title: 'Quote and terms', copy: 'You receive the deliverables, timeline, fees, required inputs and exclusions in writing.' },
-  { number: '04', phase: 'Agree', status: 'Your approval', title: 'Proposal and agreement', copy: 'We answer your questions and finalise the scope, payment stages and review points together.' },
+  { number: '01', phase: 'Introduce', status: 'Free', title: 'Introductory call', copy: 'Share what you want to improve. We listen, ask the useful questions and confirm the best next step.' },
+  { number: '02', phase: 'Review', status: 'Optional, paid', title: 'Optional audit', copy: 'A written review that helps us find the best service for your business. You can skip it.' },
+  { number: '03', phase: 'Discover', status: 'Discovery', title: 'Discovery meeting', copy: 'We go deeper into your goals, audience and constraints.' },
+  { number: '04', phase: 'Agree', status: 'Everything in writing', title: 'Quote, proposal and agreement', copy: 'You see scope, terms and price first, then a plan with deliverables and a timeline, then we agree in writing.' },
   { number: '05', phase: 'Start', status: 'Visible milestones', title: 'Project starts', copy: 'Once you approve and share the required access, work begins with clear milestones and regular updates.' },
 ];
 
@@ -132,6 +134,13 @@ const featuredProjectSlugs = ['mittal-architect', 'elixir-beverages', 'kiraq-jew
 const selectedProjects = featuredProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is NonNullable<typeof project> => Boolean(project));
+
+const audiences = [
+  ['Architects and design studios', '/industries/architects-and-design-studios'],
+  ['Manufacturers and MSMEs', '/industries/manufacturers-and-msmes'],
+  ['D2C and e-commerce brands', '/industries/d2c-and-ecommerce-brands'],
+  ['Pre-launch and start-up brands', '/industries/pre-launch-and-startup-brands'],
+] as const;
 
 export function HomePageExperience({ eyebrow, intro, schema, geographicContext }: HomePageExperienceProps = {}) {
   const homeReviews = featuredReviews();
@@ -162,7 +171,19 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
         }),
       }} />
       <SiteHeader overlay />
-      <HomeShowcase eyebrow={eyebrow} intro={intro} />
+      <HomeShowcase eyebrow={eyebrow} intro={intro} isHomepage={!geographicContext} />
+
+      {!geographicContext && <section className="services-flow-bundles" aria-labelledby="home-audience-title">
+        <div className="services-flow-showcase-heading services-flow-bundles-heading"><p>Who we work with</p><h2 id="home-audience-title">For respected businesses ready to be recognised.</h2></div>
+        <div className="services-flow-bundle-grid">{audiences.map(([name, href], index) => {
+          const card = <div className="services-flow-bundle-card-heading"><div><p>{String(index + 1).padStart(2, '0')}</p><h3>{name}</h3></div></div>;
+          return <div className="services-flow-bundle-wrap" key={name}>{industryPagesLive
+            ? <Link className="services-flow-bundle-card" href={href}>{card}</Link>
+            : <article className="services-flow-bundle-card">{card}</article>}</div>;
+        })}</div>
+      </section>}
+
+      {!geographicContext && <HomePackages />}
 
       <section className="home-services-play section-light" id="what-we-build">
         <div className="home-services-play-inner">
@@ -173,7 +194,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             </div>
             <div className="home-services-play-title">
               <p className="eyebrow eyebrow-dark">What we build</p>
-              <h2>Build the essentials.<br /><em>Add what the business needs.</em></h2>
+              <h2>Or start with a single service</h2>
             </div>
             <div className="home-services-play-intro">
               <p>Start with the service that solves the immediate gap, then connect the wider brand, content or system when the business needs it.</p>
@@ -233,7 +254,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             <h2><span>Proof takes</span><span>different shapes.</span></h2>
           </div>
           <div className="home-case-playground-intro">
-            <p>{geographicContext?.proofNote ?? 'Selected case studies and projects show the business situation, the work delivered and what the available evidence supports.'}</p>
+            <p>{geographicContext?.proofNote ?? 'Work for architects, jewellers, manufacturers and beverage brands. Every case study says what was built and what changed.'}</p>
             <Link className="home-case-playground-all" href="/work">Explore all projects <span aria-hidden="true">↗</span></Link>
           </div>
         </Reveal>
@@ -278,7 +299,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             <div className="home-process-journey-summary">
               <div>
                 <h2 id="home-process-title">Know what happens<br /><em>before work begins.</em></h2>
-                <p>Five straightforward steps. You see the scope, cost and responsibilities before you commit, and nothing moves forward without your approval.</p>
+                <p>We educate first. Before any quote, we explain what you need, what you do not, and why.</p>
               </div>
               <Link href="/process" className="home-process-journey-link">Explore the full process <span aria-hidden="true">↗</span></Link>
             </div>
@@ -306,6 +327,8 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
           </div>
         </div>
       </section>
+
+      {!geographicContext && SHOW_ELIXIR_STORY && <p>A pre-launch beverage brand asked for a 3D website. We explained why identity and a single-page site came first, and it fitted the budget.</p>}
 
       {geographicContext ? <ReviewsSection reviews={homeReviews} variant="home" /> : <AnimatedTestimonials testimonials={homeReviews.map(review => ({
         id: review.id,
@@ -436,17 +459,18 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             </div> */}
 
             {/* <div className="home-trust-decision-choices" aria-label="Choose your starting point"> */}
-              <Link className="home-trust-decision-choice" href="/contact">
+              <div className="home-trust-decision-choice">
                 <div className="home-trust-decision-choice-meta"><span>01</span><small>Free</small></div>
                 <p>Best for a defined need</p>
                 <strong>Talk it through in a free introductory call.</strong>
                 <small>Explain the situation, ask questions and check whether Kraftt is the right fit for the work.</small>
                 <span className="home-trust-decision-result">Outcome · a useful next step</span>
-                <div className="home-trust-decision-choice-action"><span>Request a free call</span><i aria-hidden="true">→</i></div>
-              </Link>
+                <Link className="home-trust-decision-choice-action" href="/contact"><span>Request a free call</span><i aria-hidden="true">→</i></Link>
+                <Link href="/tools/digital-presence-score">Not sure what you need? Take the 2-minute Digital Presence Score.</Link>
+              </div>
               <Link className="home-trust-decision-choice" href="/audit">
                 <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>₹999</RegionalPriceCopy></small></div>
-                <p>Best for an unclear direction</p>
+                <p>Optional, paid</p>
                 <strong>Start with a researched Digital Presence Audit.</strong>
                 <small>Get a structured review of the business, competitors and current online presence before deciding what to improve.</small>
                 <span className="home-trust-decision-result">Outcome · findings and priorities</span><br /><br />
