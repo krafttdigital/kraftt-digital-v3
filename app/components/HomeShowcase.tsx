@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { InfiniteTextMarquee } from '@/components/ui/infinite-text-marquee';
 import { projects } from '../data/projects';
 import { REPLY_TIME_TEXT } from '../data/site';
+import { HeroTypingTagline } from './HeroTypingTagline';
 
 const trustPillars = [
   [String(projects.length).padStart(2, '0'), 'Selected projects'],
@@ -18,8 +19,8 @@ type HomeShowcaseProps = {
 };
 
 export function HomeShowcase({
-  eyebrow = 'Founder-led · Working across India and abroad',
-  intro = 'A founder-led studio that explains what you need before you pay for it, then builds it.',
+  eyebrow = 'Branding · Websites · E-commerce · SEO · Social Media',
+  intro = 'A founder-led studio that explains what you need before you pay for it, then builds it customly.',
   isHomepage = true,
 }: HomeShowcaseProps = {}) {
   return (
@@ -30,7 +31,7 @@ export function HomeShowcase({
         <div className="kraftt-hero-copy">
           <p className="kraftt-hero-eyebrow">{eyebrow}</p>
           <h1 id="home-showcase-title" className={isHomepage ? 'kraftt-hero-home-title' : undefined}>{isHomepage ? <><span className="kraftt-hero-home-lead">Websites,</span>{' '}<span className="kraftt-hero-home-services">branding and <span>SEO</span></span>{' '}<span className="kraftt-hero-home-result">that bring enquiries.</span></> : <>Be trusted.<br />Be discovered.<br /><span className="kraftt-hero-chosen"><span>Be chosen.</span></span></>}</h1>
-          <p className="kraftt-hero-tagline"><em>{isHomepage ? 'Be trusted. Be discovered. Be chosen.' : '“Digital presence for brands who take themselves seriously.”'}</em></p>
+          {isHomepage ? <HeroTypingTagline /> : <p className="kraftt-hero-tagline"><em>“Digital presence for brands who take themselves seriously.”</em></p>}
           <p className="kraftt-hero-intro">{intro}</p>
           <div className="kraftt-hero-actions">
             <Link href="/contact">Request a free call <span aria-hidden="true">→</span></Link>

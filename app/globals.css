@@ -3619,6 +3619,12 @@ p { line-height: 1.65; }
   line-height: 1.12;
 }
 
+.kraftt-hero-typing-frame { position: relative; display: block; }
+.kraftt-hero-typing-measure { display: block; visibility: hidden; }
+.kraftt-hero-typing-text { position: absolute; inset: 0; display: block; }
+.kraftt-hero-typing-caret { display: inline-block; width: 2px; height: .82em; margin-left: 3px; background: currentColor; vertical-align: -.08em; animation: kraftt-hero-typing-caret 850ms steps(1, end) infinite; }
+@keyframes kraftt-hero-typing-caret { 50% { opacity: 0; } }
+
 .kraftt-hero-chosen > span {
   display: block;
   overflow: hidden;
@@ -4057,6 +4063,7 @@ p { line-height: 1.65; }
 @media (prefers-reduced-motion: reduce) {
   .kraftt-hero-copy,
   .kraftt-hero-visual { animation: none; }
+  .kraftt-hero-typing-caret { display: none; animation: none; }
   .kraftt-hero-chosen > span { clip-path: none; animation: none; }
   .kraftt-hero-chosen::after { display: none; }
   .kraftt-hero-visual-orbit { animation: none; }
