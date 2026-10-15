@@ -19,6 +19,8 @@ export type Service = {
   problemSolved: string;
   tiers: ServiceTier[];
   mainDeliverables: string[];
+  scopeClarification?: string;
+  scopeDetails?: { label: string; text: string }[];
   notIncluded: string[];
   goodFitWhen: string[];
   workflow: { title: string; detail: string }[];
@@ -341,6 +343,8 @@ export const services: Service[] = [
     "name": "E-commerce Store Development",
     "category": "Websites & Commerce",
     "headline": "Shopify, Wix and WooCommerce stores with clear products and a usable buying journey.",
+    "scopeClarification": "What we handle: setup, listings, descriptions, images, training and platform management. What you handle: inventory, orders, shipping, returns and customer support. Need help with operations? Ask about our optional monthly operations service.",
+    "scopeDetails": [{ "label": "Online stores:", "text": "Shopify, Wix, WooCommerce" }],
     "idealClient": "Product businesses launching or improving a store, moving platforms, or needing catalogue setup and platform guidance.",
     "problemSolved": "A missing or unfinished store, unconfigured theme, incomplete product data, or missing launch search foundations.",
     "tiers": [
@@ -491,6 +495,10 @@ export const services: Service[] = [
     "name": "SEO Services",
     "category": "Search & Social",
     "headline": "Ongoing search work for business websites and online stores, with clear priorities and monthly reporting.",
+    "scopeDetails": [
+      { "label": "SEO built into your website project:", "text": "a defined scope delivered with the build." },
+      { "label": "Ongoing SEO:", "text": "a separate monthly service." },
+    ],
     "idealClient": "Service businesses and online stores that need ongoing page, content, local or technical search improvements.",
     "problemSolved": "Useful pages are hard to discover, search data is not guiding improvements, or launch SEO has not been followed by regular work.",
     "tiers": [
@@ -620,6 +628,7 @@ export const services: Service[] = [
     "name": "Social Media Strategy & Management",
     "category": "Search & Social",
     "headline": "Planned content that communicates your work, expertise and offers consistently.",
+    "scopeClarification": "What we do: strategy, design, posting, account management and reporting. We can also create AI-generated reels. What we do not do: shoot or edit video.",
     "idealClient": "Brands needing consistent monthly content, teams working across platforms, and businesses that want useful reporting alongside publishing.",
     "problemSolved": "Quiet or inconsistent profiles, no shared content calendar, and outdated profile details that make the business harder to understand.",
     "tiers": [
@@ -771,6 +780,8 @@ export const services: Service[] = [
     name: 'Marketplace Catalogue Building',
     category: 'Stores & Marketplaces',
     headline: 'Structured product catalogues for Amazon, Flipkart, Myntra and Meesho, with setup support and platform training.',
+    scopeClarification: 'What we handle: setup, listings, descriptions, images, training and platform management. What you handle: inventory, orders, shipping, returns and customer support. Need help with operations? Ask about our optional monthly operations service.',
+    scopeDetails: [{ label: 'Marketplaces:', text: 'Amazon, Flipkart, Myntra, Meesho' }],
     idealClient: 'Indian product businesses preparing to sell through Amazon, Flipkart, Myntra or Meesho and teams that need an organised catalogue before launch.',
     problemSolved: 'Incomplete product information, inconsistent listings and unfamiliar marketplace setup steps that delay a confident launch.',
     tiers: marketplacePackages.map((pack) => tier(
@@ -782,6 +793,7 @@ export const services: Service[] = [
       [marketplaceScopeNotes[2], marketplaceScopeNotes[3]],
     )),
     mainDeliverables: [
+      'Marketplace setup on Amazon, Flipkart, Myntra and Meesho.',
       'Account setup and verification assistance',
       'Product and niche research for the selected package',
       'Structured listings across the agreed marketplaces',
@@ -817,6 +829,7 @@ export const services: Service[] = [
     name: 'Landing Pages',
     category: 'Websites & Campaign Support',
     headline: 'Focused landing pages built around one offer, audience and next action.',
+    scopeClarification: 'We make ad creatives and the landing pages that support your campaigns. We do not manage ad campaigns.',
     idealClient: 'Businesses launching an offer, campaign, event or product that needs a focused page outside the main website journey.',
     problemSolved: 'Campaign traffic arriving on a general website page with too many choices, weak message continuity or no clear conversion path.',
     tiers: [
@@ -915,9 +928,9 @@ export const services: Service[] = [
       { question: 'Is post-launch support included?', answer: 'The support period and ongoing options are written into the proposal.' },
     ],
     productProof: {
-      name: 'Employee OS',
-      eyebrow: 'Kraftt-built product proof',
-      description: 'From operational dashboards to complete desktop systems, we design internal tools around the workflows teams actually use. Employee OS is our local-first Windows product for employee records, attendance, payroll, salary slips and reporting.',
+      name: 'EmployeeOS',
+      eyebrow: 'Software and products',
+      description: 'EmployeeOS is our offline-first Windows product for employee records, attendance, payroll, salary slips and reporting.',
       href: 'https://employeeos.krafttdigital.in',
       linkLabel: 'See Employee OS',
       logoSrc: '/assets/projects/employee-os/employee-os-wordmark.webp',
@@ -936,6 +949,7 @@ export const services: Service[] = [
     name: 'AI-Powered Creative',
     category: 'Creative Production',
     headline: 'Ad creatives, product mockups and copy produced faster with AI, then directed and finished by people.',
+    scopeClarification: 'We make ad creatives and the landing pages that support your campaigns. We do not manage ad campaigns.',
     idealClient: 'D2C brands testing creative variations, founders visualising products before manufacturing, and teams that need more platform-ready assets quickly.',
     problemSolved: 'Creative demand outpacing production capacity, limited shoot budgets, or products that need visualisation before physical samples exist.',
     tiers: [

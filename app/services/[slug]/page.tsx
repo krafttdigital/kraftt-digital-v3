@@ -88,7 +88,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <section className="service-simple-hero" aria-labelledby="service-title">
         <div className="service-simple-shell">
-          <Reveal className="service-simple-back" direction="left"><Link href="/services"><ArrowLeft size={15} /> All services</Link><span>{service.category}</span></Reveal>
+          <Reveal className="service-simple-back" direction="left"><Link href="/services"><ArrowLeft size={15} /> All services</Link><span>{['app-development', 'dashboards-internal-tools'].includes(service.slug) ? 'Software and products' : service.category}</span></Reveal>
           <div className="service-simple-hero-grid">
             <Reveal className="service-simple-hero-copy" direction="left"><p className="eyebrow eyebrow-dark">Focused service · clear scope</p><h1 id="service-title">{service.name}</h1><strong>{service.headline}</strong><p>{service.problemSolved}</p></Reveal>
             <Reveal className="service-simple-hero-panel" direction="right">
@@ -130,6 +130,13 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <a href={serviceMessage}>{discussionLabel} <ArrowUpRight size={15} /></a>
             </Reveal>
           </div>
+          {(service.scopeClarification || service.scopeDetails) && <Reveal className="service-simple-scope-note">
+            <strong>Scope and responsibilities</strong>
+            <div>
+              {service.scopeClarification && <p>{service.scopeClarification}</p>}
+              {service.scopeDetails?.map(({ label, text }) => <p key={label}><strong>{label}</strong> {text}</p>)}
+            </div>
+          </Reveal>}
           {/* <Reveal className="service-simple-outcomes"><p className="eyebrow eyebrow-dark">A practical fit check</p><h2>When this service is useful</h2><div>{service.goodFitWhen.map((item) => <p key={item}><Check size={15} /><span>{item}</span></p>)}</div></Reveal> */}
         </div>
       </section>
@@ -146,7 +153,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <a href={whatsappUrl(`Hi Kraftt, I would like to discuss the ${tier.name} option for ${service.name}.`)}>Discuss this option <ArrowRight size={15} /></a>
             </Reveal>)}
           </div>
-          {/* <Reveal className="service-simple-scope-note"><strong>Not included by default</strong><div>{service.notIncluded.map((item) => <p key={item}>{item}</p>)}</div></Reveal> */}
+          <Reveal className="service-simple-scope-note"><strong>Not included by default</strong><div>{service.notIncluded.map((item) => <p key={item}>{item}</p>)}</div></Reveal>
         </div>
       </section>
 
@@ -164,7 +171,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </section>
 
       {service.productProof && <section className="service-simple-proof"><div className="service-simple-shell service-simple-proof-grid">
-        <Reveal direction="left"><p className="eyebrow">{service.productProof.eyebrow}</p><h2>A working product.<br /><em>Not a concept screen.</em></h2><p>{service.productProof.description}</p><a href={service.productProof.href} target="_blank" rel="noopener noreferrer">{service.productProof.linkLabel} <ArrowUpRight size={15} /></a></Reveal>
+        <Reveal direction="left"><p className="eyebrow">{service.productProof.eyebrow}</p><h2>{service.productProof.name}<br /><em>A working product.</em></h2><p>{service.productProof.description}</p><a href={service.productProof.href} target="_blank" rel="noopener noreferrer">{service.productProof.linkLabel} <ArrowUpRight size={15} /></a></Reveal>
         <Reveal direction="right"><Image src={service.productProof.image.src} alt={service.productProof.image.alt} width={service.productProof.image.width} height={service.productProof.image.height} /></Reveal>
       </div></section>}
 
