@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { DraftingCompass, Factory, ShoppingBag, Sparkles } from 'lucide-react';
 import Faq, { type Faq6Data } from '../../components/ui/faq-6';
 import { AnimatedServiceIcon } from './AnimatedServiceIcon';
 import { Footer } from './Footer';
@@ -136,10 +137,14 @@ const selectedProjects = featuredProjectSlugs
   .filter((project): project is NonNullable<typeof project> => Boolean(project));
 
 const audiences = [
-  ['Architects and design studios', '/industries/architects-and-design-studios'],
-  ['Manufacturers and MSMEs', '/industries/manufacturers-and-msmes'],
-  ['D2C and e-commerce brands', '/industries/d2c-and-ecommerce-brands'],
-  ['Pre-launch and start-up brands', '/industries/pre-launch-and-startup-brands'],
+  { name: 'Architects and design studios', href: '/industries/architects-and-design-studios', icon: DraftingCompass,
+    value: 'Let the work speak clearly before the first meeting.', focus: ['Project stories', 'Enquiry paths'] },
+  { name: 'Manufacturers and MSMEs', href: '/industries/manufacturers-and-msmes', icon: Factory,
+    value: 'Make your capabilities easy to find and verify.', focus: ['Product clarity', 'Search foundations'] },
+  { name: 'D2C and e-commerce brands', href: '/industries/d2c-and-ecommerce-brands', icon: ShoppingBag,
+    value: 'Bring the brand, products and buying journey together.', focus: ['Storefront', 'Product presentation'] },
+  { name: 'Pre-launch and start-up brands', href: '/industries/pre-launch-and-startup-brands', icon: Sparkles,
+    value: 'Build a credible first impression before you launch.', focus: ['Brand foundation', 'Launch-ready site'] },
 ] as const;
 
 export function HomePageExperience({ eyebrow, intro, schema, geographicContext }: HomePageExperienceProps = {}) {
@@ -173,14 +178,32 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
       <SiteHeader overlay />
       <HomeShowcase eyebrow={eyebrow} intro={intro} isHomepage={!geographicContext} />
 
-      {!geographicContext && <section className="services-flow-bundles" aria-labelledby="home-audience-title">
-        <div className="services-flow-showcase-heading services-flow-bundles-heading"><p>Who we work with</p><h2 id="home-audience-title">For respected businesses ready to be recognised.</h2></div>
-        <div className="services-flow-bundle-grid">{audiences.map(([name, href], index) => {
-          const card = <div className="services-flow-bundle-card-heading"><div><p>{String(index + 1).padStart(2, '0')}</p><h3>{name}</h3></div></div>;
-          return <div className="services-flow-bundle-wrap" key={name}>{industryPagesLive
-            ? <Link className="services-flow-bundle-card" href={href}>{card}</Link>
-            : <article className="services-flow-bundle-card">{card}</article>}</div>;
-        })}</div>
+      {!geographicContext && <section className="home-audience" aria-labelledby="home-audience-title">
+        <div className="home-audience-inner">
+          <div className="home-audience-heading">
+            <div><p className="eyebrow eyebrow-dark">Who we work with</p><h2 id="home-audience-title">For respected businesses<br /><em>ready to be recognised.</em></h2></div>
+            <p>Different businesses, different starting points. We shape the brand, website and digital systems around what people need to understand about yours.</p>
+          </div>
+          <div className="home-audience-grid">{audiences.map(({ name, href, icon: Icon, value, focus }, index) => {
+            const card = <>
+              <div className="home-audience-card-copy">
+                <span className="home-audience-card-number">{String(index + 1).padStart(2, '0')} / 04</span>
+                <h3>{name}</h3>
+                <p>{value}</p>
+                <div className="home-audience-card-focus"><span>Where we help</span>{focus.map((item) => <small key={item}>{item}</small>)}</div>
+              </div>
+              <div className={`home-audience-illustration home-audience-illustration-${index + 1}`} aria-hidden="true">
+                <span className="home-audience-illustration-orbit"><Icon size={78} strokeWidth={1.15} /></span>
+                <i className="home-audience-illustration-point home-audience-illustration-point-a" />
+                <i className="home-audience-illustration-point home-audience-illustration-point-b" />
+                <span className="home-audience-illustration-caption">Kraftt · {String(index + 1).padStart(2, '0')}</span>
+              </div>
+            </>;
+            return <div className="home-audience-card-wrap" key={name}>{industryPagesLive
+              ? <Link className="home-audience-card" href={href}>{card}</Link>
+              : <article className="home-audience-card">{card}</article>}</div>;
+          })}</div>
+        </div>
       </section>}
 
       {!geographicContext && <HomePackages />}
