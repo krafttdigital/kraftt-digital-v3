@@ -1,0 +1,46 @@
+.section { padding: clamp(40px, 6vh, 56px) 0; background: var(--parchment); border-block: 1px solid var(--bone); scroll-margin-top: 86px; }
+.inner { width: min(1200px, calc(100% - 80px)); margin-inline: auto; }
+.heading { text-align: center; margin-bottom: 24px; }
+.eyebrow { color: var(--raw-umber); font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+.heading h2 { margin: 8px 0 0; font-family: var(--font-display), Georgia, serif; font-size: clamp(32px, 3.5vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -.025em; }
+.heading h2 em { color: var(--raw-umber); font-weight: 300; }
+.stage { display: grid; position: relative; min-width: 0; overflow: hidden; }
+.slide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; grid-area: 1 / 1; min-width: 0; }
+.card { display: flex; flex-direction: column; min-width: 0; padding: 20px; border: 1px solid #ded5c7; border-radius: 8px; background: #fffdf9; }
+.quoteMark { display: block; height: 28px; font-family: Georgia, serif; font-size: 52px; line-height: 1; color: var(--sand); pointer-events: none; }
+.card blockquote { flex: 1; margin: 8px 0 0; }
+.card blockquote p { margin: 0; font-family: var(--font-display), Georgia, serif; font-size: 18px; font-weight: 400; line-height: 1.3; color: var(--midnight); overflow-wrap: anywhere; }
+.person { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--bone); }
+.logo { display: grid; flex: 0 0 64px; width: 64px; height: 52px; padding: 5px; place-items: center; background: white; border: 1px solid var(--bone); border-radius: 4px; }
+.logo img { width: 100%; height: 40px; min-height: 0; object-fit: contain; }
+.identity { min-width: 0; }
+.person h3 { margin: 0 0 3px; font-family: var(--font-body), Arial, sans-serif; font-size: 13px; font-weight: 500; }
+.person p { margin: 0; color: var(--dusk); font-size: 11px; line-height: 1.5; }
+.person a { display: inline-flex; align-items: center; gap: 8px; margin-top: 5px; color: var(--raw-umber); font-size: 11px; text-decoration: none; }
+.controls { display: flex; position: relative; width: fit-content; align-items: center; justify-content: center; margin: 8px auto 0; }
+.dots { display: flex; align-items: center; }
+.dots button { display: grid; width: 34px; height: 44px; padding: 0; border: 0; place-items: center; background: transparent; cursor: pointer; }
+.dots span { display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--sand); transition: box-shadow .2s, background .2s; }
+.dots span[data-active='true'] { background: var(--forest); box-shadow: 0 0 0 4px #2c4a3e18; }
+.section :is(a, button):focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; }
+@media (min-width: 761px) and (max-width: 1000px) { .inner { width: calc(100% - 48px); } .slide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } .card { padding: 20px; } .card blockquote p { font-size: 18px; } }
+@media (max-width: 760px) {
+  .section { padding: 36px 0; scroll-margin-top: 70px; }
+  .inner { width: calc(100% - 32px); }
+  .heading { margin-bottom: 18px; }
+  .heading h2 { font-size: 32px; }
+  .slide { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 20px; }
+  .quoteMark { font-size: 52px; height: 28px; }
+  .card blockquote p { font-size: 18px; line-height: 1.3; }
+  .person { gap: 10px; margin-top: 18px; padding-top: 14px; }
+  .logo { flex-basis: 72px; width: 72px; height: 56px; }
+  .logo img { height: 44px; }
+  .person h3 { font-size: 13px; }
+  .person p { font-size: 10px; }
+  .controls { margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .dots span { transition: none; } }
+
+
+

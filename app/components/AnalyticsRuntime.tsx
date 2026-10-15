@@ -15,7 +15,7 @@ const engagedPricing = new WeakSet<Element>();
 function storage(kind: 'localStorage' | 'sessionStorage') { try { return window[kind]; } catch { return undefined; } }
 function formId(form: HTMLFormElement): FormId | undefined {
   if (form.classList.contains('contact-form')) return 'contact_enquiry';
-  if (form.classList.contains('offer-enquiry-form')) return 'offer_enquiry';
+  if (form.classList.contains('offer-enquiry-form') || form.dataset?.analyticsForm === 'offer_enquiry') return 'offer_enquiry';
   if (form.classList.contains('partner-application-form')) return 'partner_application';
   if (form.classList.contains('audit-form')) return 'audit_request';
 }

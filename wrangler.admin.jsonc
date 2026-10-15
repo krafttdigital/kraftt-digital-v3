@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kraftt-admin",
+  "compatibility_date": "2026-05-15",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "admin.krafttdigital.in", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./dist/admin",
+    "not_found_handling": "single-page-application"
+  }
+}

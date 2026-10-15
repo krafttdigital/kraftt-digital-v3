@@ -8,6 +8,7 @@ import { JsonLd } from './JsonLd';
 import { CurrencySymbol, RegionalPriceCopy } from './PricingCurrencyProvider';
 import { Reveal } from './Reveal';
 import { ReviewsSection } from './ReviewsSection';
+import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 import { SiteHeader } from './SiteHeader';
 import { projects } from '../data/projects';
 import { featuredReviews } from '../data/reviews';
@@ -306,7 +307,20 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
         </div>
       </section>
 
-      <ReviewsSection reviews={homeReviews} variant="home" />
+      {geographicContext ? <ReviewsSection reviews={homeReviews} variant="home" /> : <AnimatedTestimonials testimonials={homeReviews.map(review => ({
+        id: review.id,
+        name: review.clientName,
+        role: review.role,
+        company: review.company,
+        content: review.review,
+        rating: review.rating,
+        href: `/work/${review.projectSlug}`,
+        logo: ({
+          'shree-hari-spintex': '/assets/projects/shree-hari-spintex/shsl-logo.jpg',
+          'mittal-architect': '/assets/projects/mittal-architect/Mittal Logo.jpg',
+          'kiraq-jewellery': '/assets/projects/kiraq-jewellery/Kiraq Primary Logo-Photoroom.png',
+        } as Record<string, string>)[review.projectSlug],
+      }))} />}
 
 
       {/* <section className="home-conversion">

@@ -25,7 +25,7 @@ export function GET() {
     `- Free introductory call request: ${absoluteUrl('/contact')}`,
     `- Optional paid Digital Presence Audit (₹999 / $24): ${absoluteUrl('/audit')}`,
     `- Contact: ${absoluteUrl('/contact')}`,
-    `- Current offers: ${absoluteUrl('/offers/campaign-festive-season-offer')} — Active campaign status, scope, terms and enquiry options are shown on the canonical page.`,
+    `- Current offers: ${absoluteUrl('/offers/diwali-growth-website')} — The Diwali Growth Website offer, price, scope, terms and enquiry form are shown on the canonical page.`,
     `- Kraftt Partner Program: ${absoluteUrl('/partner-program')} — Refer an eligible business and earn 15% of the final collected professional fee after delivery and complete client payment.`,
     `- Free tools: ${absoluteUrl('/tools')}`,
     '',

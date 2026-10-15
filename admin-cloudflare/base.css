@@ -1,0 +1,10 @@
+@import 'tailwindcss/preflight.css';
+
+html {
+  max-width: 100%;
+  overflow-x: clip;
+  scrollbar-color: #8b7355 #f2efe9;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+body { margin: 0; max-width: 100%; background: #f2efe9; }

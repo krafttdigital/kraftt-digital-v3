@@ -45,9 +45,10 @@ export function PdfPreview({ url, title, updating, generationError }: { url?: st
       setRendering(true);
       setError('');
       try {
-        const pdfjs = await import('pdfjs-dist');
+        // Include PDF.js's browser compatibility polyfills in both execution contexts.
+        const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
         if (cancelled) return;
-        pdfjs.GlobalWorkerOptions.workerSrc = '/admin-assets/pdf.worker.min.mjs';
+        pdfjs.GlobalWorkerOptions.workerSrc = `/admin-assets/pdf.worker.legacy-${pdfjs.version}.min.mjs`;
         loading = pdfjs.getDocument({ url });
         document = await loading.promise;
         if (cancelled) return;
