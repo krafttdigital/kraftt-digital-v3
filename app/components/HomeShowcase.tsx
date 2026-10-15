@@ -29,7 +29,7 @@ export function HomeShowcase({
       <div className="kraftt-hero-main">
         <div className="kraftt-hero-copy">
           <p className="kraftt-hero-eyebrow">{eyebrow}</p>
-          <h1 id="home-showcase-title">{isHomepage ? 'Websites, branding and SEO that bring enquiries.' : <>Be trusted.<br />Be discovered.<br /><span className="kraftt-hero-chosen"><span>Be chosen.</span></span></>}</h1>
+          <h1 id="home-showcase-title" className={isHomepage ? 'kraftt-hero-home-title' : undefined}>{isHomepage ? <><span className="kraftt-hero-home-lead">Websites,</span>{' '}<span className="kraftt-hero-home-services">branding and <span>SEO</span></span>{' '}<span className="kraftt-hero-home-result">that bring enquiries.</span></> : <>Be trusted.<br />Be discovered.<br /><span className="kraftt-hero-chosen"><span>Be chosen.</span></span></>}</h1>
           <p className="kraftt-hero-tagline"><em>{isHomepage ? 'Be trusted. Be discovered. Be chosen.' : '“Digital presence for brands who take themselves seriously.”'}</em></p>
           <p className="kraftt-hero-intro">{intro}</p>
           <div className="kraftt-hero-actions">

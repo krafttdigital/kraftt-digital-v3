@@ -3599,6 +3599,11 @@ p { line-height: 1.65; }
   letter-spacing: -.05em;
 }
 
+.kraftt-hero-copy h1.kraftt-hero-home-title { font-size: clamp(58px, 5.1vw, 78px); line-height: .96; letter-spacing: -.045em; }
+.kraftt-hero-home-title > span { display: block; }
+.kraftt-hero-home-services > span { color: var(--raw-umber); font-style: italic; background: linear-gradient(transparent 86%, var(--sand) 86%); }
+.kraftt-hero-home-title > .kraftt-hero-home-result { margin-top: .12em; color: var(--forest); font-size: .72em; font-style: italic; letter-spacing: -.035em; line-height: 1.08; }
+
 .kraftt-hero-copy h1 > .kraftt-hero-chosen {
   position: relative;
   display: inline-block;
@@ -4015,6 +4020,7 @@ p { line-height: 1.65; }
   .kraftt-hero-main { grid-template-columns: 1fr; gap: 20px; min-height: 0; padding-top: 72px; }
   .kraftt-hero-copy { max-width: 700px; }
   .kraftt-hero-copy h1 { font-size: clamp(70px, 12.8vw, 104px); }
+  .kraftt-hero-copy h1.kraftt-hero-home-title { font-size: clamp(60px, 8vw, 78px); }
   .kraftt-hero-eyebrow,
   .kraftt-hero-copy h1 > .kraftt-hero-chosen,
   .kraftt-hero-tagline { color: var(--midnight); }
@@ -4032,6 +4038,7 @@ p { line-height: 1.65; }
   .kraftt-hero-main { padding: 64px 20px 24px; }
   .kraftt-hero-eyebrow { max-width: 250px; line-height: 1.5; }
   .kraftt-hero-copy h1 { font-size: clamp(43px, 12vw, 64px); line-height: .92; }
+  .kraftt-hero-copy h1.kraftt-hero-home-title { font-size: clamp(42px, 10.5vw, 56px); line-height: .98; }
   .kraftt-hero-tagline { max-width: 350px; font-size: clamp(22px, 6vw, 27px); }
   .kraftt-hero-intro { font-size: 14px; }
   .kraftt-hero-actions { display: grid; grid-template-columns: 1fr; width: min(100%, 330px); }
