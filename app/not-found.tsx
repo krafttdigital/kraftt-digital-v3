@@ -5,7 +5,7 @@ import { SiteHeader } from './components/SiteHeader';
 
 export const metadata: Metadata = {
   title: 'Page Not Found | Kraftt Digital',
-  description: 'The page you requested could not be found. Explore Kraftt Digital services, selected work or request a free introductory call.',
+  description: 'The page you requested could not be found. Explore Kraftt Digital services, selected work or request a free call.',
   robots: { index: false, follow: true },
 };
 
@@ -24,7 +24,7 @@ const routes = [
   },
   {
     number: '03',
-    label: 'Free Introductory Call',
+    label: 'Request a free call',
     description: 'Tell us what you need and discuss a sensible next step.',
     href: '/contact',
   },

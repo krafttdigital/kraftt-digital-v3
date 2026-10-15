@@ -20,11 +20,11 @@ export function Footer() {
           <BrandWordmark inverse />
         </Link>
         <p>Branding, websites, e-commerce, marketplace setup, SEO and social media shaped around your business.</p>
-        <Link className="button button-accent footer-cta" href="/contact">Request a Free Introductory Call</Link>
+        <Link className="button button-accent footer-cta" href="/contact">Request a free call</Link>
         <div className="footer-contact-links" aria-label="Contact Kraftt Digital">
           <a href={`mailto:${contactEmail}`}><span>Email</span><strong>{contactEmail}</strong></a>
           <a href={contactPhoneHref}><span>Call</span><strong>{contactPhone}</strong></a>
-          <a href={whatsappUrl('Hi Kraftt, I would like to request a free introductory call about my business.')} target="_blank" rel="noreferrer"><span>WhatsApp</span><strong>{contactPhone}</strong></a>
+          <a href={whatsappUrl('Hi Kraftt, I would like to request a free call about my business.')} target="_blank" rel="noreferrer"><span>WhatsApp</span><strong>{contactPhone}</strong></a>
         </div>
         <div className="footer-socials" aria-label="Kraftt Digital social profiles">
           <a href="https://www.instagram.com/krafttdigital" target="_blank" rel="noreferrer">Instagram <span aria-hidden="true">↗</span></a>
@@ -85,7 +85,7 @@ export function Footer() {
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Kraftt Digital</span>
-        <span>India · Working with clients worldwide</span>
+        <span>Bathinda, Punjab · Working with clients worldwide</span>
       </div>
     </footer>
   );

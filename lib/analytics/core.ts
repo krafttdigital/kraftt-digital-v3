@@ -1,6 +1,6 @@
 export const EVENTS = [
   'whatsapp_click', 'phone_click', 'email_click', 'contact_form_start', 'contact_form_submit',
-  'book_call_click', 'pricing_engagement', 'package_cta_click', 'audit_start', 'audit_complete',
+  'book_call_click', 'booking_click', 'pricing_engagement', 'package_cta_click', 'audit_start', 'audit_complete',
   'tool_start', 'tool_complete', 'case_study_cta_click', 'outbound_click', 'service_cta_click',
   'kraftt_page_view',
 ] as const;

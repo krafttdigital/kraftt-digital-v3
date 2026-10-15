@@ -59,14 +59,14 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       </nav>
 
       <Link className="header-cta" href="/contact">
-        Request a Free Call <span aria-hidden="true">↗</span>
+        Request a free call <span aria-hidden="true">↗</span>
       </Link>
 
       <details className="mobile-menu" ref={mobileMenuRef}>
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
           {navItems.map((item) => <Link key={item.href} href={item.href} onClick={closeMobileMenu}>{item.label}</Link>)}
-          <Link href="/contact" onClick={closeMobileMenu}>Request a Free Introductory Call</Link>
+          <Link href="/contact" onClick={closeMobileMenu}>Request a free call</Link>
         </nav>
       </details>
     </header>

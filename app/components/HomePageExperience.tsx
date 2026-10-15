@@ -15,7 +15,7 @@ import { featuredReviews } from '../data/reviews';
 import { createPageSchema, faqSchema, reviewSchemas } from '../data/seo';
 
 export const homeTitle = 'Branding, Web Design & Digital Presence | Kraftt Digital';
-export const homeDescription = 'Kraftt Digital builds brands, websites and online stores, with marketplace, SEO and social media support. Request a free introductory call.';
+export const homeDescription = 'Kraftt Digital builds brands, websites and online stores, with marketplace, SEO and social media support. Request a free call.';
 
 type HomePageExperienceProps = {
   eyebrow?: string;
@@ -440,7 +440,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
                 <strong>Talk it through in a free introductory call.</strong>
                 <small>Explain the situation, ask questions and check whether Kraftt is the right fit for the work.</small>
                 <span className="home-trust-decision-result">Outcome · a useful next step</span>
-                <div className="home-trust-decision-choice-action"><span>Book the call</span><i aria-hidden="true">→</i></div>
+                <div className="home-trust-decision-choice-action"><span>Request a free call</span><i aria-hidden="true">→</i></div>
               </Link>
               <Link className="home-trust-decision-choice" href="/audit">
                 <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>₹999</RegionalPriceCopy></small></div>

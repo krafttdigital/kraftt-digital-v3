@@ -3,7 +3,7 @@
 import type { MouseEvent, ReactNode } from 'react';
 import { whatsappUrl } from '../data/site';
 
-const baseMessage = 'Hi Kraftt, I would like to request a free introductory call about my business.';
+const baseMessage = 'Hi Kraftt, I would like to request a free call about my business.';
 
 export function IntroCallLink({ children, className = '', ariaLabel }: { children: ReactNode; className?: string; ariaLabel?: string }) {
   const attachContext = (event: MouseEvent<HTMLAnchorElement>) => {

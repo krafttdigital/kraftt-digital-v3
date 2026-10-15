@@ -89,6 +89,7 @@ function click(event: MouseEvent) {
   else if (url.protocol === 'mailto:') trackEvent('email_click', { ...params, destination_type: 'email', cta_label: 'email' });
   else if (!booking && /^https?:$/.test(url.protocol) && url.origin !== window.location.origin) trackEvent('outbound_click', { ...params, destination_type: 'external', cta_label: 'external_link' });
   if (booking) trackEvent('book_call_click', { ...params, destination_type: 'booking', cta_label: 'book_call' });
+  if (anchor.dataset.booking === 'true') trackEvent('booking_click', { ...params, destination_type: 'booking', cta_label: 'pick_a_time' });
   if (context.page_type === 'case_study' && enquiry) trackEvent('case_study_cta_click', { ...params, cta_label: 'enquire' });
   if (context.service && (enquiry || area || url.hash === '#packages')) trackEvent('service_cta_click', { ...params, cta_label: enquiry ? 'enquire' : 'view_pricing' });
   else if (url.origin === window.location.origin && pageContext(url.pathname).service) trackEvent('service_cta_click', { ...params, service: pageContext(url.pathname).service, cta_label: 'view_service' });

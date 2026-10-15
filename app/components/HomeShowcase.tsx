@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { InfiniteTextMarquee } from '@/components/ui/infinite-text-marquee';
 import { projects } from '../data/projects';
+import { REPLY_TIME_TEXT } from '../data/site';
 
 const trustPillars = [
   [String(projects.length).padStart(2, '0'), 'Selected projects'],
@@ -34,12 +35,12 @@ export function HomeShowcase({
           <p className="kraftt-hero-tagline"><em>“Digital presence for brands who take themselves seriously.”</em></p>
           <p className="kraftt-hero-intro">{intro}</p>
           <div className="kraftt-hero-actions">
-            <Link href="/contact">Request a Free Introductory Call <span aria-hidden="true">→</span></Link>
+            <Link href="/contact">Request a free call <span aria-hidden="true">→</span></Link>
             <Link href="/work">Explore Our Work <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="kraftt-hero-note" aria-label="Kraftt approach">
             <span>01</span><span>02</span><span>03</span>
-            <p>Founder-led · India-based · Working worldwide</p>
+            <p>15 minutes. Free.{REPLY_TIME_TEXT ? ` We reply within ${REPLY_TIME_TEXT}.` : ''} · Founder-led · Working worldwide</p>
           </div>
         </div>
 

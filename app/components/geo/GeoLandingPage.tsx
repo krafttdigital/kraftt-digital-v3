@@ -22,7 +22,7 @@ function locationAnswers(market: LocationMarket) {
     },
     {
       question: 'How does a project begin?',
-      answer: 'Request a free introductory call to discuss the requirement. A paid Digital Presence Audit is available separately when deeper research would help.',
+      answer: 'Start with a free call to discuss the requirement. A paid Digital Presence Audit is available separately when deeper research would help.',
     },
   ];
 }

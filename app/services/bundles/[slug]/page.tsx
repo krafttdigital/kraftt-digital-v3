@@ -56,7 +56,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
   const relatedBanner = relatedProject ? projectProofBanners[relatedProject.slug] : undefined;
   const bundleNumber = bundles.findIndex((item) => item.slug === bundle.slug) + 1;
   const namedInclusionCount = bundle.inclusions.reduce((total, inclusion) => total + inclusion.items.length, 0);
-  const bundleMessage = whatsappUrl(`Hi Kraftt, I would like to request a free introductory call about the ${bundle.name} bundle.`);
+  const bundleMessage = whatsappUrl(`Hi Kraftt, I would like to request a free call about the ${bundle.name} bundle.`);
   const bundleFaqs = [
     { question: `What is included in the ${bundle.name} bundle?`, answer: `The bundle connects ${bundle.deliverables.join(', ')}. The detailed inclusions, responsibilities and review stages are confirmed in the written proposal.` },
     { question: `How much does the ${bundle.name} bundle cost?`, answer: `The published bundle investment is ${bundle.price}. Third-party subscriptions, platform charges, hosting and advertising budgets remain separate unless the proposal states otherwise.` },
@@ -232,7 +232,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
         </div>
         <Reveal className="bundle-detail-fit-cta">
           <div><Clock3 size={18} /><p>Unsure whether a bundle or one service is the right scope?</p></div>
-          <Link href="/contact">Request a Free Introductory Call <ArrowRight size={15} /></Link>
+          <Link href="/contact">Request a free call <ArrowRight size={15} /></Link>
         </Reveal>
       </section>
 

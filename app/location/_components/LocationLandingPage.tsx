@@ -62,7 +62,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
     { question: `Does Kraftt work with businesses in ${market.name}?`, answer: `Yes. ${delivery.description}` },
     { question: 'Can you redesign our website?', answer: `Yes. We review your website, brand, content and enquiry flow, then recommend the right scope for your ${market.name} business.` },
     { question: 'Do you build Shopify stores?', answer: 'Yes. Kraftt builds Shopify stores with product setup, checkout, mobile usability and search foundations according to the selected package.' },
-    { question: 'How does a project begin?', answer: 'Request a free introductory call to discuss the requirement. A paid Digital Presence Audit is available separately when deeper research would help.' },
+    { question: 'How does a project begin?', answer: 'Start with a free call to discuss the requirement. A paid Digital Presence Audit is available separately when deeper research would help.' },
   ];
   return (
     <main>
@@ -88,7 +88,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
               <h3>{delivery.inPerson ? <>A real conversation.<br /><em>In person, too.</em></> : <>A local understanding.<br /><em>Without the distance.</em></>}</h3>
               <p>{delivery.description}</p>
               <div className={styles.deliveryModes}><span><Video size={14} aria-hidden="true" /> Remote collaboration</span>{delivery.inPerson && <span><Users size={14} aria-hidden="true" /> In-person meetings</span>}</div>
-              <Link href={contactHref}>{delivery.inPerson ? 'Arrange a conversation' : 'Book a free introductory call'}<ArrowUpRight size={18} aria-hidden="true" /></Link>
+              <Link href={contactHref}>Request a free call <ArrowUpRight size={18} aria-hidden="true" /></Link>
             </Reveal>
           </div>
           {market.nearbyAreas.length > 0 && <div className={styles.nearbyAreas}><span><MapPin size={15} aria-hidden="true" /> Also serving nearby</span><ul>{market.nearbyAreas.map((area) => <li key={area}>{area}</li>)}</ul></div>}
@@ -256,7 +256,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
                 <strong>Talk it through in a free introductory call.</strong>
                 <small>Explain the situation, ask questions and check whether Kraftt is the right fit for the work.</small>
                 <span className="home-trust-decision-result">Outcome · a useful next step</span>
-                <div className="home-trust-decision-choice-action"><span>Book the call</span><i aria-hidden="true">→</i></div>
+                <div className="home-trust-decision-choice-action"><span>Request a free call</span><i aria-hidden="true">→</i></div>
               </Link>
               <Link className="home-trust-decision-choice" href="/audit">
                 <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>₹999</RegionalPriceCopy></small></div>

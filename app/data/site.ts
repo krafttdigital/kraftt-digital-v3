@@ -1,5 +1,8 @@
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://krafttdigital.in';
 
+export const BOOKING_URL = '';
+export const REPLY_TIME_TEXT = '';
+
 export const contactEmail = 'hello@krafttdigital.in';
 export const contactPhone = '+91 79867 69102';
 export const contactPhoneHref = 'tel:+917986769102';

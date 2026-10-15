@@ -12,7 +12,7 @@ import { JsonLd } from '../components/JsonLd';
 import { Reveal } from '../components/Reveal';
 import { SiteHeader } from '../components/SiteHeader';
 import { createPageMetadata, createPageSchema, faqSchema } from '../data/seo';
-import { contactEmail, contactPhone, contactPhoneHref } from '../data/site';
+import { BOOKING_URL, REPLY_TIME_TEXT, contactEmail, contactPhone, contactPhoneHref } from '../data/site';
 import { ContactForm } from './ContactForm';
 import { IntroCallLink } from './IntroCallLink';
 import { PageFaq } from '@/components/ui/faq-6';
@@ -38,7 +38,7 @@ const quickAnswers = [
 const faqs = [
   { question: 'What can I ask Kraftt Digital to help with?', answer: 'Kraftt works on brand identity, websites, e-commerce stores, marketplace catalogues, SEO, social media and custom digital systems. Tell us the business goal even if you are unsure which service fits.' },
   { question: 'Why choose Kraftt Digital for a website project?', answer: 'Kraftt connects business positioning, brand, site structure, development and enquiry paths in one project. You can review the scope and pricing on the services pages, see documented work in the case studies, and agree the deliverables before work starts.' },
-  { question: 'Do I need to buy the Digital Presence Audit first?', answer: 'No. You can send an enquiry or request a free introductory call. The paid Digital Presence Audit is an optional, separate service for a deeper researched review.' },
+  { question: 'Do I need to buy the Digital Presence Audit first?', answer: 'No. You can send an enquiry or request a free call. The paid Digital Presence Audit is an optional, separate service for a deeper researched review.' },
   { question: 'Can we work together if my business is outside Bathinda?', answer: 'Yes. Kraftt works remotely with businesses across India and international markets through calls, email, WhatsApp and documented approvals. City pages describe service areas and do not imply a local office.' },
 ] as const;
 
@@ -68,9 +68,10 @@ export default function ContactPage() {
           <p>Short on time? Share the essentials. You do not need a polished brief or the right service name.</p>
 
           <div className="contact-quick-actions">
-            <IntroCallLink className="button button-accent">Start on WhatsApp <ArrowUpRight size={15} aria-hidden="true" /></IntroCallLink>
+            <IntroCallLink className="button button-accent">Request a free call <ArrowUpRight size={15} aria-hidden="true" /></IntroCallLink>
             <a className="button button-outline-dark" href={contactPhoneHref}>Call {contactPhone} <Phone size={15} aria-hidden="true" /></a>
           </div>
+          <p className="contact-form-intro">15 minutes. Free.{REPLY_TIME_TEXT ? ` We reply within ${REPLY_TIME_TEXT}.` : ''}</p>
 
           <div className="contact-scan-points" aria-label="What to know before contacting Kraftt">
             {quickAnswers.map(([title, detail]) => (
@@ -93,6 +94,7 @@ export default function ContactPage() {
             <span>01</span>
           </div>
           <p className="contact-form-intro">A name, reply email and a few words are enough to start.</p>
+          {BOOKING_URL && <a className="button button-accent" href={BOOKING_URL} data-booking="true" target="_blank" rel="noopener noreferrer">Pick a time <ArrowUpRight size={15} aria-hidden="true" /></a>}
           <ContactForm />
         </Reveal>
       </section>
@@ -146,7 +148,7 @@ export default function ContactPage() {
         <div className="page-faq-inner">
           <Reveal className="page-faq-heading">
             <div><p className="eyebrow eyebrow-dark">Common questions · 04 focused answers</p><h2 id="contact-faq-title">Know the essentials<br /><em>before you send.</em></h2></div>
-            <div><p>Scope, fit, audit requirements and working location—answered without making you search the site.</p><Link href="">Send project details <i aria-hidden="true">→</i></Link></div>
+            <div><p>Scope, fit, audit requirements and working location—answered without making you search the site.</p><Link href="#enquiry">Send project details <i aria-hidden="true">→</i></Link></div>
           </Reveal>
           <PageFaq
             title="Contact Kraftt Digital questions"

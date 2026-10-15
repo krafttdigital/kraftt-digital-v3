@@ -63,7 +63,7 @@ export function ContactForm() {
   }
 
   return (
-    <form ref={formRef} className="audit-form contact-form" action={formspreeEndpoint} method="POST" onSubmit={sendForm}>
+    <form ref={formRef} id="enquiry" className="audit-form contact-form" action={formspreeEndpoint} method="POST" onSubmit={sendForm}>
       <input type="hidden" name="_subject" value="New Kraftt website enquiry" />
       <div className="audit-field-grid">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your name" required /></label>

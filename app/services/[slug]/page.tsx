@@ -63,7 +63,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = serviceBySlug(slug);
   if (!service) notFound();
 
-  const serviceMessage = whatsappUrl(`Hi Kraftt, I would like to request a free introductory call about ${service.name}.`);
+  const serviceMessage = whatsappUrl(`Hi Kraftt, I would like to request a free call about ${service.name}.`);
   const discussionLabel = discussionLabels[service.slug] ?? 'Discuss your requirements';
   const isCustomScope = service.tiers.length === 1 || service.tiers[0].price.toLowerCase().includes('custom');
   const isMarketplaceService = service.slug === 'marketplace-catalogue-building';
@@ -96,7 +96,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                 <div><span>First delivery</span><strong>{service.tiers[0].timeline}</strong></div>
                 <div><span>Scope options</span><strong>{service.tiers.length === 1 ? 'Custom' : `${service.tiers.length} packages`}</strong></div>
               </div>
-              <div className="service-simple-hero-actions"><Link href="#packages">View scope &amp; pricing <span aria-hidden="true">↓</span></Link><Link href="/contact">Book a free call <ArrowUpRight size={14} /></Link></div>
+              <div className="service-simple-hero-actions"><Link href="#packages">View scope &amp; pricing <span aria-hidden="true">↓</span></Link><Link href="/contact">Request a free call <ArrowUpRight size={14} /></Link></div>
             </Reveal>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="page-faq-section" id="service-faq" aria-labelledby="service-faq-title"><div className="page-faq-inner">
         <Reveal className="page-faq-heading" direction="left">
           <div><p className="eyebrow eyebrow-dark">Before you decide · 05 focused answers</p><h2 id="service-faq-title">Questions before<br /><em>you begin.</em></h2></div>
-          <div><p>Five clear answers about scope, investment, timing and ownership for {service.name.toLowerCase()}.</p><span className="page-faq-actions"><Link href="/contact">Book a free call <ArrowRight size={15} /></Link><Link href="/audit">Request the ₹999 audit <ArrowUpRight size={15} /></Link></span></div>
+          <div><p>Five clear answers about scope, investment, timing and ownership for {service.name.toLowerCase()}.</p><span className="page-faq-actions"><Link href="/contact">Request a free call <ArrowRight size={15} /></Link><Link href="/audit">Request the ₹999 audit <ArrowUpRight size={15} /></Link></span></div>
         </Reveal>
         <PageFaq title={`${service.name} questions`} items={featuredFaqs} categoryTitles={['Scope and investment', 'Delivery and ownership']} />
       </div></section>
@@ -179,7 +179,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         <div className="service-simple-related-grid">{relatedServices.map((related) => <Reveal key={related.slug}><Link href={`/services/${related.slug}`}><span><AnimatedServiceIcon slug={related.slug} size={38} /></span><h3>{related.name}</h3><p>{related.headline}</p><i>View service <ArrowUpRight size={14} /></i></Link></Reveal>)}</div>
       </div></section>
 
-      <section className="service-simple-final"><Reveal direction="left"><p className="eyebrow">Choose the right first step</p><h2>Discuss the requirement.<br /><em>Decide with clarity.</em></h2></Reveal><Reveal direction="right"><p>Use the free call for quick direction. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.</p><div><Link href="/contact">Book a free call <ArrowRight size={15} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={15} /></Link></div></Reveal></section>
+      <section className="service-simple-final"><Reveal direction="left"><p className="eyebrow">Choose the right first step</p><h2>Discuss the requirement.<br /><em>Decide with clarity.</em></h2></Reveal><Reveal direction="right"><p>Use the free call for quick direction. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.</p><div><Link href="/contact">Request a free call <ArrowRight size={15} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={15} /></Link></div></Reveal></section>
       <Footer />
     </main>
   );

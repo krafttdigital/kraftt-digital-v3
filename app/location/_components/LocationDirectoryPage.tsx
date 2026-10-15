@@ -15,7 +15,7 @@ const questions = [
   { question: 'Does Kraftt work with businesses across India?', answer: 'Yes. Kraftt is based in Bathinda and works with businesses across India. Remote delivery is available nationwide, with in-person meetings also available by arrangement in Bathinda, Barnala, Mansa and nearby areas.' },
   { question: 'Where is Kraftt based, and can we meet in person?', answer: 'Kraftt is based in Bathinda, Punjab. In-person meetings are available by arrangement in Bathinda, Barnala, Mansa and nearby areas. Other cities listed here are service areas, with communication through calls, email and WhatsApp.' },
   { question: 'What if my city is not listed?', answer: 'You can still contact Kraftt. The listed locations are starting points for exploring our work; they do not limit where we can deliver a project.' },
-  { question: 'How do I choose a service?', answer: 'Open your city, compare the available services and review the packages. If you are unsure where to begin, request a free introductory call for direction.' },
+  { question: 'How do I choose a service?', answer: 'Open your city, compare the available services and review the packages. If you are unsure where to begin, request a free call for direction.' },
 ];
 
 export function LocationDirectoryPage({ markets, title, description }: {
@@ -33,7 +33,7 @@ export function LocationDirectoryPage({ markets, title, description }: {
           <p className="eyebrow eyebrow-dark">Bathinda-based · Working across India</p>
           <h1 id="location-directory-title">Find your city.<br /><em>Choose your next step.</em></h1>
           <p>Explore websites, branding, online stores and growth services for your business. Choose a city to see the relevant services, then compare scope and pricing.</p>
-          <div className="services-flow-hero-actions"><Link href="#locations">Explore service areas <span aria-hidden="true">↓</span></Link><Link href="/contact">Book a free introductory call <ArrowUpRight size={15} /></Link></div>
+          <div className="services-flow-hero-actions"><Link href="#locations">Explore service areas <span aria-hidden="true">↓</span></Link><Link href="/contact">Request a free call <ArrowUpRight size={15} /></Link></div>
           <ul className="services-flow-hero-signals" aria-label="How we work"><li><Check size={14} /> Published starting prices</li><li><Check size={14} /> Scope agreed in writing</li><li><Check size={14} /> Local meetings available</li></ul>
         </Reveal>
         <Reveal className="services-flow-paths" direction="right">
@@ -63,7 +63,7 @@ export function LocationDirectoryPage({ markets, title, description }: {
       </section>
 
       <section className="page-faq-section" aria-labelledby="location-faq-title"><div className="page-faq-inner">
-        <Reveal className="page-faq-heading" direction="left"><div><p className="eyebrow eyebrow-dark">Before you choose a city</p><h2 id="location-faq-title">Clear answers.<br /><em>A useful next step.</em></h2></div><div><p>Your city is a starting point. The right scope depends on your business, audience and priorities.</p><span className="page-faq-actions"><Link href="/contact">Book a free call <ArrowRight size={15} /></Link></span></div></Reveal>
+        <Reveal className="page-faq-heading" direction="left"><div><p className="eyebrow eyebrow-dark">Before you choose a city</p><h2 id="location-faq-title">Clear answers.<br /><em>A useful next step.</em></h2></div><div><p>Your city is a starting point. The right scope depends on your business, audience and priorities.</p><span className="page-faq-actions"><Link href="/contact">Request a free call <ArrowRight size={15} /></Link></span></div></Reveal>
         <PageFaq title="Kraftt service areas" items={questions} categoryTitles={['Where we work', 'Choosing your next step']} />
       </div></section>
       <Footer />

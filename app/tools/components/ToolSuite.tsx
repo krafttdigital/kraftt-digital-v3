@@ -144,7 +144,7 @@ export function ResultActions({
   return (
     <div className="tool-result-actions">
       <Button href={serviceHref} variant="secondary">{serviceLabel} <span aria-hidden="true">↗</span></Button>
-      <Button href={contactHref}>Request a Free Introductory Call</Button>
+      <Button href={contactHref}>Request a free call</Button>
       <Link href={auditHref}>Explore the Paid Digital Presence Audit</Link>
     </div>
   );
