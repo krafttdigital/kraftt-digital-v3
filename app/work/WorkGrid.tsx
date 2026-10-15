@@ -21,9 +21,11 @@ const projectBanners: Record<string, { src: string; alt: string }> = {
 export function WorkGrid({ projects }: { projects: Project[] }) {
   const filters = ['All Work', 'Case Study', 'Portfolio Project', 'Kraftt Product'] as const;
   const [active, setActive] = useState<(typeof filters)[number]>('All Work');
+  const orderedProjects = [...projects].sort((a, b) =>
+    Number(Boolean(a.relationshipLabel)) - Number(Boolean(b.relationshipLabel)));
   const visible = active === 'All Work'
-    ? projects
-    : projects.filter((project) => project.projectType === active);
+    ? orderedProjects
+    : orderedProjects.filter((project) => project.projectType === active);
 
   const projectCount = (filter: (typeof filters)[number]) => filter === 'All Work'
     ? projects.length
@@ -42,7 +44,7 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
       <div className="work-page-grid" aria-live="polite">
         {visible.map((project, index) => {
           const banner = projectBanners[project.slug];
-          const projectNumber = String(projects.findIndex((item) => item.slug === project.slug) + 1).padStart(2, '0');
+          const projectNumber = String(orderedProjects.findIndex((item) => item.slug === project.slug) + 1).padStart(2, '0');
           const liveLabel = project.slug === 'employee-os' ? 'View Employee OS' : 'Visit live website';
 
           return (

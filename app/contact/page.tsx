@@ -22,10 +22,10 @@ const pageDescription = 'Tell Kraftt Digital about your website, branding, e-com
 
 const proofItems = [
   'Branding · websites · e-commerce · marketplace · SEO',
-  'Client-reported ₹30L+ stock sales',
-  'Direct enquiries generated',
-  'Stronger Google and Maps visibility',
-  'Thousands saved on production and platform costs',
+  'Work for architects, jewellers, manufacturers and beverage brands',
+  'Websites with clear enquiry routes',
+  'Brand identity and organised product catalogues',
+  'Documented work and client reviews',
 ] as const;
 
 const quickAnswers = [

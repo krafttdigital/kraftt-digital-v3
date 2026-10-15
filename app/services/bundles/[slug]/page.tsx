@@ -290,6 +290,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
               <div className="bundle-detail-proof-copy">
                 <div><p>{relatedProject.industry}</p><ArrowUpRight size={19} /></div>
                 <h3>{relatedProject.name}</h3>
+                {relatedProject.relationshipLabel && <p>{relatedProject.relationshipLabel}</p>}
                 <p>{relatedProject.context}</p>
                 <dl><dt>Engagement</dt><dd>{relatedProject.package}</dd></dl>
                 <div className="bundle-detail-proof-metrics">

@@ -34,10 +34,10 @@ const aboutAtGlance = [
 ] as const;
 
 const reportedOutcomes = [
-  { value: '₹30L+', title: 'Stock sales reported', copy: 'A manufacturing client reported stock sold after direct enquiries from the rebuilt website.', source: 'View the Shree Hari case study', href: '/work/shree-hari-spintex' },
-  { value: 'Crore-scale', title: 'Major order reported', copy: 'The same client reported a large order from a customer who discovered the mill through its website and Google Maps.', source: 'View the client evidence', href: '/work/shree-hari-spintex' },
-  { value: 'Search + Maps', title: 'Easier customer discovery', copy: 'A client reported improved online visibility after website and Google Maps information was strengthened.', source: 'Client feedback', href: '/work/shree-hari-spintex' },
-  { value: '₹2.4K/mo', title: 'Platform cost avoided', copy: 'A jewellery client reported saving thousands and avoiding roughly ₹2,400 per month in Shopify costs.', source: 'View the Kiraq case study', href: '/work/kiraq-jewellery' },
+  { value: 'Architects', title: 'Portfolio structure', copy: 'Mittal Architect presents its work in a project-led website.', source: 'View the Mittal case study', href: '/work/mittal-architect', relationshipLabel: '' },
+  { value: 'Jewellers', title: 'Storefront and catalogue', copy: 'Kiraq Jewellery brought its products into an organised online store.', source: 'View the Kiraq case study', href: '/work/kiraq-jewellery', relationshipLabel: '' },
+  { value: 'Beverage brands', title: 'Brand and website', copy: 'Elixir Beverages has a visual identity and a website built around its product story.', source: 'View the Elixir case study', href: '/work/elixir-beverages', relationshipLabel: '' },
+  { value: 'Manufacturers', title: 'Website and enquiry paths', copy: 'Shree Hari Spintex received a clearer website and direct contact routes.', source: 'View the Shree Hari case study', href: '/work/shree-hari-spintex', relationshipLabel: projects.find(project => project.slug === 'shree-hari-spintex')?.relationshipLabel ?? '' },
 ] as const;
 
 const capabilityGroups = [
@@ -140,16 +140,16 @@ export default function AboutPage() {
 
       <section className="about-clarity-proof" id="proof" aria-labelledby="about-proof-title">
         <Reveal className="about-clarity-proof-heading">
-          <div><p className="eyebrow eyebrow-dark">Real-world trust signals</p><h2 id="about-proof-title">Specific outcomes.<br /><em>Reported by clients.</em></h2></div>
-          <div><p>These results come from direct client feedback. They show the commercial and practical difference the work made without presenting every project as identical.</p><Link href="/work">Explore documented work <span aria-hidden="true">→</span></Link></div>
+          <div><p className="eyebrow eyebrow-dark">Documented work</p><h2 id="about-proof-title">Different businesses.<br /><em>Clearer presence.</em></h2></div>
+          <div><p>Work for architects, jewellers, manufacturers and beverage brands. Every case study says what was built and what changed.</p><Link href="/work">Explore documented work <span aria-hidden="true">→</span></Link></div>
         </Reveal>
         <div className="about-clarity-proof-grid">
           {reportedOutcomes.map((outcome, index) => (
             <Reveal key={`${outcome.value}-${outcome.title}`} className={index === 0 ? 'about-clarity-proof-card about-clarity-proof-card-featured' : 'about-clarity-proof-card'}>
-              <small>Client reported</small>
+              <small>Documented work</small>
               <strong>{outcome.value}</strong>
               <h3>{outcome.title}</h3>
-              <p>{outcome.copy}</p>
+              <p>{outcome.copy}{outcome.relationshipLabel ? ` ${outcome.relationshipLabel}` : ''}</p>
               <Link href={outcome.href}>{outcome.source} <span aria-hidden="true">↗</span></Link>
             </Reveal>
           ))}

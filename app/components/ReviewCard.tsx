@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ClientReview } from '../data/reviews';
+import { projectBySlug } from '../data/projects';
 
 function ReviewStars({ rating }: { rating: ClientReview['rating'] }) {
   const ratingLabel = rating === null
@@ -34,12 +35,13 @@ export function ReviewCard({
   return (
     <article className="client-review-card" aria-labelledby={reviewerId}>
       <div className="client-review-card-topline">
-        <span>{review.company}</span>
+        <span>Client review · {review.company}</span>
         <span>0{index + 1}</span>
       </div>
 
       <blockquote>
         <p>{review.review}</p>
+        {review.translation && <p><strong>English translation:</strong> {review.translation}</p>}
       </blockquote>
 
       <footer>
@@ -48,6 +50,7 @@ export function ReviewCard({
           <div>
             <strong id={reviewerId}>{review.clientName}</strong>
             <span>{review.role} · {review.company}</span>
+            {projectBySlug(review.projectSlug)?.relationshipLabel && <span>{projectBySlug(review.projectSlug)?.relationshipLabel}</span>}
           </div>
         </div>
         <div className="client-review-proof">

@@ -7,6 +7,7 @@ export type ClientReview = {
   company: string;
   role: string;
   review: string;
+  translation?: string;
   rating: ReviewRating | null;
   featured: boolean;
 };
@@ -63,5 +64,6 @@ export function reviewsForProject(projectSlug: string): ClientReview[] {
 }
 
 export function featuredReviews(): ClientReview[] {
-  return reviews.filter((review) => review.featured);
+  return reviews.filter((review) => review.featured).sort((a, b) =>
+    Number(a.projectSlug === 'shree-hari-spintex') - Number(b.projectSlug === 'shree-hari-spintex'));
 }

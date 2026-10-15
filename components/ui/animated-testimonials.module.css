@@ -22,6 +22,7 @@
 .dots button { display: grid; width: 34px; height: 44px; padding: 0; border: 0; place-items: center; background: transparent; cursor: pointer; }
 .dots span { display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--sand); transition: box-shadow .2s, background .2s; }
 .dots span[data-active='true'] { background: var(--forest); box-shadow: 0 0 0 4px #2c4a3e18; }
+.pause { margin-left: 12px; padding: 6px 10px; border: 1px solid var(--bone); border-radius: 4px; background: transparent; color: var(--forest); font: inherit; font-size: 11px; cursor: pointer; }
 .section :is(a, button):focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; }
 @media (min-width: 761px) and (max-width: 1000px) { .inner { width: calc(100% - 48px); } .slide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } .card { padding: 20px; } .card blockquote p { font-size: 18px; } }
 @media (max-width: 760px) {

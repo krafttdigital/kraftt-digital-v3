@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import styles from './page.module.css';
+import { projectBySlug } from '../../data/projects';
 
 type Proof = {
   category: string;
@@ -14,6 +15,7 @@ type Proof = {
   width: number;
   height: number;
   video?: string;
+  relationshipLabel?: string;
 };
 
 const proofs: Proof[] = [
@@ -25,6 +27,7 @@ const proofs: Proof[] = [
     alt: 'Google search screenshot for Shree Hari Spintex, including its website and sitelinks',
     width: 1881,
     height: 877,
+    relationshipLabel: projectBySlug('shree-hari-spintex')?.relationshipLabel,
   },
   {
     category: 'AEO / GEO example',
@@ -75,7 +78,7 @@ export function ProofCarousel() {
       <div className={styles.carouselCopy}>
         <span className={styles.carouselCategory}>{proof.category}</span>
         <strong>{proof.title}</strong>
-        <p>{proof.description}</p>
+        <p>{proof.description}{proof.relationshipLabel ? ` ${proof.relationshipLabel}` : ''}</p>
         <small>Past-project example. Search and AI appearances can change.</small>
       </div>
     </div>

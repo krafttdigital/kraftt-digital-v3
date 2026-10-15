@@ -50,6 +50,7 @@ export default function FestiveSeasonOfferPage() {
       name: project.name,
       projectType: project.projectType,
       industry: project.industry,
+      relationshipLabel: project.relationshipLabel,
       hero: project.hero,
     }];
   });

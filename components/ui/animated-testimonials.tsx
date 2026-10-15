@@ -12,6 +12,8 @@ export interface Testimonial {
   role: string;
   company: string;
   content: string;
+  translation?: string;
+  relationshipLabel?: string;
   logo: string;
   href: string;
   rating?: number | null;
@@ -60,6 +62,8 @@ const serverSnapshot = () => 3;
 export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [keyboardFocused, setKeyboardFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [manuallyPaused, setManuallyPaused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { amount: 0.3 });
   const perPage = useSyncExternalStore(subscribeToViewport, viewportSnapshot, serverSnapshot);
@@ -67,13 +71,13 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
   const pageCount = pages.length;
   const active = Math.min(activeIndex, pageCount - 1);
   const reduceMotion = useReducedMotion();
-  const rotating = inView && !keyboardFocused && !reduceMotion && pageCount > 1;
+  const rotating = inView && !keyboardFocused && !hovered && !manuallyPaused && !reduceMotion && pageCount > 1;
 
   useEffect(() => {
     if (!rotating) return;
     const timer = window.setInterval(() => {
       if (!document.hidden) setActiveIndex(index => (index + 1) % pageCount);
-    }, 3000);
+    }, 8000);
     return () => window.clearInterval(timer);
   }, [rotating, pageCount, activeIndex]);
 
@@ -82,7 +86,9 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
   return (
     <section id="testimonials" ref={sectionRef} className={styles.section} aria-labelledby="home-testimonials-title"
       onPointerDownCapture={() => setKeyboardFocused(false)}
-      onFocusCapture={event => setKeyboardFocused(event.target.matches(':focus-visible'))}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocusCapture={() => setKeyboardFocused(true)}
       onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setKeyboardFocused(false); }}>
       <div className={styles.inner}>
         <header className={styles.heading}>
@@ -94,10 +100,10 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
             initial={false} animate={{ opacity: active === page ? 1 : 0, x: reduceMotion || active === page ? 0 : 16 }} transition={{ duration: reduceMotion ? 0 : 0.3, ease: 'easeInOut' }} style={{ zIndex: active === page ? 1 : 0, pointerEvents: active === page ? 'auto' : 'none' }}>
             {items.map(item => <article key={item.id} className={styles.card}>
               <span className={styles.quoteMark} aria-hidden="true">“</span>
-              <blockquote><p>{item.content}</p></blockquote>
+              <blockquote><p>{item.content}</p>{item.translation && <p><strong>English translation:</strong> {item.translation}</p>}</blockquote>
               <footer className={styles.person}>
                 <div className={styles.logo}><Image src={item.logo} alt={`${item.company} logo`} width={112} height={72} sizes="64px" /></div>
-                <div className={styles.identity}><h3>{item.name}</h3><p>{item.role} · {item.company}</p><Link href={item.href}>View their project <span aria-hidden="true">↗</span></Link></div>
+                <div className={styles.identity}><h3>{item.name}</h3><p>{item.role} · {item.company}</p><p>Client review{item.relationshipLabel ? ` · ${item.relationshipLabel}` : ''}</p><Link href={item.href}>View their project <span aria-hidden="true">↗</span></Link></div>
               </footer>
             </article>)}
           </motion.div>)}
@@ -106,6 +112,7 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
           <div className={styles.dots}>
             {pages.map((items, page) => <button key={page} type="button" aria-label={`View testimonial page ${page + 1}: ${items.map(item => item.name).join(' and ')}`} aria-current={active === page ? 'true' : undefined} onClick={() => setActiveIndex(page)}><span data-active={active === page} /></button>)}
           </div>
+          <button className={styles.pause} type="button" aria-label={manuallyPaused ? 'Play testimonials' : 'Pause testimonials'} aria-pressed={manuallyPaused} onClick={() => setManuallyPaused(value => !value)}>{manuallyPaused ? 'Play' : 'Pause'}</button>
         </nav>}
       </div>
     </section>

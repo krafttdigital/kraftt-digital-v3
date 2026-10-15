@@ -11,6 +11,7 @@ type ProofProject = {
   name: string;
   projectType: ProjectType;
   industry: string;
+  relationshipLabel?: string;
   hero: {
     src: string;
     alt: string;
@@ -95,6 +96,7 @@ export function OfferProofCarousel({ projects }: { projects: ProofProject[] }) {
                   <div>
                     <p className="eyebrow eyebrow-dark">{project.industry}</p>
                     <h3>{project.name}</h3>
+                    {project.relationshipLabel && <p>{project.relationshipLabel}</p>}
                   </div>
                   <span className="offer-proof-slide-link">View {project.projectType.toLowerCase()} <ArrowUpRight size={16} aria-hidden="true" /></span>
                 </div>

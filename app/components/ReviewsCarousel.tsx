@@ -28,6 +28,7 @@ function usePrefersReducedMotion() {
 export function ReviewsCarousel({ reviews, variant, projectName }: ReviewsCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [manuallyPaused, setManuallyPaused] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const watermarkRef = useRef<HTMLSpanElement>(null);
   const reduceMotion = usePrefersReducedMotion();
@@ -42,10 +43,10 @@ export function ReviewsCarousel({ reviews, variant, projectName }: ReviewsCarous
   };
 
   useEffect(() => {
-    if (reduceMotion || isPaused || reviews.length < 2) return;
+    if (reduceMotion || isPaused || manuallyPaused || reviews.length < 2) return;
     const timer = window.setInterval(goNext, 8000);
     return () => window.clearInterval(timer);
-  }, [goNext, isPaused, reduceMotion, reviews.length]);
+  }, [goNext, isPaused, manuallyPaused, reduceMotion, reviews.length]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const bounds = carouselRef.current?.getBoundingClientRect();
@@ -136,6 +137,7 @@ export function ReviewsCarousel({ reviews, variant, projectName }: ReviewsCarous
           <span>Review {String(activeIndex + 1).padStart(2, '0')} / {String(reviews.length).padStart(2, '0')}</span>
           {reviews.length > 1 && (
             <div>
+              <button type="button" onClick={() => setManuallyPaused(value => !value)} aria-label={manuallyPaused ? 'Play client reviews' : 'Pause client reviews'} aria-pressed={manuallyPaused}>{manuallyPaused ? '▶' : '⏸'}</button>
               <button type="button" onClick={goPrevious} aria-label="Show previous client review">
                 <span aria-hidden="true">←</span>
               </button>

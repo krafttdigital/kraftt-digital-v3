@@ -127,7 +127,7 @@ const caseStudyBanners: Record<string, { src: string; alt: string }> = {
   'ketan-goyal': { src: '/ketan-banner.png', alt: 'Ketan Goyal personal portfolio, writing and builds collage' },
 };
 
-const featuredProjectSlugs = ['shree-hari-spintex', 'mittal-architect', 'elixir-beverages', 'kiraq-jewellery'];
+const featuredProjectSlugs = ['mittal-architect', 'elixir-beverages', 'kiraq-jewellery', 'shree-hari-spintex'];
 
 const selectedProjects = featuredProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
@@ -250,7 +250,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
                     <span className="home-case-play-arrow" aria-hidden="true">↗</span>
                   </div>
                   <div className="home-case-play-copy">
-                    <div><span>{project.projectType}</span><span>{project.industry}</span></div>
+                    <div><span>{project.projectType}</span><span>{project.relationshipLabel ?? project.industry}</span></div>
                     <h3>{project.name}</h3>
                     <p>{project.context}</p>
                   </div>
@@ -313,6 +313,8 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
         role: review.role,
         company: review.company,
         content: review.review,
+        translation: review.translation,
+        relationshipLabel: projects.find(project => project.slug === review.projectSlug)?.relationshipLabel,
         rating: review.rating,
         href: `/work/${review.projectSlug}`,
         logo: ({
