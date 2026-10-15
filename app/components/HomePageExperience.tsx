@@ -181,7 +181,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
       {!geographicContext && <section className="home-audience" aria-labelledby="home-audience-title">
         <div className="home-audience-inner">
           <div className="home-audience-heading">
-            <div><p className="eyebrow eyebrow-dark">Who we work with</p><h2 id="home-audience-title">For respected businesses<br /><em>ready to be recognised.</em></h2></div>
+            <div><p className="eyebrow eyebrow-dark">Who we work with</p><h2 id="home-audience-title">Good work deserves<br /><em>to be seen.</em></h2></div>
             <p>Different businesses, different starting points. We shape the brand, website and digital systems around what people need to understand about yours.</p>
           </div>
           <div className="home-audience-grid">{audiences.map(({ name, href, icon: Icon, value, focus }, index) => {
@@ -190,13 +190,12 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
                 <span className="home-audience-card-number">{String(index + 1).padStart(2, '0')} / 04</span>
                 <h3>{name}</h3>
                 <p>{value}</p>
-                <div className="home-audience-card-focus"><span>Where we help</span>{focus.map((item) => <small key={item}>{item}</small>)}</div>
+                <div className="home-audience-card-focus"><span>Where we help</span><small>{focus.join(' · ')}</small></div>
               </div>
               <div className={`home-audience-illustration home-audience-illustration-${index + 1}`} aria-hidden="true">
-                <span className="home-audience-illustration-orbit"><Icon size={78} strokeWidth={1.15} /></span>
+                <span className="home-audience-illustration-orbit"><Icon size={42} strokeWidth={1.3} /></span>
                 <i className="home-audience-illustration-point home-audience-illustration-point-a" />
                 <i className="home-audience-illustration-point home-audience-illustration-point-b" />
-                <span className="home-audience-illustration-caption">Kraftt · {String(index + 1).padStart(2, '0')}</span>
               </div>
             </>;
             return <div className="home-audience-card-wrap" key={name}>{industryPagesLive
