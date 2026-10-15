@@ -205,7 +205,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
         </div>
       </section>}
 
-      {!geographicContext && <HomePackages />}
+      {/* {!geographicContext && <HomePackages />} */}
 
       <section className="home-services-play section-light" id="what-we-build">
         <div className="home-services-play-inner">
@@ -357,15 +357,18 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
         name: review.clientName,
         role: review.role,
         company: review.company,
-        content: review.review,
-        translation: review.translation,
+        content: review.homepageExcerpt ?? review.review,
+        translation: review.homepageTranslation ?? review.translation,
+        isExcerpt: Boolean(review.homepageExcerpt),
         relationshipLabel: projects.find(project => project.slug === review.projectSlug)?.relationshipLabel,
+        sourceImages: review.sourceImages,
         rating: review.rating,
         href: `/work/${review.projectSlug}`,
         logo: ({
           'shree-hari-spintex': '/assets/projects/shree-hari-spintex/shsl-logo.jpg',
           'mittal-architect': '/assets/projects/mittal-architect/Mittal Logo.jpg',
           'kiraq-jewellery': '/assets/projects/kiraq-jewellery/Kiraq Primary Logo-Photoroom.png',
+          'elixir-beverages': '/assets/projects/elixir-beverages/04-Primary Horizintal-Photoroom.png',
         } as Record<string, string>)[review.projectSlug],
       }))} />}
 

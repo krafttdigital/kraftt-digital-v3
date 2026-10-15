@@ -29,6 +29,7 @@ const projectGalleryDetails: Record<string, readonly string[]> = {
     'Logo usage rules protect recognition by documenting approved backgrounds, spacing and applications before the brand expands into more surfaces.',
     'The colour palette balances botanical green, warm ivory and controlled gold accents to create a premium but natural beverage identity.',
     'The typography system separates expressive brand moments from functional reading, giving future packaging and digital communication a consistent hierarchy.',
+    'In this supplied screenshot, elixirbeverages.in appears first for the branded search “elixir beverages”, above another similarly named site. It is a single captured result, not a promise of ongoing position or performance for other queries.',
   ],
   'bharat-bhushan-singla': [
     'The complete page system connects the founder profile, practice areas and consultation paths so visitors can understand both credibility and the next step.',

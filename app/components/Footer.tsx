@@ -48,6 +48,7 @@ export function Footer() {
         <Link href="/process">How We Work</Link>
         <Link href="/about">About</Link>
         <Link href="/partner-program">Partner Program</Link>
+        <Link href="/offers">Offers</Link>
         <Link href="/tools">Tools</Link>
         <Link href="/audit">Paid Digital Presence Audit</Link>
         <Link href="/contact">Contact</Link>
@@ -75,6 +76,7 @@ export function Footer() {
             <Link href="/process">How We Work</Link>
             <Link href="/about">About</Link>
             <Link href="/partner-program">Partner Program</Link>
+            <Link href="/offers">Offers</Link>
             <Link href="/tools">Tools</Link>
             <Link href="/audit">Paid Digital Presence Audit</Link>
             <Link href="/contact">Contact</Link>

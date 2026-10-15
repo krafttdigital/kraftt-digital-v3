@@ -1,0 +1,111 @@
+.page {
+  --edge: clamp(22px, 5vw, 80px);
+  min-height: 100vh;
+  background: var(--parchment);
+  color: var(--midnight);
+}
+
+.hero {
+  display: grid;
+  width: min(100%, 1320px);
+  min-height: 360px;
+  margin: 0 auto;
+  padding: clamp(62px, 7vw, 92px) var(--edge) clamp(52px, 6vw, 78px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, .75fr);
+  align-items: end;
+  gap: clamp(38px, 7vw, 96px);
+}
+.eyebrow { margin: 0; color: var(--raw-umber); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.hero h1 { max-width: 800px; margin: 18px 0 0; font-family: var(--font-display), Georgia, serif; font-size: clamp(50px, 5.8vw, 78px); font-weight: 300; letter-spacing: -.045em; line-height: .93; }
+.hero h1 em, .sectionHeading h2 em { color: var(--raw-umber); font-weight: inherit; }
+.heroDetail > p { max-width: 510px; margin: 0; color: var(--dusk); font-size: 16px; line-height: 1.65; }
+.heroActions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+.heroActions a { display: inline-flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 17px; padding: 12px 18px; border: 1px solid var(--midnight); border-radius: 6px; color: var(--midnight); font-size: 12px; font-weight: 600; transition: background-color 180ms ease, color 180ms ease, transform 180ms ease; }
+.heroActions a:first-child { background: var(--midnight); color: var(--linen); }
+.heroActions a:hover { transform: translateY(-2px); background: var(--raw-umber); border-color: var(--raw-umber); color: var(--parchment); }
+.heroActions a:focus-visible, .cardLink:focus-visible { outline: 2px solid var(--raw-umber); outline-offset: 3px; }
+
+.offerRail { display: flex; width: min(calc(100% - var(--edge) * 2), 1176px); min-height: 82px; margin: 0 auto; overflow: hidden; border-radius: 10px; background: var(--midnight); color: var(--linen); }
+.railLabel { display: flex; width: 220px; flex: 0 0 220px; flex-direction: column; justify-content: center; gap: 4px; padding: 16px 23px; border-right: 1px solid #49413b; }
+.railLabel span { color: var(--sand); font-size: 9px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.railLabel strong { font-family: var(--font-display), Georgia, serif; font-size: 23px; font-weight: 400; line-height: 1.05; }
+.railWindow { display: flex; min-width: 0; flex: 1; align-items: center; overflow: hidden; }
+.railTrack, .railGroup { display: flex; width: max-content; align-items: center; }
+.railTrack { animation: offerFlow 24s linear infinite; }
+.railItem { display: flex; min-width: max-content; align-items: center; gap: 15px; padding: 0 27px; font-size: 13px; }
+.railItem small { color: var(--sand); font-size: 10px; }
+.railItem b { color: var(--sand); font-weight: 600; }
+.railItem i { margin-left: 9px; color: #85705a; font-size: 11px; font-style: normal; }
+@keyframes offerFlow { to { transform: translateX(-50%); } }
+
+.offerSection { width: min(100%, 1320px); margin: 0 auto; padding: clamp(64px, 7vw, 92px) var(--edge) clamp(85px, 9vw, 132px); scroll-margin-top: 85px; }
+.sectionHeading { display: grid; max-width: 850px; margin-bottom: 34px; grid-template-columns: 54px minmax(0, 1fr); gap: 22px; }
+.sectionHeading > span { color: var(--raw-umber); font-family: var(--font-display), Georgia, serif; font-size: 42px; line-height: 1; }
+.sectionHeading h2 { margin: 8px 0 11px; font-family: var(--font-display), Georgia, serif; font-size: clamp(36px, 3.7vw, 52px); font-weight: 300; letter-spacing: -.035em; line-height: .97; }
+.sectionHeading div > p:last-child { max-width: 610px; margin: 0; color: var(--dusk); font-size: 14px; line-height: 1.6; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cardWrap { min-width: 0; height: 100%; }
+.card { height: 100%; min-height: 455px; overflow: hidden; border: 1px solid var(--bone); border-radius: 10px; background: #fff; transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease; }
+.card:hover { transform: translateY(-3px); border-color: #bba98f; box-shadow: 0 15px 34px rgb(47 35 24 / 9%); }
+.featured { border-color: var(--midnight); background: var(--midnight); color: var(--linen); }
+.cardLink { display: flex; width: 100%; height: 100%; min-height: 455px; padding: clamp(22px, 2.8vw, 34px); flex-direction: column; outline: none; }
+.cardTop { display: flex; align-items: center; justify-content: space-between; gap: 13px; color: var(--raw-umber); font-size: 11px; }
+.cardTop i { display: grid; width: 38px; height: 38px; margin-right: auto; place-items: center; border: 1px solid #c8baaa; border-radius: 50%; }
+.cardTop strong { padding: 5px 9px; border: 1px solid currentColor; border-radius: 999px; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.featured .cardTop { color: var(--sand); }
+.featured .cardTop i { border-color: #68594b; }
+.cardBody { padding-top: 30px; }
+.cardLabel { margin: 0 0 7px; color: var(--raw-umber); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.featured .cardLabel { color: var(--sand); }
+.card h3 { max-width: 480px; margin: 0; font-family: var(--font-display), Georgia, serif; font-size: clamp(34px, 3.2vw, 48px); font-weight: 300; letter-spacing: -.03em; line-height: 1.02; }
+.cardDescription { max-width: 460px; margin: 12px 0 0; color: var(--dusk); font-size: 12px; line-height: 1.55; }
+.featured .cardDescription { color: #c9bdae; }
+.cardPrice { display: flex; align-items: baseline; gap: 14px; margin-top: 20px; }
+.cardPrice strong { font-family: var(--font-display), Georgia, serif; font-size: clamp(35px, 3.5vw, 50px); font-weight: 300; line-height: 1; }
+.cardPrice span { color: var(--dusk); font-size: 10px; }
+.featured .cardPrice span { color: #c9bdae; }
+.highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 22px 0; padding: 0; list-style: none; }
+.highlights li { display: flex; min-width: 0; align-items: flex-start; gap: 8px; padding: 10px; border: 1px solid var(--bone); border-radius: 5px; color: var(--dusk); font-size: 10px; line-height: 1.35; }
+.highlights svg { flex: 0 0 auto; color: var(--raw-umber); }
+.featured .highlights li { border-color: #4a423a; color: #d4c8b9; }
+.featured .highlights svg { color: var(--sand); }
+.cardAction { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--bone); }
+.cardAction > span { color: var(--dusk); font-size: 10px; line-height: 1.4; }
+.cardAction strong { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 11px; font-weight: 600; }
+.cardAction svg { transition: transform 180ms ease; }
+.cardLink:hover .cardAction svg { transform: translate(3px, -3px); }
+.featured .cardAction { border-color: #4a423a; }
+.featured .cardAction > span { color: #c9bdae; }
+
+@media (max-width: 950px) {
+  .hero { grid-template-columns: 1fr; gap: 25px; }
+  .heroDetail > p { max-width: 720px; }
+  .highlights { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .hero { padding-block: 54px 44px; }
+  .hero h1 { font-size: clamp(44px, 12vw, 62px); }
+  .heroDetail > p { font-size: 14px; }
+  .offerRail { width: calc(100% - 36px); min-height: 70px; }
+  .railLabel { width: 145px; flex-basis: 145px; padding: 12px 14px; }
+  .railLabel strong { font-size: 19px; }
+  .cards { grid-template-columns: 1fr; }
+  .card, .cardLink { min-height: 0; }
+  .highlights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .hero, .offerSection { padding-inline: 18px; }
+  .heroActions { display: grid; }
+  .offerRail { width: calc(100% - 36px); }
+  .railLabel { width: 120px; flex-basis: 120px; }
+  .railLabel strong { font-size: 16px; }
+  .sectionHeading { grid-template-columns: 40px minmax(0, 1fr); gap: 14px; }
+  .sectionHeading > span { font-size: 34px; }
+  .highlights { grid-template-columns: 1fr; }
+  .cardAction { align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .railTrack { animation: none; }
+  .card, .heroActions a, .cardAction svg { transition: none; }
+  .card:hover, .heroActions a:hover { transform: none; }
+}

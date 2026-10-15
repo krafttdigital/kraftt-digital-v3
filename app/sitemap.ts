@@ -1,19 +1,22 @@
 import type { MetadataRoute } from 'next';
 import { bundles } from './data/bundles';
+import { diwaliGrowthOffer } from './data/diwaliGrowthOffer';
+import { offers } from './data/offers';
 import { projects } from './data/projects';
 import { services } from './data/services';
-import { absoluteUrl, metadataByPath } from './data/seo';
+import { absoluteUrl } from './data/seo';
 import { locationHubPaths, locationServicePaths, regionHubPaths, regionServicePaths } from './data/geo';
 import { tools } from './tools/data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const newLocationSlugs = ['barnala', 'jalandhar', 'amritsar', 'mansa', 'chennai'];
   const staticRoutes = [
     '', '/services', '/work', '/process', '/about', '/audit',
-    '/contact', '/partner-program', '/offers/diwali-growth-website', '/offers/campaign-festive-season-offer', '/tools', '/location', '/region', '/legal/privacy-policy', '/legal/terms',
+    '/contact', '/partner-program', '/offers', '/tools', '/location', '/region', '/legal/privacy-policy', '/legal/terms',
   ];
-  const routes = [
+  const routes = new Set([
     ...staticRoutes,
+    diwaliGrowthOffer.pagePath,
+    ...offers.map((offer) => offer.pagePath),
     ...services.map((service) => `/services/${service.slug}`),
     ...bundles.map((bundle) => `/services/bundles/${bundle.slug}`),
     ...projects.map((project) => `/work/${project.slug}`),
@@ -22,12 +25,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...locationServicePaths,
     ...regionHubPaths,
     ...regionServicePaths,
-  ];
+  ]);
 
-  return routes.map((route) => ({
+  // Only publish lastmod where a meaningful page update has a known date.
+  const recentlyUpdated = new Map<string, string>([
+    ['/offers', '2026-10-16'],
+    [diwaliGrowthOffer.pagePath, '2026-10-15'],
+    ['/tools', '2026-10-16'],
+    ...tools.map((tool): [string, string] => [`/tools/${tool.slug}`, '2026-10-16']),
+  ]);
+
+  return [...routes].map((route) => ({
     url: route === '' ? `${absoluteUrl('/')}/` : absoluteUrl(route),
-    lastModified: new Date(route === '/offers/diwali-growth-website' ? '2026-10-15' : metadataByPath[route || '/'] ? '2026-10-04' : newLocationSlugs.some((slug) => route === `/location/${slug}` || route.startsWith(`/location/${slug}/`)) || route === '/contact' ? '2026-09-28' : route.startsWith('/location') || route.startsWith('/region') ? '2026-09-15' : route === '/offers/campaign-festive-season-offer' ? '2026-09-11' : route === '/partner-program' ? '2026-09-05' : '2026-08-25'),
-    changeFrequency: route === '' ? 'weekly' : route.startsWith('/work/') ? 'monthly' : 'monthly',
-    priority: route === '' ? 1 : ['/audit', '/offers/diwali-growth-website'].includes(route) ? 0.9 : ['/services', '/work'].includes(route) ? 0.85 : ['/location', '/region'].includes(route) ? 0.75 : 0.7,
+    ...(recentlyUpdated.has(route) ? { lastModified: recentlyUpdated.get(route) } : {}),
   }));
 }

@@ -102,7 +102,7 @@ export function ToolIntro({ tool }: { tool: ToolDefinition }) {
         <span aria-hidden="true"><Icon size={16} strokeWidth={1.6} /></span>
         <p className="tool-eyebrow">Free Kraftt tool · {detail.number}</p>
       </div>
-      <h1 id="tool-page-title">{tool.name}</h1>
+      <h1 id="tool-page-title">{tool.slug === 'website-cost-calculator' ? 'Website Cost in India Calculator' : tool.name}</h1>
       <p className="tool-intro-copy">{tool.value}</p>
       <div className="tool-intro-facts" aria-label={`${tool.name} overview`}>
         {detail.facts.map(([value, label]) => (
@@ -117,7 +117,7 @@ export function ToolIntro({ tool }: { tool: ToolDefinition }) {
   );
 }
 
-export function ToolDetail({ tool, children }: { tool: ToolDefinition; children: ReactNode }) {
+export function ToolDetail({ tool, children, editorial }: { tool: ToolDefinition; children: ReactNode; editorial?: ReactNode }) {
   const Icon = toolIcons[tool.slug] ?? Calculator;
 
   return (
@@ -127,6 +127,7 @@ export function ToolDetail({ tool, children }: { tool: ToolDefinition; children:
         <span className="tool-workspace-badge"><Icon size={13} strokeWidth={1.8} aria-hidden="true" /> Calculator</span>
         {children}
       </section>
+      {editorial}
     </main>
   );
 }

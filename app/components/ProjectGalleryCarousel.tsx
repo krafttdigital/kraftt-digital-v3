@@ -48,7 +48,7 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
   const paint = useCallback(() => {
     const width = widthRef.current;
     if (!width) return;
-    const pitch = width * 0.72;
+    const pitch = width * 0.82;
     const position = positionRef.current;
 
     cardRefs.current.forEach((card, index) => {
@@ -58,14 +58,11 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
       if (offset > count / 2) offset -= count;
 
       const distance = Math.abs(offset);
-      const ramp = Math.pow(distance, 0.62);
-      const tilt = Math.min(37 * ramp, 76) * Math.sign(offset);
-      const edge = Math.min(1, Math.max(0, count / 2 - distance));
+      const scale = Math.max(0.78, 1 - distance * 0.12);
+      const edge = Math.max(0, Math.min(1, (1.5 - distance) * 2));
 
-      card.style.transform =
-        `translateX(calc(-50% + ${offset * pitch}px)) ` +
-        `translateZ(${-0.48 * width * ramp}px) rotateY(${-tilt}deg)`;
-      card.style.opacity = String(Math.max(0, 1 - 0.13 * distance) * edge);
+      card.style.transform = `translateX(calc(-50% + ${offset * pitch}px)) scale(${scale})`;
+      card.style.opacity = String(Math.max(0, 1 - 0.55 * distance) * edge);
       card.style.zIndex = String(100 - Math.round(distance));
     });
   }, [count]);
@@ -124,7 +121,7 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
-    const pitch = widthRef.current * 0.72;
+    const pitch = widthRef.current * 0.82;
     if (!pitch) return;
 
     const now = performance.now();
@@ -174,14 +171,11 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
       aria-label={`${projectName} project gallery`}
     >
       <div className="project-gallery-carousel-shell">
-        <button type="button" className="project-gallery-carousel-nav is-previous" onClick={() => nudge(-1)} aria-label="Show previous project image">
-          <ChevronLeft aria-hidden="true" />
-        </button>
-
         <div
           className="project-gallery-carousel-frame"
           ref={frameRef}
           tabIndex={0}
+          aria-label="Use left and right arrow keys to browse project images"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endDrag}
@@ -215,6 +209,7 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}: ${slide.alt}`}
                 aria-current={index === selected ? 'true' : undefined}
+                tabIndex={index === selected ? 0 : -1}
               >
                 <Image
                   src={slide.src}
@@ -228,19 +223,22 @@ export function ProjectGalleryCarousel({ slides, projectName }: ProjectGalleryCa
             ))}
           </div>
         </div>
-
-        <button type="button" className="project-gallery-carousel-nav is-next" onClick={() => nudge(1)} aria-label="Show next project image">
-          <ChevronRight aria-hidden="true" />
-        </button>
       </div>
 
-      <div className="project-gallery-carousel-caption" aria-live="polite" aria-atomic="true">
-        <div>
-          <span>Surface {String(selected + 1).padStart(2, '0')}</span>
-          <span>{String(selected + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span>
+      <div className="project-gallery-carousel-caption">
+        <div className="project-gallery-carousel-position">
+          <span>Project gallery</span>
+          <strong>{String(selected + 1).padStart(2, '0')} <i>/</i> {String(count).padStart(2, '0')}</strong>
+          <span className="project-gallery-carousel-progress" aria-hidden="true"><span style={{ width: `${((selected + 1) / count) * 100}%` }} /></span>
         </div>
-        <h3>{active.alt}</h3>
-        <p>{active.detail}</p>
+        <div className="project-gallery-carousel-description" aria-live="polite" aria-atomic="true">
+          <h3>{active.alt}</h3>
+          <p>{active.detail}</p>
+        </div>
+        <div className="project-gallery-carousel-controls">
+          <button type="button" className="project-gallery-carousel-nav" onClick={() => nudge(-1)} aria-label="Show previous project image"><ChevronLeft aria-hidden="true" /></button>
+          <button type="button" className="project-gallery-carousel-nav" onClick={() => nudge(1)} aria-label="Show next project image"><ChevronRight aria-hidden="true" /></button>
+        </div>
       </div>
 
       <div className="project-gallery-carousel-pagination" aria-label="Choose a project image">

@@ -15,7 +15,7 @@ export default function TermsPage() {
       <article className="legal-copy">
         <h2>Website information</h2><p>This website describes Kraftt Digital services and selected work. Project availability, price and scope are confirmed only in a written proposal or agreement.</p>
         <h2>Audit</h2><p>The Digital Presence Audit is a focused paid review. It does not guarantee rankings, sales, enquiries or acceptance of a later proposal.</p>
-        <h2>Project claims</h2><p>Measured outcomes are identified separately from qualitative outcomes. Evidence notes remain visible where dated proof is still required before public release.</p>
+        <h2>Project claims</h2><p>Project examples distinguish delivered work, observed outcomes and client-reported results. Client-reported figures are labelled where they have not been independently verified; individual results may vary.</p>
         <h2>Intellectual property</h2><p>Site content and Kraftt brand materials may not be copied or represented as another party’s work. Client and project assets remain subject to their respective rights and agreements.</p>
         <h2>Contact and project terms</h2><p>Questions can be raised through the contact options on this website. The written proposal and client agreement govern the final scope, payment schedule, responsibilities, timeline and applicable project terms.</p>
       </article><Footer /></main>

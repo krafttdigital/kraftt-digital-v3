@@ -51,7 +51,7 @@ export default function ContactPage() {
       <JsonLd data={createPageSchema({ name: pageTitle, description: pageDescription, path: '/contact', breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }], entities: [faqSchema(faqs, '/contact')] })} />
       <SiteHeader />
 
-      <div className="contact-proof-marquee" aria-label="Kraftt capabilities and client-reported outcomes">
+      <div className="contact-proof-marquee" aria-label="Kraftt capabilities and documented work">
         <div className="contact-proof-marquee-track" aria-hidden="true">
           {[0, 1].map((group) => (
             <div className="contact-proof-marquee-group" key={group}>

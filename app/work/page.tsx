@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { AuditCTA } from '../components/CTA';
 import { Footer } from '../components/Footer';
@@ -24,26 +25,29 @@ export default function WorkPage() {
     <main className="work-page">
       <JsonLd data={createPageSchema({ name: pageTitle, description: pageDescription, path: '/work', breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Work', path: '/work' }] })} />
       <SiteHeader />
-      <section className="work-page-hero">
+      <section className="work-page-hero" aria-labelledby="work-page-title">
         <div className="work-page-hero-inner">
-          <Reveal className="work-page-hero-count" direction="left">
-            <strong>{projectCount}</strong>
-            <span>Selected projects</span>
+          <Reveal className="work-page-hero-copy" direction="left">
+            <div className="work-page-hero-kicker"><p className="eyebrow eyebrow-dark">Selected work</p><span>{projectCount} projects to explore</span></div>
+            <h1 id="work-page-title">Real work.<br /><em>Honest evidence.</em></h1>
+            <p>Client engagements, portfolio work and our own product. Each project is clearly labelled, so you can judge the work and its evidence in context.</p>
+            <div className="work-page-hero-actions">
+              <a href="#work-index">Explore the projects <span aria-hidden="true">↓</span></a>
+              <Link href="/contact">Discuss your project <span aria-hidden="true">↗</span></Link>
+            </div>
           </Reveal>
 
-          <Reveal className="work-page-hero-title" direction="scale">
-            <p className="eyebrow eyebrow-dark">Selected work</p>
-            <h1>Real work.<br /><em>Honest evidence.</em></h1>
-          </Reveal>
-
-          <Reveal className="work-page-hero-intro" direction="right">
-            <p>Client engagements, portfolio work and our own product. Each is labelled so you can judge the evidence in context.</p>
-            <a href="#work-index">Browse the work <span aria-hidden="true">↓</span></a>
+          <Reveal className="work-page-hero-feature" direction="right">
+            <Link href="/work/elixir-beverages" aria-label="View the Elixir Beverages case study">
+              <div className="work-page-hero-feature-image">
+                <Image src="/elixir-banner.png" alt="Elixir Beverages branding and website project collage" fill priority sizes="(max-width: 760px) 92vw, (max-width: 1100px) 44vw, 48vw" />
+              </div>
+              <div className="work-page-hero-feature-caption"><span>Featured case study · Consumer brands</span><strong>Elixir Beverages</strong><span aria-hidden="true">↗</span></div>
+            </Link>
           </Reveal>
         </div>
 
         <Reveal className="work-page-evidence" direction="up">
-          <p>Work, clearly labelled</p>
           <div><strong>{caseCount}</strong><span>Case studies</span></div>
           <div><strong>{portfolioCount}</strong><span>Portfolio projects</span></div>
           <div><strong>{productCount}</strong><span>Kraftt products</span></div>

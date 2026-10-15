@@ -274,6 +274,100 @@
   .tool-line-total { flex-direction: column; gap: 4px; }
 }
 
+/* Editorial guidance on each tool page, using the homepage's split headings, numbered cards and FAQ treatment. */
+.tool-guide-overview,
+.tool-guide-method,
+.tool-guide-faq { grid-column: 1 / -1; min-width: 0; margin-inline: calc(-1 * var(--tool-edge)); padding: clamp(54px, 7vw, 92px) var(--tool-edge); }
+.tool-guide-inner { width: min(100%, 1320px); margin-inline: auto; }
+.tool-guide-overview { margin-top: 26px; border-top: 1px solid var(--bone); background: var(--parchment); }
+.tool-guide-heading { display: grid; grid-template-columns: minmax(210px, .48fr) minmax(0, 1.52fr); column-gap: clamp(28px, 5vw, 76px); padding-bottom: clamp(34px, 5vw, 60px); border-bottom: 1px solid var(--bone); }
+.tool-guide-heading > .tool-eyebrow { padding-top: 9px; }
+.tool-guide-heading h2 { max-width: 840px; font-size: clamp(38px, 4.8vw, 68px); letter-spacing: -.035em; line-height: .98; }
+.tool-guide-heading > p:last-child { grid-column: 2; max-width: 850px; margin: 24px 0 0; color: var(--dusk); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.65; }
+.tool-guide-context { display: grid; grid-template-columns: minmax(210px, .48fr) minmax(0, 1.52fr); gap: clamp(28px, 5vw, 76px); padding: 28px 0 0; }
+.tool-guide-context span { color: var(--raw-umber); font-size: 10px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.tool-guide-context p { max-width: 850px; margin: 0; color: var(--dusk); font-size: 14px; line-height: 1.7; }
+
+.tool-guide-prices { margin-top: clamp(46px, 6vw, 76px); padding: clamp(25px, 4vw, 44px); border: 1px solid #d8ccbc; border-radius: 17px; background: #fffdf9; }
+.tool-guide-prices-intro { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 26px; }
+.tool-guide-prices-intro h3 { max-width: 570px; margin-top: 9px; font-size: clamp(30px, 3vw, 42px); line-height: 1.02; }
+.tool-guide-prices-intro > p { max-width: 330px; margin: 0; color: var(--dusk); font-size: 12px; line-height: 1.6; }
+.tool-guide-table-scroll { overflow-x: auto; }
+.tool-guide-prices table { width: 100%; border-collapse: collapse; text-align: left; }
+.tool-guide-prices th,
+.tool-guide-prices td { padding: 15px 12px; border-bottom: 1px solid var(--bone); font-size: 13px; }
+.tool-guide-prices thead th { color: var(--raw-umber); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.tool-guide-prices tbody th { font-weight: 600; }
+.tool-guide-prices tbody td:nth-child(2) { color: var(--dusk); }
+.tool-guide-prices tbody td:last-child { color: var(--forest); font-weight: 600; white-space: nowrap; }
+.tool-guide-table-note { margin: 19px 0 0; color: var(--dusk); font-size: 12px; line-height: 1.6; }
+.tool-guide-table-note a { color: var(--raw-umber); text-decoration: underline; text-underline-offset: 3px; }
+
+.tool-guide-method { background: var(--linen); }
+.tool-guide-section-heading { display: grid; grid-template-columns: minmax(210px, .48fr) minmax(0, 1.52fr); gap: clamp(28px, 5vw, 76px); margin-bottom: clamp(30px, 4vw, 50px); }
+.tool-guide-section-heading > span { color: var(--raw-umber); font-family: var(--font-display), Georgia, serif; font-size: clamp(36px, 4vw, 58px); line-height: 1; }
+.tool-guide-section-heading h2 { max-width: 810px; margin-top: 10px; font-size: clamp(38px, 4.4vw, 62px); letter-spacing: -.035em; line-height: .98; }
+.tool-guide-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #c6b9a6; border-left: 1px solid #c6b9a6; }
+.tool-guide-steps article { display: flex; min-height: 250px; padding: clamp(20px, 2.7vw, 32px); flex-direction: column; border-right: 1px solid #c6b9a6; border-bottom: 1px solid #c6b9a6; }
+.tool-guide-steps article > span { color: var(--raw-umber); font-family: var(--font-display), Georgia, serif; font-size: 38px; line-height: 1; }
+.tool-guide-steps h3 { margin-top: auto; padding-top: 26px; font-size: clamp(20px, 2vw, 28px); line-height: 1.1; }
+.tool-guide-steps p { margin: 11px 0 0; color: var(--dusk); font-size: 12px; line-height: 1.6; }
+.tool-guide-example { display: grid; grid-template-columns: minmax(210px, .48fr) minmax(0, 1.52fr); gap: clamp(28px, 5vw, 76px); margin-top: 24px; padding: clamp(28px, 4vw, 48px); border-radius: 15px; background: var(--forest); color: var(--parchment); }
+.tool-guide-example span { color: var(--sand); font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.tool-guide-example h3 { max-width: 310px; margin-top: 16px; font-size: clamp(28px, 3vw, 42px); line-height: 1.03; }
+.tool-guide-example p { max-width: 810px; margin: 0; font-family: var(--font-display), Georgia, serif; font-size: clamp(23px, 2.4vw, 34px); line-height: 1.2; }
+.tool-guide-example small { display: block; max-width: 800px; margin-top: 19px; color: #d6c9b8; font-size: 12px; line-height: 1.6; }
+
+.tool-guide-faq { background: var(--midnight); color: var(--parchment); }
+.tool-guide-faq-heading { display: grid; grid-template-columns: minmax(180px, .38fr) minmax(0, 1.15fr) minmax(240px, .47fr); align-items: end; gap: clamp(24px, 4vw, 55px); margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgb(242 239 233 / 24%); }
+.tool-guide-faq-heading .tool-eyebrow { color: var(--sand); }
+.tool-guide-faq-heading span { display: block; margin-top: 22px; color: #b7a997; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.tool-guide-faq-heading h2 { font-size: clamp(42px, 5vw, 70px); line-height: .94; letter-spacing: -.035em; }
+.tool-guide-faq-heading h2 em { color: var(--sand); font-weight: inherit; }
+.tool-guide-faq-heading > p { margin: 0; color: #bfb4a4; font-size: 13px; line-height: 1.65; }
+.tool-guide-faq .faq6 { color: var(--midnight); }
+
+@media (max-width: 980px) {
+  .tool-guide-heading,
+  .tool-guide-context,
+  .tool-guide-section-heading,
+  .tool-guide-example { grid-template-columns: minmax(150px, .42fr) minmax(0, 1fr); gap: 26px; }
+  .tool-guide-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tool-guide-faq-heading { grid-template-columns: minmax(140px, .35fr) minmax(0, 1fr); }
+  .tool-guide-faq-heading > p { grid-column: 2; }
+}
+
+@media (max-width: 680px) {
+  .tool-guide-overview,
+  .tool-guide-method,
+  .tool-guide-faq { padding-block: 55px; }
+  .tool-guide-heading,
+  .tool-guide-context,
+  .tool-guide-section-heading,
+  .tool-guide-example,
+  .tool-guide-faq-heading { grid-template-columns: 1fr; gap: 17px; }
+  .tool-guide-heading > p:last-child,
+  .tool-guide-faq-heading > p { grid-column: 1; }
+  .tool-guide-heading h2,
+  .tool-guide-section-heading h2 { font-size: clamp(37px, 10vw, 48px); }
+  .tool-guide-heading > p:last-child { margin-top: 0; }
+  .tool-guide-prices { padding: 22px 17px; }
+  .tool-guide-prices-intro { display: block; }
+  .tool-guide-prices-intro > p { margin-top: 12px; }
+  .tool-guide-prices table { min-width: 550px; }
+  .tool-guide-steps { grid-template-columns: 1fr; }
+  .tool-guide-steps article { min-height: 0; }
+  .tool-guide-steps h3 { margin-top: 6px; padding-top: 0; }
+  .tool-guide-example h3 { margin-top: 8px; }
+  .tool-guide-faq-heading h2 { font-size: clamp(43px, 11vw, 56px); }
+}
+
+@media (max-width: 560px) {
+  .tool-guide-overview,
+  .tool-guide-method,
+  .tool-guide-faq { margin-inline: -18px; padding-inline: 18px; }
+}
+
 /* Compact tools experience */
 .tool-btn { min-height: 48px; padding: 12px 20px; gap: 14px; border-radius: 6px; font-size: 13px; }
 .tool-btn:hover { transform: translateY(-1px); }

@@ -21,8 +21,8 @@ export const tools: ToolDefinition[] = [
   {
     slug: 'website-cost-calculator',
     name: 'Website Cost Calculator',
-    description: 'Match your site requirements to a published Kraftt package and starting estimate.',
-    value: 'Turn a rough website brief into a clear package and starting investment.',
+    description: 'Estimate website cost in India from Kraftt’s published website and store starting prices.',
+    value: 'Compare website prices in India and turn your brief into a clear starting estimate.',
     group: 'Digital Growth Tools',
     time: '1 minute',
   },

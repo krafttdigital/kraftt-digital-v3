@@ -216,7 +216,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <div>
             <p className="eyebrow">What changed</p>
             <h2>{project.outcome}</h2>
-            {project.evidenceNote && <p className="project-detail-evidence-note"><span>Evidence note</span>{project.evidenceNote}</p>}
+            {project.evidenceNote && <p className="project-detail-evidence-note"><span>Result context</span>{project.evidenceNote}</p>}
           </div>
         </Reveal>
       </section>

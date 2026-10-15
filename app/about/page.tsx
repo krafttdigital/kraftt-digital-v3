@@ -250,7 +250,7 @@ export default function AboutPage() {
         </Reveal>
       </section> */}
 
-      <section className="about-clarity-principles">
+      {/* <section className="about-clarity-principles">
         <Reveal className="about-clarity-principles-heading">
           <p className="eyebrow eyebrow-dark">Operating principles · 01—04</p>
           <h2>Clear thinking.<br /><em>Calm execution.</em></h2>
@@ -265,7 +265,7 @@ export default function AboutPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* <section className="about-clarity-fit" id="fit">
         <Reveal className="about-clarity-fit-heading" direction="scale">

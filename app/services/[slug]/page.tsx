@@ -120,7 +120,11 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="service-simple-overview" id="overview" aria-labelledby="service-included-title">
         <div className="service-simple-shell">
           <div className="service-simple-overview-grid">
-            <Reveal className="service-simple-included" direction="left"><p className="eyebrow eyebrow-dark">The working scope</p><h2 id="service-included-title">What&apos;s included</h2><div>{service.mainDeliverables.map((item) => <p key={item}><Check size={18} /><span>{item}</span></p>)}</div></Reveal>
+            <Reveal className="service-simple-included" direction="left">
+              <p className="eyebrow eyebrow-dark">The working scope</p>
+              <h2 id="service-included-title">What&apos;s included</h2>
+              <ul>{service.mainDeliverables.map((item) => <li key={item}><span className="service-simple-included-icon" aria-hidden="true"><Check size={17} strokeWidth={2.2} /></span><span>{item}</span></li>)}</ul>
+            </Reveal>
             <Reveal className="service-simple-quote-card" direction="right">
               <span>{isCustomScope ? 'Built around your requirement' : 'Published packages. Written scope.'}</span>
               <h3>{isCustomScope ? 'Custom-scoped. Custom-priced.' : `Choose from ${service.tiers.length} clear scope levels.`}</h3>
@@ -185,7 +189,13 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <section className="service-simple-related" aria-labelledby="related-services-title"><div className="service-simple-shell">
         <Reveal className="service-simple-section-head"><div><p className="eyebrow eyebrow-dark">Build the wider system</p><h2 id="related-services-title">Related services</h2></div><Link href="/services">Browse all services <ArrowRight size={15} /></Link></Reveal>
-        <div className="service-simple-related-grid">{relatedServices.map((related) => <Reveal key={related.slug}><Link href={`/services/${related.slug}`}><span><AnimatedServiceIcon slug={related.slug} size={38} /></span><h3>{related.name}</h3><p>{related.headline}</p><i>View service <ArrowUpRight size={14} /></i></Link></Reveal>)}</div>
+        <div className="service-simple-related-grid">{relatedServices.map((related) => <Reveal key={related.slug}>
+          <Link href={`/services/${related.slug}`}>
+            <div className="service-simple-related-card-top"><span className="service-simple-related-icon"><AnimatedServiceIcon slug={related.slug} size={46} /></span><span className="service-simple-related-category">{related.category}</span><ArrowUpRight size={17} aria-hidden="true" /></div>
+            <div className="service-simple-related-card-copy"><h3>{related.name}</h3><p>{related.headline}</p></div>
+            <span className="service-simple-related-card-cta">Explore service <ArrowRight size={16} aria-hidden="true" /></span>
+          </Link>
+        </Reveal>)}</div>
       </div></section>
 
       <section className="service-simple-final"><Reveal direction="left"><p className="eyebrow">Choose the right first step</p><h2>Discuss the requirement.<br /><em>Decide with clarity.</em></h2></Reveal><Reveal direction="right"><p>Use the free call for quick direction. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.</p><div><Link href={contactHref}>Request a free call <ArrowRight size={15} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={15} /></Link></div></Reveal></section>
