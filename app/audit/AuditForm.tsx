@@ -7,6 +7,7 @@ import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
 import { usePricingCurrency } from '../components/PricingCurrencyProvider';
 import { regionalizePriceCopy } from '../data/pricing';
+import { parseLeadHandoff } from '../data/handoff';
 
 const formspreeEndpoint = 'https://formspree.io/f/mgawjopk';
 
@@ -33,6 +34,7 @@ export function AuditForm() {
     if (!form) return;
     const params = new URLSearchParams(window.location.search);
     if (!params.size) return;
+    const handoff = parseLeadHandoff(params);
 
     const setValue = (name: string, value: string) => {
       const control = form.elements.namedItem(name);
@@ -59,25 +61,30 @@ export function AuditForm() {
 
     const socialTier = params.get('socialTier');
     if (socialTier) {
-      setValue('service', 'Social Media Strategy & Management');
+      setValue('service', services.find((service) => service.slug === 'social-media-management')?.name ?? '');
       context.push(`Social calculator: ${socialTier}; ${params.get('platforms') ?? '—'} platform(s), ${params.get('posts') ?? '—'} posts, stories ${params.get('stories') ?? '—'}, community management ${params.get('community') ?? '—'}.`);
     }
 
     const tool = params.get('tool');
     if (tool === 'seo-roi') {
-      setValue('service', 'E-commerce SEO');
+      setValue('service', services.find((service) => service.slug === 'ecommerce-seo')?.name ?? '');
       setValue('primaryGap', 'People cannot find us online');
       context.push(`SEO ROI calculator: moderate illustrative ROI ${params.get('roi') ?? 'not recorded'}%.`);
     } else if (tool === 'roas-calculator') {
       context.push(`ROAS calculator: ${params.get('roas') ?? '—'}x; break-even ${params.get('breakEven') || 'not calculated'}.`);
     } else if (tool === 'gst-calculator') {
-      setValue('service', 'Dashboards & Internal Tools');
+      setValue('service', services.find((service) => service.slug === 'dashboards-internal-tools')?.name ?? '');
       context.push(`GST calculator used: ${params.get('gstRate') ?? '—'}% in ${params.get('gstMode') ?? '—'} mode.`);
     } else if (tool === 'gst-invoice-generator') {
-      setValue('service', 'Dashboards & Internal Tools');
+      setValue('service', services.find((service) => service.slug === 'dashboards-internal-tools')?.name ?? '');
       context.push(`GST invoice generator used; current invoice total ${params.get('invoiceTotal') ?? '—'}.`);
     }
 
+    if (handoff.service) setValue('service', handoff.service.name);
+    setValue('service_slug', handoff.service?.slug ?? '');
+    setValue('place', handoff.place);
+    setValue('source', handoff.source);
+    setValue('band', handoff.band);
     if (context.length) setValue('context', context.join('\n'));
   }, []);
 
@@ -98,7 +105,9 @@ export function AuditForm() {
       .map(([label, value]) => `${label}: ${value}`)
       .join('\n');
 
-    const message = `Hi Kraftt, I would like to request the ${auditPrice} Digital Presence Audit.\n\n${details}\n\nI consent to Kraftt using these details to review my business and contact me about the audit.`;
+    const source = String(data.get('source') || 'page');
+    const service = String(data.get('service') || 'my business');
+    const message = `Hi Kraftt, I would like to request the ${auditPrice} Digital Presence Audit for ${service} (from the ${source} page).\n\n${details}\n\nI consent to Kraftt using these details to review my business and contact me about the audit.`;
     trackEvent('whatsapp_click', { ...formContext(form), form_id: 'audit_request', cta_location: 'form', cta_label: 'whatsapp', destination_type: 'whatsapp' });
     window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
   }
@@ -131,6 +140,10 @@ export function AuditForm() {
   return (
     <form ref={formRef} className="audit-form" action={formspreeEndpoint} method="POST" onSubmit={handleFormspree}>
       <input type="hidden" name="_subject" value={`New ${auditPrice} Digital Presence Audit request`} />
+      <input type="hidden" name="service_slug" defaultValue="" />
+      <input type="hidden" name="place" defaultValue="" />
+      <input type="hidden" name="source" defaultValue="" />
+      <input type="hidden" name="band" defaultValue="" />
 
       <div className="audit-field-grid audit-field-grid-compact">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your full name" required /></label>

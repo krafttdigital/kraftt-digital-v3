@@ -52,7 +52,7 @@ const selectedProjects = featuredProjectSlugs
 export function LocationLandingPage({ market }: { market: LocationMarket }) {
   const homeReviews = featuredReviews();
   const pagePath = `/location/${market.slug}`;
-  const contactHref = `/contact?market=${encodeURIComponent(market.name)}`;
+  const contactHref = `/contact?place=${encodeURIComponent(market.slug)}&source=page`;
   const delivery = locationDelivery(market);
   const featuredServices = featuredLocationServices.map((slug, index) => {
     const service = serviceBySlug(slug)!;

@@ -140,12 +140,26 @@ export function ResultActions({
   serviceLabel: string;
   auditHref: string;
 }) {
-  const contactHref = `${auditHref.replace(/^\/audit/, '/contact')}`;
+  const params = new URLSearchParams(auditHref.split('?')[1] ?? '');
+  const service = /^\/services\/([^/?]+)/.exec(serviceHref)?.[1] ?? '';
+  const source = params.has('score') ? 'score' : 'calculator';
+  const score = Number(params.get('score'));
+  const band = params.has('score') && Number.isFinite(score)
+    ? score <= 40 ? '0-40' : score <= 70 ? '41-70' : score <= 90 ? '71-90' : '91-100'
+    : '';
+  if (service) params.set('service', service);
+  params.set('source', source);
+  if (band) params.set('band', band);
+  const auditWithHandoff = `/audit?${params.toString()}`;
+  const contactParams = new URLSearchParams({ source });
+  if (service) contactParams.set('service', service);
+  if (band) contactParams.set('band', band);
+  const contactHref = `/contact?${contactParams.toString()}`;
   return (
     <div className="tool-result-actions">
       <Button href={serviceHref} variant="secondary">{serviceLabel} <span aria-hidden="true">↗</span></Button>
       <Button href={contactHref}>Request a free call</Button>
-      <Link href={auditHref}>Explore the Paid Digital Presence Audit</Link>
+      <Link href={auditWithHandoff}>Explore the Paid Digital Presence Audit</Link>
     </div>
   );
 }

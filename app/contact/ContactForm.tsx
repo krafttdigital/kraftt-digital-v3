@@ -2,10 +2,11 @@
 
 import { formContext, trackEvent, trackFormSuccess } from '../../lib/analytics/core';
 
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
+import { parseLeadHandoff } from '../data/handoff';
 
 const formspreeEndpoint = 'https://formspree.io/f/mgawjopk';
 const fields = [
@@ -20,6 +21,21 @@ export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const handoff = parseLeadHandoff(new URLSearchParams(window.location.search));
+    const setValue = (name: string, value: string) => {
+      const field = form.elements.namedItem(name);
+      if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement) field.value = value;
+    };
+    setValue('service', handoff.service?.name ?? '');
+    setValue('service_slug', handoff.service?.slug ?? '');
+    setValue('place', handoff.place);
+    setValue('source', handoff.source);
+    setValue('band', handoff.band);
+  }, []);
 
   function validForm() {
     const form = formRef.current;
@@ -36,7 +52,10 @@ export function ContactForm() {
       .map(([label, value]) => `${label}: ${value}`)
       .join('\n');
     trackEvent('whatsapp_click', { ...formContext(form), form_id: 'contact_enquiry', cta_location: 'form', cta_label: 'whatsapp', destination_type: 'whatsapp' });
-    window.open(whatsappUrl(`Hi Kraftt, I would like to discuss a project.\n\n${details}`), '_blank', 'noopener,noreferrer');
+    const service = String(data.get('service') || 'a project');
+    const source = String(data.get('source') || 'page');
+    const pageName = source === 'score' ? 'Digital Presence Score' : source === 'calculator' ? 'calculator' : source === 'offer' ? 'offer' : service === 'a project' ? 'website' : 'Services';
+    window.open(whatsappUrl(`Hi Kraftt, I'd like a free call about ${service} (from the ${pageName} page).\n\n${details}`), '_blank', 'noopener,noreferrer');
   }
 
   async function sendForm(event: FormEvent<HTMLFormElement>) {
@@ -65,6 +84,10 @@ export function ContactForm() {
   return (
     <form ref={formRef} id="enquiry" className="audit-form contact-form" action={formspreeEndpoint} method="POST" onSubmit={sendForm}>
       <input type="hidden" name="_subject" value="New Kraftt website enquiry" />
+      <input type="hidden" name="service_slug" defaultValue="" />
+      <input type="hidden" name="place" defaultValue="" />
+      <input type="hidden" name="source" defaultValue="" />
+      <input type="hidden" name="band" defaultValue="" />
       <div className="audit-field-grid">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your name" required /></label>
         <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@business.com" required /></label>

@@ -5,7 +5,7 @@ export const EVENTS = [
   'kraftt_page_view',
 ] as const;
 export type EventName = typeof EVENTS[number];
-const contextKeys = ['page_path', 'page_type', 'service', 'cta_location', 'cta_label', 'package_name',
+const contextKeys = ['page_path', 'page_type', 'service', 'place', 'source', 'band', 'cta_location', 'cta_label', 'package_name',
   'case_study', 'tool_name', 'destination_type', 'form_id', 'page_location', 'page_referrer'] as const;
 const touchKeys = ['source', 'medium', 'campaign', 'content', 'term', 'referrer', 'landing_page', 'touch_timestamp'] as const;
 type ContextKey = typeof contextKeys[number];
@@ -31,7 +31,12 @@ export function configureServiceNames(names: Record<string, string>) { serviceNa
 export function formContext(form?: HTMLFormElement): Params {
   try {
     const control = form?.elements.namedItem('service');
-    return control instanceof HTMLSelectElement && serviceNames[control.value] ? { service: serviceNames[control.value] } : {};
+    const service = control instanceof HTMLSelectElement ? serviceNames[control.value] : '';
+    const read = (name: string) => {
+      const field = form?.elements.namedItem(name);
+      return field instanceof HTMLInputElement ? field.value : '';
+    };
+    return { service: service ?? '', place: read('place'), source: read('source'), band: read('band') };
   } catch { return {}; }
 }
 export function configurePaths(paths: readonly string[]) { allowedPaths = new Set(paths); }

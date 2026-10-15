@@ -5,6 +5,7 @@ import { projectBySlug } from '../../data/projects';
 import { createPageSchema, faqSchema, serviceSchema } from '../../data/seo';
 import type { Service } from '../../data/services';
 import { whatsappUrl } from '../../data/site';
+import { contactHandoff } from '../../data/handoff';
 import { Footer } from '../Footer';
 import { HomeShowcase } from '../HomeShowcase';
 import { JsonLd } from '../JsonLd';
@@ -59,7 +60,7 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
   const intro = serviceIntro(service, market, kind);
   const faqs = geoFaqs(service, market, kind);
   const relatedProject = projectBySlug(service.relatedProjectSlug);
-  const message = whatsappUrl(`Hi Kraftt, I would like to discuss ${service.name} for a business in ${marketName}.`);
+  const message = whatsappUrl(`Hi Kraftt, I'd like a free call about ${service.name} in ${marketName} (from the ${marketName} Services page).`);
 
   return (
     <main className={styles.page}>
@@ -154,7 +155,7 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
 
       <section className={styles.cta} aria-labelledby="geo-service-cta-title">
         <Reveal direction="left"><p className="eyebrow">Choose the next clear step</p><h2 id="geo-service-cta-title">Discuss {service.name.toLowerCase()}.<br /><em>Start with clarity.</em></h2></Reveal>
-        <Reveal className={styles.ctaActions} direction="right"><p>Start with a free call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={`/contact?service=${encodeURIComponent(service.name)}&market=${encodeURIComponent(marketName)}`}>Request a free call <ArrowRight size={15} /></Link><a href={message}>Message about this service <ArrowRight size={15} /></a></div></Reveal>
+        <Reveal className={styles.ctaActions} direction="right"><p>Start with a free call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={contactHandoff(service.slug, 'page', market.slug)}>Request a free call <ArrowRight size={15} /></Link><a href={message}>Message about this service <ArrowRight size={15} /></a></div></Reveal>
       </section>
 
       <Footer />

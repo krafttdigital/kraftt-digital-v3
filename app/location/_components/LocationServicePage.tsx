@@ -14,6 +14,7 @@ import { projectBySlug } from '../../data/projects';
 import { LocationBreadcrumbs } from './LocationBreadcrumbs';
 import { locationDelivery } from './locationExperience';
 import { whatsappUrl } from '../../data/site';
+import { contactHandoff } from '../../data/handoff';
 import { PageFaq } from '@/components/ui/faq-6';
 
 const discussionLabels: Record<string, string> = {
@@ -37,10 +38,10 @@ type LocationServicePageProps = {
 export function LocationServicePage({ market, service, siblingServices }: LocationServicePageProps) {
   const basePath = `/location/${market.slug}`;
   const pagePath = `${basePath}/${service.slug}`;
-  const contactHref = `/contact?service=${encodeURIComponent(service.name)}&market=${encodeURIComponent(market.name)}`;
+  const contactHref = contactHandoff(service.slug, 'page', market.slug);
   const relatedProject = projectBySlug(service.relatedProjectSlug);
   const delivery = locationDelivery(market);
-  const serviceMessage = whatsappUrl(`Hi Kraftt, I would like to request a free call about ${service.name} for a business in ${market.name}.`);
+  const serviceMessage = whatsappUrl(`Hi Kraftt, I'd like a free call about ${service.name} in ${market.name} (from the ${market.name} Services page).`);
   const discussionLabel = discussionLabels[service.slug] ?? 'Discuss your requirements';
   const isCustomScope = service.tiers.length === 1 || service.tiers[0].price.toLowerCase().includes('custom');
   const featuredFaqs = [
