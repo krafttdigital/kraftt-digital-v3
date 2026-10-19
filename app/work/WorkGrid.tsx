@@ -45,12 +45,19 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
       <div className="work-page-grid" aria-live="polite">
         {visible.map((project, index) => {
           const banner = projectBanners[project.slug];
+          const categoryClass = project.projectType === 'Case Study'
+            ? 'work-page-card-case-study'
+            : project.projectType === 'Portfolio Project'
+              ? 'work-page-card-portfolio'
+              : 'work-page-card-product';
 
           return (
-            <Reveal className="work-page-card work-page-hero-feature" direction="up" delay={Math.min(index, 5) * 0.045} key={project.slug}>
+            <Reveal className={`work-page-card work-page-hero-feature ${categoryClass}`} direction="up" delay={Math.min(index, 5) * 0.045} key={project.slug}>
               <Link href={`/work/${project.slug}`} aria-label={`View ${project.name} ${project.projectType.toLowerCase()}`}>
                 <div className="work-page-hero-feature-image">
-                  <Image src={banner.src} alt={banner.alt} fill priority={index < 2} sizes="(max-width: 760px) 92vw, (max-width: 1100px) 47vw, 48vw" />
+                  <div className="work-page-card-image-inset">
+                    <Image src={banner.src} alt={banner.alt} fill priority={index < 2} sizes="(max-width: 760px) 86vw, (max-width: 1100px) 43vw, 45vw" />
+                  </div>
                 </div>
                 <div className="work-page-hero-feature-caption">
                   <span>{project.projectType} · {project.workCategory}</span>
