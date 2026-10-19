@@ -14,6 +14,7 @@ import { projectBySlug, projects } from '../../data/projects';
 import { galleryDetailsForProject } from '../../data/projectGalleryDetails';
 import { reviewsForProject } from '../../data/reviews';
 import { articleSchema, createPageMetadata, createPageSchema, reviewSchemas } from '../../data/seo';
+import { CaseStudyHero } from './CaseStudyHero';
 import { CaseStudyNarrative } from './CaseStudyNarrative';
 
 const projectBanners: Record<string, { src: string; alt: string }> = {
@@ -69,7 +70,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   }));
 
   return (
-    <main className={`project-detail-page${caseStudy ? ' project-detail-page-case' : ''}`}>
+    <main className="project-detail-page">
       <JsonLd data={createPageSchema({
         name: `${project.name} ${project.projectType} | Kraftt Digital`,
         description: project.context,
@@ -90,6 +91,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         ],
       })} />
       <SiteHeader />
+      {caseStudy ? (
+        <CaseStudyHero
+          project={project}
+          study={caseStudy}
+          number={projectNumber}
+          count={projectCount}
+          image={project.hero ? { src: project.hero.src, alt: project.hero.alt } : banner}
+        />
+      ) : (
       <section className="project-detail-hero">
         <div className="project-detail-hero-inner">
           <Reveal className="project-detail-kicker" direction="left">
@@ -102,10 +112,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <p className="eyebrow eyebrow-dark">{project.industry}</p>
               <span>{project.outcomeType} outcome</span>
             </div>
-            <h1>{caseStudy?.title ?? project.name}</h1>
+            <h1>{project.name}</h1>
             <div className="project-detail-heading-summary">
-              <p>{caseStudy?.lead ?? project.context}</p>
-              {caseStudy ? <dl><dt>Project</dt><dd>{project.name}<br />{caseStudy.location}<br />{caseStudy.projectDate}</dd></dl> : <dl><dt>Engagement</dt><dd>{project.package}</dd></dl>}
+              <p>{project.context}</p>
+              <dl><dt>Engagement</dt><dd>{project.package}</dd></dl>
               <a className="project-detail-live-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                 {project.slug === 'employee-os' ? 'View Employee OS' : 'Visit live website'} <span aria-hidden="true">↗</span>
               </a>
@@ -115,12 +125,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.relationshipLabel && <Reveal className="project-detail-relationship"><strong>{project.relationshipLabel}</strong></Reveal>}
 
           <Reveal className="project-detail-hero-media" direction="scale">
-            <Image src={caseStudy && project.hero ? project.hero.src : banner.src} alt={caseStudy && project.hero ? project.hero.alt : banner.alt} fill priority sizes="(max-width: 760px) 94vw, 88vw" />
+            <Image src={banner.src} alt={banner.alt} fill priority sizes="(max-width: 760px) 94vw, 88vw" />
             {/* <strong>{projectNumber}</strong> */}
             <span>View the project ↓</span>
           </Reveal>
 
-          {!caseStudy && <Reveal className="project-detail-metrics">
+          <Reveal className="project-detail-metrics">
             {project.metrics.map((metric) => (
               <div key={`${metric.value}-${metric.label}`}>
                 <span className="project-detail-metric-icon" aria-hidden="true">{metric.icon}</span>
@@ -130,9 +140,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 <p>{metric.note}</p>
               </div>
             ))}
-          </Reveal>}
+          </Reveal>
         </div>
       </section>
+      )}
 
       {caseStudy ? <CaseStudyNarrative study={caseStudy} /> : <>
       <section className="project-detail-story">

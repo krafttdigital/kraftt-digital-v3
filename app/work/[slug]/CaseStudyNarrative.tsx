@@ -2,11 +2,12 @@ import Image from 'next/image';
 import type { CaseStudyContent, CaseStudyImage } from '../../data/caseStudies';
 import styles from './CaseStudyNarrative.module.css';
 
-function StudyImage({ image, className = '' }: { image: CaseStudyImage; className?: string }) {
+function StudyImage({ image, className = '', badge }: { image: CaseStudyImage; className?: string; badge?: string }) {
   return (
     <figure className={`${styles.figure} ${image.shape === 'portrait' ? styles.portrait : ''} ${className}`}>
       <div className={styles.imageFrame}>
         <Image src={image.src} alt={image.alt} fill sizes={image.shape === 'portrait' ? '(max-width: 700px) 82vw, 28vw' : '(max-width: 700px) 92vw, 48vw'} />
+        {badge && <span className={styles.imageBadge}>{badge}</span>}
       </div>
       <figcaption>{image.caption}</figcaption>
     </figure>
@@ -17,12 +18,12 @@ export function CaseStudyNarrative({ study }: { study: CaseStudyContent }) {
   return (
     <div className={styles.study}>
       <nav className={styles.nav} aria-label="Case study sections">
-        <span>Inside this case study</span>
-        <a href="#case-overview">Overview</a>
-        <a href="#case-challenge">The challenge</a>
-        <a href="#case-decisions">Decisions</a>
-        <a href="#case-work">The work</a>
-        <a href="#case-outcomes">Outcomes</a>
+        <span className={styles.navTitle}>Explore the story</span>
+        <a href="#case-overview"><span>01</span> Overview</a>
+        <a href="#case-challenge"><span>02</span> Challenge</a>
+        <a href="#case-decisions"><span>03</span> Decisions</a>
+        <a href="#case-work"><span>04</span> The work</a>
+        <a href="#case-outcomes"><span>05</span> Outcomes</a>
       </nav>
 
       <section className={`${styles.section} ${styles.overview}`} id="case-overview" aria-labelledby="case-overview-title">
@@ -47,7 +48,7 @@ export function CaseStudyNarrative({ study }: { study: CaseStudyContent }) {
         </div>
         {study.beforeAfter && (
           <div className={styles.beforeAfter}>
-            {study.beforeAfter.map((image) => <StudyImage key={image.src} image={image} />)}
+            {study.beforeAfter.map((image, index) => <StudyImage key={image.src} image={image} badge={index === 0 ? 'Before' : 'After'} />)}
           </div>
         )}
       </section>
@@ -61,10 +62,10 @@ export function CaseStudyNarrative({ study }: { study: CaseStudyContent }) {
         <div className={styles.decisions}>
           {study.decisions.map((decision, index) => (
             <article key={decision.title}>
-              <span>0{index + 1}</span>
+              <span className={styles.decisionNumber}>0{index + 1}</span>
               <h3>{decision.title}</h3>
-              <div><small>Why</small><p>{decision.reason}</p></div>
-              <div><small>What changed</small><p>{decision.result}</p></div>
+              <div className={styles.decisionWhy}><small>The reason</small><p>{decision.reason}</p></div>
+              <div className={styles.decisionResult}><small>What changed</small><p>{decision.result}</p></div>
             </article>
           ))}
         </div>
@@ -77,7 +78,7 @@ export function CaseStudyNarrative({ study }: { study: CaseStudyContent }) {
           <p>{study.showcaseIntro}</p>
         </div>
         <div className={styles.showcase}>
-          {study.showcase.map((image) => <StudyImage key={image.src} image={image} />)}
+          {study.showcase.map((image, index) => <StudyImage key={image.src} image={image} badge={`View ${String(index + 1).padStart(2, '0')}`} />)}
         </div>
       </section>
 
@@ -87,15 +88,15 @@ export function CaseStudyNarrative({ study }: { study: CaseStudyContent }) {
           <h2 id="case-outcomes-title">{study.outcomesTitle}</h2>
         </div>
         <div className={styles.outcomes}>
-          {study.outcomes.map((outcome) => <article key={outcome.title}><h3>{outcome.title}</h3><p>{outcome.detail}</p></article>)}
+          {study.outcomes.map((outcome, index) => <article key={outcome.title}><span>0{index + 1}</span><h3>{outcome.title}</h3><p>{outcome.detail}</p></article>)}
         </div>
         <div className={styles.proof}>
-          <StudyImage image={study.proof} />
+          <StudyImage image={study.proof} badge="Source evidence" />
           <div><span className={styles.label}>Evidence in context</span><p>{study.proofNote}</p></div>
         </div>
       </section>
 
-      <aside className={styles.takeaway}><span>Project takeaway</span><p>{study.takeaway}</p></aside>
+      <aside className={styles.takeaway}><span>Project takeaway</span><p>{study.takeaway}</p><span className={styles.takeawayMark} aria-hidden="true">↗</span></aside>
     </div>
   );
 }

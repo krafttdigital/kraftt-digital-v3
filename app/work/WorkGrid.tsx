@@ -45,36 +45,20 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
       <div className="work-page-grid" aria-live="polite">
         {visible.map((project, index) => {
           const banner = projectBanners[project.slug];
-          const projectNumber = String(orderedProjects.findIndex((item) => item.slug === project.slug) + 1).padStart(2, '0');
-          const liveLabel = project.slug === 'employee-os' ? 'View Employee OS' : 'Visit live website';
 
           return (
-            <Reveal className={`work-page-card work-page-card-${index + 1}`} direction={index % 2 ? 'left' : 'right'} delay={index * 0.045} key={project.slug}>
+            <Reveal className="work-page-card work-page-hero-feature" direction="up" delay={Math.min(index, 5) * 0.045} key={project.slug}>
               <Link href={`/work/${project.slug}`} aria-label={`View ${project.name} ${project.projectType.toLowerCase()}`}>
-                <div className="work-page-card-media">
-                  <Image src={banner.src} alt={banner.alt} fill priority={index < 2} sizes="(max-width: 760px) 94vw, (max-width: 1100px) 47vw, 62vw" />
-                  <strong>{projectNumber}</strong>
-                  <span className="work-page-card-arrow" aria-hidden="true">↗</span>
+                <div className="work-page-hero-feature-image">
+                  <Image src={banner.src} alt={banner.alt} fill priority={index < 2} sizes="(max-width: 760px) 92vw, (max-width: 1100px) 47vw, 48vw" />
                 </div>
-
-                <div className="work-page-card-copy">
-                  <div className="work-page-card-meta"><span>{project.projectType}</span><span>{project.workCategory}</span></div>
-                  <h3>{project.name}</h3>
-                  <span className="work-page-card-niche">{project.industry}</span>
-                  <p>{project.context}</p>
-                  <div className="work-page-card-link"><span>View {project.projectType.toLowerCase()}</span><span aria-hidden="true">→</span></div>
-                  {project.relationshipLabel && <small>{project.relationshipLabel}</small>}
+                <div className="work-page-hero-feature-caption">
+                  <span>{project.projectType} · {project.workCategory}</span>
+                  <strong>{project.name}</strong>
+                  <span aria-hidden="true">↗</span>
+                  {project.relationshipLabel && <small className="work-page-card-note">{project.relationshipLabel}</small>}
                 </div>
               </Link>
-              <a
-                className="work-page-card-live"
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${liveLabel} in a new tab`}
-              >
-                <span>{liveLabel}</span><span aria-hidden="true">↗</span>
-              </a>
             </Reveal>
           );
         })}
