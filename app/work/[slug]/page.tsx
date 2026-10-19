@@ -9,13 +9,16 @@ import { ProjectGalleryCarousel } from '../../components/ProjectGalleryCarousel'
 import { Reveal } from '../../components/Reveal';
 import { ReviewsSection } from '../../components/ReviewsSection';
 import { SiteHeader } from '../../components/SiteHeader';
+import { caseStudies } from '../../data/caseStudies';
 import { projectBySlug, projects } from '../../data/projects';
 import { galleryDetailsForProject } from '../../data/projectGalleryDetails';
 import { reviewsForProject } from '../../data/reviews';
 import { articleSchema, createPageMetadata, createPageSchema, reviewSchemas } from '../../data/seo';
+import { CaseStudyNarrative } from './CaseStudyNarrative';
 
 const projectBanners: Record<string, { src: string; alt: string }> = {
   'shree-hari-spintex': { src: '/shsl-banner.png', alt: 'Shree Hari Spintex website, search and local discovery project collage' },
+  'gate-seeds': { src: '/assets/case-studies/gate-seeds/after-home.webp', alt: 'Gate Seeds redesigned website homepage' },
   'mittal-architect': { src: '/mittal-banner.png', alt: 'Mittal Architect website, portfolio and search visibility project collage' },
   'kiraq-jewellery': { src: '/kiraq-banner.png', alt: 'Kiraq Jewellery identity, storefront and administration system collage' },
   'elixir-beverages': { src: '/elixir-banner.png', alt: 'Elixir Beverages brand identity and pre-launch website collage' },
@@ -37,9 +40,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const project = projectBySlug(slug);
   if (!project) return {};
+  const study = caseStudies[slug];
   return createPageMetadata({
     title: `${project.name} ${project.projectType} | Kraftt Digital`,
-    description: project.context,
+    description: study?.lead ?? project.context,
     path: `/work/${project.slug}`,
     label: `${project.industry} ${project.projectType.toLowerCase()}`,
     type: 'article',
@@ -50,6 +54,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const project = projectBySlug(slug);
   if (!project) notFound();
+  const caseStudy = caseStudies[slug];
   const related = projectBySlug(project.relatedProjectSlug);
   const projectNumber = String(projects.findIndex((item) => item.slug === project.slug) + 1).padStart(2, '0');
   const projectCount = String(projects.length).padStart(2, '0');
@@ -64,7 +69,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   }));
 
   return (
-    <main className="project-detail-page">
+    <main className={`project-detail-page${caseStudy ? ' project-detail-page-case' : ''}`}>
       <JsonLd data={createPageSchema({
         name: `${project.name} ${project.projectType} | Kraftt Digital`,
         description: project.context,
@@ -97,10 +102,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               <p className="eyebrow eyebrow-dark">{project.industry}</p>
               <span>{project.outcomeType} outcome</span>
             </div>
-            <h1>{project.name}</h1>
+            <h1>{caseStudy?.title ?? project.name}</h1>
             <div className="project-detail-heading-summary">
-              <p>{project.context}</p>
-              <dl><dt>Engagement</dt><dd>{project.package}</dd></dl>
+              <p>{caseStudy?.lead ?? project.context}</p>
+              {caseStudy ? <dl><dt>Project</dt><dd>{project.name}<br />{caseStudy.location}<br />{caseStudy.projectDate}</dd></dl> : <dl><dt>Engagement</dt><dd>{project.package}</dd></dl>}
               <a className="project-detail-live-link" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                 {project.slug === 'employee-os' ? 'View Employee OS' : 'Visit live website'} <span aria-hidden="true">↗</span>
               </a>
@@ -110,12 +115,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.relationshipLabel && <Reveal className="project-detail-relationship"><strong>{project.relationshipLabel}</strong></Reveal>}
 
           <Reveal className="project-detail-hero-media" direction="scale">
-            <Image src={banner.src} alt={banner.alt} fill priority sizes="(max-width: 760px) 94vw, 88vw" />
+            <Image src={caseStudy && project.hero ? project.hero.src : banner.src} alt={caseStudy && project.hero ? project.hero.alt : banner.alt} fill priority sizes="(max-width: 760px) 94vw, 88vw" />
             {/* <strong>{projectNumber}</strong> */}
             <span>View the project ↓</span>
           </Reveal>
 
-          <Reveal className="project-detail-metrics">
+          {!caseStudy && <Reveal className="project-detail-metrics">
             {project.metrics.map((metric) => (
               <div key={`${metric.value}-${metric.label}`}>
                 <span className="project-detail-metric-icon" aria-hidden="true">{metric.icon}</span>
@@ -125,10 +130,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 <p>{metric.note}</p>
               </div>
             ))}
-          </Reveal>
+          </Reveal>}
         </div>
       </section>
 
+      {caseStudy ? <CaseStudyNarrative study={caseStudy} /> : <>
       <section className="project-detail-story">
         <div className="project-detail-story-inner">
           <Reveal className="project-detail-section-heading">
@@ -224,6 +230,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       {project.founderNote && (
         <section className="project-detail-founder-note"><p className="eyebrow eyebrow-dark">Founder note</p><h2>{project.founderNote}</h2></section>
       )}
+      </>}
 
       <ReviewsSection reviews={projectReviews} projectName={project.name} />
 

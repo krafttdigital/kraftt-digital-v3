@@ -8,6 +8,7 @@ import type { Project, ProjectType } from '../data/projects';
 
 const projectBanners: Record<string, { src: string; alt: string }> = {
   'shree-hari-spintex': { src: '/shsl-banner.png', alt: 'Shree Hari Spintex website, search and local discovery project collage' },
+  'gate-seeds': { src: '/assets/case-studies/gate-seeds/after-home.webp', alt: 'Gate Seeds redesigned website homepage' },
   'mittal-architect': { src: '/mittal-banner.png', alt: 'Mittal Architect website, portfolio and search visibility project collage' },
   'kiraq-jewellery': { src: '/kiraq-banner.png', alt: 'Kiraq Jewellery identity, storefront and administration system collage' },
   'elixir-beverages': { src: '/elixir-banner.png', alt: 'Elixir Beverages brand identity and pre-launch website collage' },
