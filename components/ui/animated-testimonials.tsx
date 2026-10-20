@@ -19,6 +19,7 @@ export interface Testimonial {
   logo: string;
   href: string;
   rating?: number | null;
+  kind?: 'review' | 'reaction';
 }
 
 export interface AnimatedTestimonialsProps {
@@ -29,7 +30,7 @@ function TestimonialCard({ item, number }: { item: Testimonial; number: number }
   return (
     <article className={`${styles.card}${item.sourceImages?.length ? ` ${styles.cardWithProof}` : ''}`}>
       <div className={styles.cardTop}>
-        <span>Client testimonial <span aria-hidden="true">/</span> {String(number).padStart(2, '0')}</span>
+        <span>{item.kind === 'reaction' ? 'Client reactions' : 'Client testimonial'} <span aria-hidden="true">/</span> {String(number).padStart(2, '0')}</span>
         <span className={styles.quoteMark} aria-hidden="true">“</span>
       </div>
 
@@ -89,6 +90,14 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
     setActiveIndex(Math.min(testimonials.length - 1, Math.max(0, Math.floor(latest * (testimonials.length - 1) + 0.00001))));
   });
 
+  const showTestimonial = (index: number) => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    const scrollRange = Math.max(0, section.offsetHeight - window.innerHeight);
+    window.scrollTo({ top: sectionTop + scrollRange * index / Math.max(testimonials.length - 1, 1), behavior: reducedMotion ? 'auto' : 'smooth' });
+  };
+
   if (!testimonials.length) return null;
 
   return (
@@ -100,6 +109,11 @@ export function AnimatedTestimonials({ testimonials }: AnimatedTestimonialsProps
             <h2 id="home-testimonials-title">What our <em>clients say.</em></h2>
             <p>Real feedback from the people behind the projects.</p>
           </header>
+          {!reducedMotion && <nav className={styles.jumpNav} aria-label="Choose a client testimonial">
+            {testimonials.map((item, index) => <button key={item.id} type="button" aria-current={activeIndex === index ? 'true' : undefined} onClick={() => showTestimonial(index)}>
+              <span>{String(index + 1).padStart(2, '0')}</span>{item.kind === 'reaction' ? item.company : item.name}
+            </button>)}
+          </nav>}
           {reducedMotion ? <div className={styles.reducedList}>
             {testimonials.map((item, index) => <TestimonialCard key={item.id} item={item} number={index + 1} />)}
           </div> : <div className={styles.stackStage} aria-label="Scroll to read client testimonials">

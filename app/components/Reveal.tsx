@@ -9,11 +9,15 @@ export function Reveal({
   className = '',
   direction = 'up',
   delay = 0,
+  as: Element = 'div',
+  'aria-label': ariaLabel,
 }: {
   children: React.ReactNode;
   className?: string;
   direction?: RevealDirection;
   delay?: number;
+  as?: 'div' | 'section';
+  'aria-label'?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -58,5 +62,5 @@ export function Reveal({
     };
   }, [delay, direction]);
 
-  return <div ref={ref} className={className}>{children}</div>;
+  return <Element ref={ref} className={className} aria-label={ariaLabel}>{children}</Element>;
 }

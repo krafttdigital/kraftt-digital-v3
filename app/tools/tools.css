@@ -385,7 +385,7 @@
   gap: clamp(38px, 6vw, 84px);
 }
 .tool-detail-gst-invoice-generator { grid-template-columns: minmax(270px, .56fr) minmax(680px, 1.44fr); }
-.tool-page-intro { position: sticky; top: 104px; min-width: 0; }
+.tool-page-intro { min-width: 0; }
 .tool-page-intro .tool-back-link { margin-bottom: clamp(38px, 6vh, 64px); }
 .tool-intro-label { display: flex; align-items: center; gap: 10px; }
 .tool-intro-label > span { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #cfc4b6; border-radius: 50%; color: var(--raw-umber); }
@@ -518,7 +518,6 @@
 @media (max-width: 860px) {
   .tool-detail-layout,
   .tool-detail-gst-invoice-generator { grid-template-columns: 1fr; gap: 34px; }
-  .tool-page-intro { position: static; }
   .tool-page-intro .tool-back-link { margin-bottom: 36px; }
   .tool-page-intro h1 { max-width: 720px; }
   .tool-intro-copy { max-width: 680px; }

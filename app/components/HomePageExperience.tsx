@@ -9,10 +9,12 @@ import { JsonLd } from './JsonLd';
 import { CurrencySymbol, RegionalPriceCopy } from './PricingCurrencyProvider';
 import { Reveal } from './Reveal';
 import { ReviewsSection } from './ReviewsSection';
-import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
+import { AnimatedTestimonials, type Testimonial } from '@/components/ui/animated-testimonials';
 import { SiteHeader } from './SiteHeader';
 import { HomePackages } from './HomePackages';
+import { HomeResultsCarousel, type HomeResultSlide } from './HomeResultsCarousel';
 import { SHOW_ELIXIR_STORY, industryPagesLive } from '../data/site';
+import { caseStudyFlow } from '../data/caseStudyFlow';
 import { projects } from '../data/projects';
 import { featuredReviews } from '../data/reviews';
 import { createPageSchema, faqSchema, reviewSchemas } from '../data/seo';
@@ -147,8 +149,54 @@ const audiences = [
     value: 'Build a credible first impression before you launch.', focus: ['Brand foundation', 'Launch-ready site'] },
 ] as const;
 
+const homeResultSlugs = ['elixir-beverages', 'shree-hari-spintex', 'mittal-architect', 'gate-seeds'] as const;
+const homeResultSlides: HomeResultSlide[] = [];
+for (let index = 0; index < Math.max(...homeResultSlugs.map((slug) => caseStudyFlow[slug].results.length)); index += 1) {
+  for (const slug of homeResultSlugs) {
+    const result = caseStudyFlow[slug].results[index];
+    if (!result) continue;
+    homeResultSlides.push({ ...result, id: `${slug}-${index}`, slug, project: projects.find((project) => project.slug === slug)?.name ?? slug });
+  }
+}
+
 export function HomePageExperience({ eyebrow, intro, schema, geographicContext }: HomePageExperienceProps = {}) {
   const homeReviews = featuredReviews();
+  const homeTestimonials: Testimonial[] = [
+    ...homeReviews.map(review => ({
+      id: review.id,
+      name: review.clientName,
+      role: review.role,
+      company: review.company,
+      content: review.homepageExcerpt ?? review.review,
+      translation: review.homepageTranslation ?? review.translation,
+      isExcerpt: Boolean(review.homepageExcerpt),
+      relationshipLabel: projects.find(project => project.slug === review.projectSlug)?.relationshipLabel,
+      sourceImages: review.sourceImages,
+      rating: review.rating,
+      href: `/work/${review.projectSlug}`,
+      logo: ({
+        'shree-hari-spintex': '/assets/projects/shree-hari-spintex/shsl-logo.jpg',
+        'mittal-architect': '/assets/projects/mittal-architect/Mittal Logo.jpg',
+        'kiraq-jewellery': '/assets/projects/kiraq-jewellery/Kiraq Primary Logo-Photoroom.png',
+        'elixir-beverages': '/assets/projects/elixir-beverages/04-Primary Horizintal-Photoroom.png',
+      } as Record<string, string>)[review.projectSlug],
+    })),
+    {
+      id: 'gate-seeds-client-reactions',
+      name: 'Gate Seeds team',
+      role: 'Website preview and product artwork feedback',
+      company: 'Gate Seeds',
+      content: '“Kyaaa baat h” · “Nice”',
+      translation: '“That’s great” · “Nice”',
+      sourceImages: [
+        { src: '/assets/case-studies/gate-seeds/reaction-website.webp', alt: 'Gate Seeds client reaction to the shared website preview on 24 September 2026', label: 'Website reaction' },
+        { src: '/assets/case-studies/gate-seeds/reaction-artwork.webp', alt: 'Gate Seeds client reaction to the shared product artwork on 9 October 2026', label: 'Artwork reaction' },
+      ],
+      logo: '/assets/case-studies/gate-seeds/client-logo.webp',
+      href: '/work/gate-seeds',
+      kind: 'reaction',
+    },
+  ];
   const trustItems = geographicContext
     ? geographicContext.answers.map(({ question, answer }, index) => [`Q${index + 1}`, question, answer])
     : trustCommitments;
@@ -352,25 +400,9 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
 
       {!geographicContext && SHOW_ELIXIR_STORY && <p>A pre-launch beverage brand asked for a 3D website. We explained why identity and a single-page site came first, and it fitted the budget.</p>}
 
-      {geographicContext ? <ReviewsSection reviews={homeReviews} variant="home" /> : <AnimatedTestimonials testimonials={homeReviews.map(review => ({
-        id: review.id,
-        name: review.clientName,
-        role: review.role,
-        company: review.company,
-        content: review.homepageExcerpt ?? review.review,
-        translation: review.homepageTranslation ?? review.translation,
-        isExcerpt: Boolean(review.homepageExcerpt),
-        relationshipLabel: projects.find(project => project.slug === review.projectSlug)?.relationshipLabel,
-        sourceImages: review.sourceImages,
-        rating: review.rating,
-        href: `/work/${review.projectSlug}`,
-        logo: ({
-          'shree-hari-spintex': '/assets/projects/shree-hari-spintex/shsl-logo.jpg',
-          'mittal-architect': '/assets/projects/mittal-architect/Mittal Logo.jpg',
-          'kiraq-jewellery': '/assets/projects/kiraq-jewellery/Kiraq Primary Logo-Photoroom.png',
-          'elixir-beverages': '/assets/projects/elixir-beverages/04-Primary Horizintal-Photoroom.png',
-        } as Record<string, string>)[review.projectSlug],
-      }))} />}
+      {!geographicContext && <HomeResultsCarousel slides={homeResultSlides} />}
+
+      {geographicContext ? <ReviewsSection reviews={homeReviews} variant="home" /> : <AnimatedTestimonials testimonials={homeTestimonials} />}
 
 
       {/* <section className="home-conversion">

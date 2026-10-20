@@ -2,6 +2,7 @@ export const EVENTS = [
   'whatsapp_click', 'phone_click', 'email_click', 'contact_form_start', 'contact_form_submit',
   'book_call_click', 'booking_click', 'pricing_engagement', 'package_cta_click', 'audit_start', 'audit_complete',
   'tool_start', 'tool_complete', 'case_study_cta_click', 'outbound_click', 'service_cta_click',
+  'case_study_chapter_view', 'case_study_callout_open', 'case_study_clip_play', 'case_study_live_site_click',
   'kraftt_page_view',
 ] as const;
 export type EventName = typeof EVENTS[number];

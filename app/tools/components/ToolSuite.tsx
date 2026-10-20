@@ -13,6 +13,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Footer as SiteFooter } from '../../components/Footer';
 import { SiteHeader } from '../../components/SiteHeader';
 import { CurrencySymbol } from '../../components/PricingCurrencyProvider';
+import { Reveal } from '../../components/Reveal';
 import type { ToolDefinition } from '../data';
 
 const toolIcons: Record<string, LucideIcon> = {
@@ -123,10 +124,10 @@ export function ToolDetail({ tool, children, editorial }: { tool: ToolDefinition
   return (
     <main className={`tool-detail-layout tool-detail-${tool.slug}`}>
       <ToolIntro tool={tool} />
-      <section className="tool-detail-workspace" aria-label={`${tool.name} calculator`}>
+      <Reveal as="section" className="tool-detail-workspace" aria-label={`${tool.name} calculator`} direction="right" delay={0.08}>
         <span className="tool-workspace-badge"><Icon size={13} strokeWidth={1.8} aria-hidden="true" /> Calculator</span>
         {children}
-      </section>
+      </Reveal>
       {editorial}
     </main>
   );

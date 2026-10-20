@@ -10,6 +10,7 @@ import { Reveal } from '../../components/Reveal';
 import { ReviewsSection } from '../../components/ReviewsSection';
 import { SiteHeader } from '../../components/SiteHeader';
 import { caseStudies } from '../../data/caseStudies';
+import { caseStudyFlow } from '../../data/caseStudyFlow';
 import { projectBySlug, projects } from '../../data/projects';
 import { galleryDetailsForProject } from '../../data/projectGalleryDetails';
 import { reviewsForProject } from '../../data/reviews';
@@ -56,6 +57,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const project = projectBySlug(slug);
   if (!project) notFound();
   const caseStudy = caseStudies[slug];
+  const flow = caseStudyFlow[slug];
+  const nextStories = projects.filter((item) => item.slug !== slug && caseStudyFlow[item.slug]).slice(0, 2);
   const related = projectBySlug(project.relatedProjectSlug);
   const projectNumber = String(projects.findIndex((item) => item.slug === project.slug) + 1).padStart(2, '0');
   const projectCount = String(projects.length).padStart(2, '0');
@@ -87,17 +90,17 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             path: `/work/${project.slug}`,
             industry: project.industry,
           })] : []),
-          ...reviewSchemas(projectReviews),
+          ...(!caseStudy ? reviewSchemas(projectReviews) : []),
         ],
       })} />
       <SiteHeader />
-      {caseStudy ? (
+      {caseStudy && flow ? (
         <CaseStudyHero
           project={project}
           study={caseStudy}
+          flow={flow}
           number={projectNumber}
           count={projectCount}
-          image={project.hero ? { src: project.hero.src, alt: project.hero.alt } : banner}
         />
       ) : (
       <section className="project-detail-hero">
@@ -145,7 +148,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </section>
       )}
 
-      {caseStudy ? <CaseStudyNarrative study={caseStudy} /> : <>
+      {caseStudy && flow ? <CaseStudyNarrative study={caseStudy} flow={flow} project={project} nextStories={nextStories} reviews={projectReviews} /> : <>
       <section className="project-detail-story">
         <div className="project-detail-story-inner">
           <Reveal className="project-detail-section-heading">
@@ -243,9 +246,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       )}
       </>}
 
-      <ReviewsSection reviews={projectReviews} projectName={project.name} />
+      {!caseStudy && <ReviewsSection reviews={projectReviews} projectName={project.name} />}
 
-      {related && (
+      {!caseStudy && related && (
         <section className="project-detail-next">
           <div className="project-detail-next-inner">
             <Reveal className="project-detail-next-copy" direction="left">
@@ -265,7 +268,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </div>
         </section>
       )}
-      <AuditCTA title="Turn what the market sees into a clearer business case." />
+      {!caseStudy && <AuditCTA title="Turn what the market sees into a clearer business case." />}
       <Footer />
     </main>
   );
