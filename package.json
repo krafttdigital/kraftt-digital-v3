@@ -23,6 +23,7 @@
     "test:analytics": "node --experimental-strip-types scripts/test-analytics.mjs",
     "test:invoices": "node scripts/test-invoices.mjs",
     "test:quotations": "node scripts/test-quotations.mjs",
+    "test:case-studies": "node scripts/test-case-studies.mjs",
     "test:quotations:pdf": "node scripts/test-quotation-pdfs.mjs",
     "utm": "node --experimental-strip-types scripts/build-utm.mjs",
     "postinstall": "node scripts/sync-pdf-worker.mjs"

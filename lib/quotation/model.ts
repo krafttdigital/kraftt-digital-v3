@@ -14,6 +14,19 @@ export type Scenario = { id: string; name: string; packageId: string; addOnIds: 
 export type Clause = { id: string; templateKey: string; title: string; body: string; service: string; manual: boolean };
 export type TermSettings = { revisionRounds: string; brandingRevisionRounds: string; reviewDays: string; paymentDays: string; supportPeriod: string; cancellationNotice: string };
 export type Client = { projectTitle?: string; id: string; business: string; contact: string; role: string; address: string; email: string; phone: string; gstin: string };
+export type CaseStudyPermission = 'not_confirmed' | 'yes' | 'no';
+export type CaseStudyDecision = { id: string; decision: string; reason: string; visibleChange: string };
+export type CaseStudyResult = { id: string; metric: string; value: string; dateRange: string; source: string };
+export type CaseStudy = {
+  id: string; clientId: string; createdAt: string; modifiedAt: string;
+  basics: { clientName: string; business: string; industry: string; city: string; website: string; projectDates: string; services: string; assetPermission: CaseStudyPermission; approvedBy: string; approvedOn: string; tagCollab: CaseStudyPermission };
+  before: { businessCustomers: string; discoveryChannels: string; visibleProblems: string; desktopScreenshot: string; desktopDate: string; mobileScreenshot: string; mobileDate: string };
+  brief: { clientWords: string; actualNeed: string; constraints: string };
+  decisions: CaseStudyDecision[];
+  results: { metrics: CaseStudyResult[]; enquiryChanges: string; enquiryEvidence: string; cannotClaim: string };
+  voice: { testimonial: string; voiceNote: string; publishPermission: CaseStudyPermission; startingConcern: string };
+  hooks: { surprise: string; debatedDecision: string; commonMistake: string; nextTime: string; relatableLine: string };
+};
 export type Brand = { company: string; wordmark: string; email: string; phone: string; address: string; signatory: string; logo: string; cream: string; ink: string; gold: string };
 export type Quotation = {
   id: string; number: string; status: 'draft' | 'finalised'; createdAt: string; modifiedAt: string; finalisedAt: string;
@@ -26,7 +39,7 @@ export type Quotation = {
   milestones: Milestone[]; termSettings: TermSettings; clauses: Clause[]; termsReview: boolean;
   acceptance: { note: string; clientName: string; krafttName: string }; brand: Brand;
 };
-export type Workspace = { schemaVersion: 2; documents: BusinessDocument[]; documentTrash: BusinessDocument[]; quotations: Quotation[]; trash: Quotation[]; clients: Client[]; presets: Package[]; settings: { brand: Brand; terms: TermSettings; milestones: Milestone[] } };
+export type Workspace = { schemaVersion: 2; documents: BusinessDocument[]; documentTrash: BusinessDocument[]; quotations: Quotation[]; trash: Quotation[]; clients: Client[]; caseStudies: CaseStudy[]; presets: Package[]; settings: { brand: Brand; terms: TermSettings; milestones: Milestone[] } };
 export type LineCalculation = { line: LineItem; gross: number; itemDiscount: number; net: number; reference: number; complimentaryValue: number };
 export type Calculation = { scenario: Scenario; package: Package | null; lines: LineCalculation[]; subtotal: number; itemDiscount: number; orderDiscount: number; adjustment: number; quotedNet: number; taxBase: number; taxAmount: number; total: number; reference: number; savings: number; complimentaryValue: number; payments: { milestone: Milestone; amount: number }[]; errors: string[] };
 
@@ -224,7 +237,20 @@ export function createQuotation(workspace: Workspace, structure: QuotationStruct
     acceptance: { note: 'I accept the scope, pricing, payment schedule and terms of this quotation. Acceptance may be recorded by signature below or written confirmation quoting the quotation reference.', clientName: '', krafttName: '' }, brand: copy(workspace.settings.brand),
   };
 }
-export function emptyWorkspace(): Workspace { return { schemaVersion: 2, documents: [], documentTrash: [], quotations: [], trash: [], clients: [], presets: [], settings: { brand: copy(defaultBrand), terms: copy(defaultTerms), milestones: paymentPreset('50/50') } }; }
+export function createCaseStudy(client?: Client): CaseStudy {
+  const date = new Date().toISOString();
+  return {
+    id: uid(), clientId: client?.id || '', createdAt: date, modifiedAt: date,
+    basics: { clientName: client?.business || '', business: '', industry: '', city: '', website: '', projectDates: '', services: '', assetPermission: 'not_confirmed', approvedBy: '', approvedOn: '', tagCollab: 'not_confirmed' },
+    before: { businessCustomers: '', discoveryChannels: '', visibleProblems: '', desktopScreenshot: '', desktopDate: '', mobileScreenshot: '', mobileDate: '' },
+    brief: { clientWords: '', actualNeed: '', constraints: '' },
+    decisions: Array.from({ length: 3 }, () => ({ id: uid(), decision: '', reason: '', visibleChange: '' })),
+    results: { metrics: [{ id: uid(), metric: '', value: '', dateRange: '', source: '' }], enquiryChanges: '', enquiryEvidence: '', cannotClaim: '' },
+    voice: { testimonial: '', voiceNote: '', publishPermission: 'not_confirmed', startingConcern: '' },
+    hooks: { surprise: '', debatedDecision: '', commonMistake: '', nextTime: '', relatableLine: '' },
+  };
+}
+export function emptyWorkspace(): Workspace { return { schemaVersion: 2, documents: [], documentTrash: [], quotations: [], trash: [], clients: [], caseStudies: [], presets: [], settings: { brand: copy(defaultBrand), terms: copy(defaultTerms), milestones: paymentPreset('50/50') } }; }
 export function duplicateQuotation(q: Quotation, workspace: Workspace, revision = false): Quotation {
   const result = copy(q), date = new Date();
   result.id = uid(); result.number = nextNumber(workspace.quotations); result.status = 'draft'; result.createdAt = result.modifiedAt = date.toISOString(); result.finalisedAt = '';

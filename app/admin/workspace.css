@@ -76,6 +76,39 @@
 .admin-banner button{background:transparent;font-size:18px;align-self:start}
 .admin-root .admin-error{color:#a44332}
 .admin-root .admin-help{font-size:11px;color:#7a6f61;line-height:1.65;margin:12px 0}
+.admin-case-studies{max-width:1080px}
+.admin-case-new{display:flex;align-items:end;gap:14px;max-width:620px}
+.admin-case-new .admin-field{flex:1;margin:0}
+.admin-case-header{display:flex;align-items:start;justify-content:space-between;gap:24px;margin-bottom:20px}
+.admin-case-header>div:first-child{min-width:0}
+.admin-case-header h1{overflow-wrap:anywhere}
+.admin-case-header p{color:#756959;font-size:13px;margin:8px 0}
+.admin-root .admin-case-back{background:transparent;padding:0;margin:0 0 22px;color:#6f5b41;font-size:12px;text-decoration:underline;text-underline-offset:4px}
+.admin-case-save{display:flex;align-items:flex-end;flex-direction:column;gap:8px;white-space:nowrap}
+.admin-case-tabs{display:flex;gap:5px;overflow-x:auto;padding:4px 0 13px;border-bottom:1px solid var(--admin-line);scrollbar-width:thin}
+.admin-root .admin-case-tabs button{display:flex;align-items:center;gap:8px;flex:none;min-height:42px;padding:9px 12px;border:1px solid transparent;border-radius:5px;background:transparent;font-size:12px}
+.admin-case-tabs button span{font-size:10px;font-weight:600;color:var(--admin-gold)}
+.admin-root .admin-case-tabs button[aria-current=step]{background:#e9dfd0;border-color:#d9cab4;font-weight:600}
+.admin-case-panel{margin-top:18px}
+.admin-case-panel-heading{display:flex;align-items:baseline;gap:12px;padding-bottom:17px;border-bottom:1px solid var(--admin-line);margin-bottom:20px}
+.admin-case-panel-heading .admin-eyebrow{margin:0;white-space:nowrap}
+.admin-case-panel-heading h2{font-size:35px}
+.admin-case-divider{border-top:1px solid var(--admin-line);margin:14px 0 22px;padding-top:5px}
+.admin-case-divider h3{margin:17px 0 3px}
+.admin-case-divider p,.admin-root .admin-case-intro{font-size:12px;color:#756959;line-height:1.6;margin:4px 0 20px}
+.admin-case-decision-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:9px 86px 9px 44px;background:#e9dfd0;border:1px solid var(--admin-line);border-bottom:0;font-size:11px;font-weight:600;color:#65553f}
+.admin-case-decision{display:grid;grid-template-columns:24px repeat(3,minmax(0,1fr)) 66px;gap:12px;align-items:start;padding:14px 8px;border:1px solid var(--admin-line);border-top:0}
+.admin-case-decision:nth-of-type(odd){background:#faf7f1}
+.admin-case-decision .admin-field{margin:0}
+.admin-case-decision .admin-field>span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.admin-case-row-number{color:var(--admin-gold);font-size:10px;font-weight:600;padding-top:13px}
+.admin-case-decision .admin-small-button{padding:8px 7px}
+.admin-case-result{border:1px solid var(--admin-line);border-radius:5px;padding:16px;margin:14px 0;background:#faf7f1}
+.admin-case-result-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;font-size:12px;color:#65553f}
+.admin-case-next{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid var(--admin-line);padding-top:20px;margin-top:28px;color:#746858;font-size:11px}
+.admin-case-next .admin-row-actions{margin:0}
+@media(max-width:800px){.admin-case-decision-head{display:none}.admin-case-decision{grid-template-columns:1fr 1fr;padding:16px;margin:12px 0;border:1px solid var(--admin-line);border-radius:5px}.admin-case-decision .admin-case-row-number{grid-column:1/-1;padding:0}.admin-case-decision .admin-field{grid-column:1/-1}.admin-case-decision .admin-field>span{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}.admin-case-decision .admin-small-button{grid-column:2;justify-self:end}.admin-case-header{flex-wrap:wrap}.admin-case-save{align-items:flex-start}}
+@media(max-width:650px){.admin-case-new{display:block}.admin-case-new .admin-field{margin-bottom:12px}.admin-case-panel-heading h2{font-size:30px}.admin-case-tabs{margin-right:-15px;padding-right:15px}.admin-case-next{align-items:flex-start;flex-direction:column}.admin-case-next .admin-row-actions{width:100%;justify-content:space-between}}
 .admin-card,.admin-saved-card{background:#fffdf9;border:1px solid var(--admin-line);border-radius:6px;padding:22px;margin:18px 0}
 .admin-catalogue{background:#eee7da;border:1px solid #dacdb9;border-radius:6px;padding:17px;margin:20px 0 25px}
 .admin-catalogue h3{margin-top:0}

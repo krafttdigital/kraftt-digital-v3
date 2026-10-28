@@ -16,6 +16,17 @@ const lineFields = { ...textFields('id', 'name', 'description', 'fee', 'quantity
 const line = object(lineFields);
 const pkg = object({ ...textFields('id', 'name', 'description', 'why', 'delivery'), recommended: bool, lines: array(line) });
 const client = object({ ...textFields('id', 'business', 'contact', 'role', 'address', 'email', 'phone', 'gstin'), projectTitle: { kind: 'string', optional: true } });
+const caseStudyPermission = choice('not_confirmed', 'yes', 'no');
+const caseStudy = object({
+  ...textFields('id', 'clientId', 'createdAt', 'modifiedAt'),
+  basics: object({ ...textFields('clientName', 'business', 'industry', 'city', 'website', 'projectDates', 'services', 'approvedBy', 'approvedOn'), assetPermission: caseStudyPermission, tagCollab: caseStudyPermission }),
+  before: object(textFields('businessCustomers', 'discoveryChannels', 'visibleProblems', 'desktopScreenshot', 'desktopDate', 'mobileScreenshot', 'mobileDate')),
+  brief: object(textFields('clientWords', 'actualNeed', 'constraints')),
+  decisions: array(object(textFields('id', 'decision', 'reason', 'visibleChange'))),
+  results: object({ metrics: array(object(textFields('id', 'metric', 'value', 'dateRange', 'source'))), ...textFields('enquiryChanges', 'enquiryEvidence', 'cannotClaim') }),
+  voice: object({ ...textFields('testimonial', 'voiceNote', 'startingConcern'), publishPermission: caseStudyPermission }),
+  hooks: object(textFields('surprise', 'debatedDecision', 'commonMistake', 'nextTime', 'relatableLine')),
+});
 const brand = object(textFields('company', 'wordmark', 'email', 'phone', 'address', 'signatory', 'logo', 'cream', 'ink', 'gold'));
 const terms = object(textFields('revisionRounds', 'brandingRevisionRounds', 'reviewDays', 'paymentDays', 'supportPeriod', 'cancellationNotice'));
 const milestone = object({ ...textFields('id', 'name', 'value', 'trigger', 'dueDate', 'note'), mode: choice('percent', 'fixed', 'balance') });
@@ -32,7 +43,7 @@ const quote = object({
   acceptance: object(textFields('note', 'clientName', 'krafttName')), brand,
 });
 const businessDocument = object({ ...textFields('id', 'number', 'title', 'project', 'date', 'createdAt', 'modifiedAt', 'finalisedAt', 'revisionOf', 'terms'), kind: choice(...documentKinds), client, brand, status: choice('draft', 'finalised'), fields: array(object(textFields('id', 'label', 'placeholder', 'value'))) });
-const workspaceSchema = object({ schemaVersion: choice(2), documents: array(businessDocument), documentTrash: array(businessDocument), quotations: array(quote), trash: array(quote), clients: array(client), presets: array(pkg), settings: object({ brand, terms, milestones: array(milestone) }) });
+const workspaceSchema = object({ schemaVersion: choice(2), documents: array(businessDocument), documentTrash: array(businessDocument), quotations: array(quote), trash: array(quote), clients: array(client), caseStudies: array(caseStudy), presets: array(pkg), settings: object({ brand, terms, milestones: array(milestone) }) });
 function check(value: unknown, schema: Schema, path: string): void {
   if (value === undefined && 'optional' in schema && schema.optional) return;
   if (schema.kind === 'string') {
@@ -61,11 +72,17 @@ export function validateWorkspace(value: unknown): Workspace {
   // Lossless migration of the original quotation-only workspace and its backups.
   if (value && typeof value === 'object' && !Array.isArray(value) && (value as Record<string, unknown>).schemaVersion === 1) {
     if ('documents' in value || 'documentTrash' in value) throw new Error('Unexpected document fields in a version 1 backup.');
-    value = { ...value, schemaVersion: 2, documents: [], documentTrash: [] };
+    value = { ...value, schemaVersion: 2, documents: [], documentTrash: [], caseStudies: [] };
   }
+  // Existing version 2 browser backups and D1 snapshots predate case-study intake.
+  if (value && typeof value === 'object' && !Array.isArray(value) && (value as Record<string, unknown>).schemaVersion === 2 && !Object.hasOwn(value, 'caseStudies')) value = { ...value, caseStudies: [] };
   check(value, workspaceSchema, 'workspace');
   const state = value as Workspace;
-  uniqueIds([...state.quotations, ...state.trash], 'Quotations'); uniqueIds(state.clients, 'Clients'); uniqueIds(state.presets, 'Packages');
+  uniqueIds([...state.quotations, ...state.trash], 'Quotations'); uniqueIds(state.clients, 'Clients'); uniqueIds(state.caseStudies, 'Case studies'); uniqueIds(state.presets, 'Packages');
+  for (const study of state.caseStudies) {
+    uniqueIds(study.decisions, 'Case-study decisions'); uniqueIds(study.results.metrics, 'Case-study results');
+    if (study.decisions.length > 5 || study.results.metrics.length > 20) throw new Error('Case study has too many decision or result rows.');
+  }
   uniqueIds([...state.documents, ...state.documentTrash], 'Documents');
   if (new Set(state.documents.map(d => d.number.trim().toLowerCase())).size !== state.documents.length) throw new Error('Duplicate document numbers.');
   for (const doc of [...state.documents, ...state.documentTrash]) {
