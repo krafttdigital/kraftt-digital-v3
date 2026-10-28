@@ -2,6 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "kraftt-admin",
   "compatibility_date": "2026-05-15",
+  "main": "./admin-cloudflare/worker.ts",
   "workers_dev": false,
   "preview_urls": false,
   "routes": [
@@ -9,6 +10,19 @@
   ],
   "assets": {
     "directory": "./dist/admin",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
     "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kraftt-admin-data",
+      "database_id": "5f73d77f-79b0-4cab-948c-981596f49a6e"
+    }
+  ],
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "twilight-grass-87d1.cloudflareaccess.com",
+    "ACCESS_AUD": "16aea161563102dd7a7d952e4943ade0a74dde1ab3b534a11364cabd6842507c"
   }
 }

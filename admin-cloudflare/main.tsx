@@ -7,5 +7,5 @@ import './base.css';
 import '../app/admin/workspace.css';
 
 createRoot(document.getElementById('root')!).render(
-  <DocumentWorkspace catalogue={buildCatalogue(services, bundles)} />,
+  <DocumentWorkspace catalogue={buildCatalogue(services, bundles)} cloud />,
 );
