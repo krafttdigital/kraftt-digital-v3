@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS admin_users (
+  email TEXT PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL DEFAULT '',
+  role TEXT NOT NULL CHECK (role IN ('owner', 'member')),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+

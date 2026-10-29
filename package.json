@@ -24,6 +24,8 @@
     "test:invoices": "node scripts/test-invoices.mjs",
     "test:quotations": "node scripts/test-quotations.mjs",
     "test:case-studies": "node scripts/test-case-studies.mjs",
+    "test:admin-users": "node scripts/test-admin-users.mjs",
+    "test:admin-auth": "node scripts/test-admin-auth.mjs",
     "test:quotations:pdf": "node scripts/test-quotation-pdfs.mjs",
     "utm": "node --experimental-strip-types scripts/build-utm.mjs",
     "postinstall": "node scripts/sync-pdf-worker.mjs"

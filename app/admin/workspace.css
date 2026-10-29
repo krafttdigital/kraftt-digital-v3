@@ -107,6 +107,22 @@
 .admin-case-result-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;font-size:12px;color:#65553f}
 .admin-case-next{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid var(--admin-line);padding-top:20px;margin-top:28px;color:#746858;font-size:11px}
 .admin-case-next .admin-row-actions{margin:0}
+.admin-users-page{max-width:1040px}
+.admin-users-add{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:32px;align-items:start;margin:28px 0 38px}
+.admin-users-add h2,.admin-users-list h2{margin:0 0 8px}
+.admin-users-add p{font-size:12px;color:#756959;line-height:1.6}
+.admin-users-add form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:end}
+.admin-users-add form .admin-field{margin:0}
+.admin-users-add form .admin-button{justify-self:start}
+.admin-users-list-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+.admin-users-list-head span{font-size:12px;color:#756959}
+.admin-user-card h2{font-size:28px}
+.admin-user-card p{overflow-wrap:anywhere}
+.admin-user-edit{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:end}
+.admin-user-edit .admin-field,.admin-user-edit .admin-row-actions{margin:0}
+.admin-user-edit .admin-row-actions{grid-column:1/-1}
+@media(max-width:800px){.admin-users-add{grid-template-columns:1fr}}
+@media(max-width:650px){.admin-users-add form,.admin-user-edit{grid-template-columns:1fr}}
 @media(max-width:800px){.admin-case-decision-head{display:none}.admin-case-decision{grid-template-columns:1fr 1fr;padding:16px;margin:12px 0;border:1px solid var(--admin-line);border-radius:5px}.admin-case-decision .admin-case-row-number{grid-column:1/-1;padding:0}.admin-case-decision .admin-field{grid-column:1/-1}.admin-case-decision .admin-field>span{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}.admin-case-decision .admin-small-button{grid-column:2;justify-self:end}.admin-case-header{flex-wrap:wrap}.admin-case-save{align-items:flex-start}}
 @media(max-width:650px){.admin-case-new{display:block}.admin-case-new .admin-field{margin-bottom:12px}.admin-case-panel-heading h2{font-size:30px}.admin-case-tabs{margin-right:-15px;padding-right:15px}.admin-case-next{align-items:flex-start;flex-direction:column}.admin-case-next .admin-row-actions{width:100%;justify-content:space-between}}
 .admin-card,.admin-saved-card{background:#fffdf9;border:1px solid var(--admin-line);border-radius:6px;padding:22px;margin:18px 0}
