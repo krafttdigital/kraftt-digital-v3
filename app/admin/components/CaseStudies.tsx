@@ -18,10 +18,10 @@ function Permission({ label, value, onChange }: { label: string; value: CaseStud
   </SelectField>;
 }
 
-export function CaseStudies({ studies, clients, activeId, onCreate, onChange, onDelete, onOpen, onSave, saveStatus }: {
+export function CaseStudies({ studies, clients, activeId, onCreate, onChange, onDelete, onOpen, onSave, onDownload, downloadBusy, saveStatus }: {
   studies: CaseStudy[]; clients: Client[]; activeId: string;
   onCreate: (clientId: string) => void; onChange: (study: CaseStudy) => void; onDelete: (id: string) => void;
-  onOpen: (id: string) => void; onSave: () => void; saveStatus: string;
+  onOpen: (id: string) => void; onSave: () => void; onDownload: (study: CaseStudy, format: 'pdf' | 'html') => void; downloadBusy: boolean; saveStatus: string;
 }) {
   const [newClientId, setNewClientId] = useState('');
   const [section, setSection] = useState<Section>('basics');
@@ -42,7 +42,7 @@ export function CaseStudies({ studies, clients, activeId, onCreate, onChange, on
       <div><span className="admin-badge">Intake notes</span><h2>{item.basics.clientName || 'Untitled project'}</h2>
         <p>{[item.basics.industry, item.basics.city, item.basics.services].filter(Boolean).join(' · ') || 'Add the project basics'}</p>
         <small>Edited {new Date(item.modifiedAt).toLocaleString('en-IN')}</small></div>
-      <div className="admin-row-actions"><button className="admin-small-button" type="button" onClick={() => onOpen(item.id)}>Open notes</button><button className="admin-small-button admin-danger" type="button" onClick={() => onDelete(item.id)}>Delete</button></div>
+      <div className="admin-row-actions"><button className="admin-small-button" type="button" onClick={() => onOpen(item.id)}>Open notes</button><button className="admin-small-button" type="button" disabled={downloadBusy} onClick={() => onDownload(item, 'pdf')}>PDF</button><button className="admin-small-button" type="button" disabled={downloadBusy} onClick={() => onDownload(item, 'html')}>HTML</button><button className="admin-small-button admin-danger" type="button" onClick={() => onDelete(item.id)}>Delete</button></div>
     </article>)}
     {!studies.length && <p className="admin-empty">No case studies yet. Start with any client or an unlinked project.</p>}
   </section>;
@@ -58,7 +58,7 @@ export function CaseStudies({ studies, clients, activeId, onCreate, onChange, on
 
   return <section className="admin-page admin-case-studies">
     <div className="admin-case-header"><div><button className="admin-case-back" type="button" onClick={() => onOpen('')}>← All case studies</button><span className="admin-eyebrow">Case study intake · private working notes</span><h1>{study.basics.clientName || 'Untitled project'}</h1><p>Write what you know. Keep unverified outcomes clearly marked.</p></div>
-      <div className="admin-case-save"><button className="admin-button" type="button" onClick={onSave}>Save now</button><small role="status">{saveStatus}</small></div></div>
+      <div className="admin-case-save"><div className="admin-row-actions"><button className="admin-small-button" type="button" disabled={downloadBusy} onClick={() => onDownload(study, 'html')}>Download HTML</button><button className="admin-small-button" type="button" disabled={downloadBusy} onClick={() => onDownload(study, 'pdf')}>Download PDF</button><button className="admin-button" type="button" onClick={onSave}>Save now</button></div><small role="status">{saveStatus}</small></div></div>
     <nav className="admin-case-tabs" aria-label="Case study sections">{sections.map(item => <button key={item.id} type="button" aria-current={section === item.id ? 'step' : undefined} onClick={() => setSection(item.id)}><span>{item.letter}</span>{item.title}</button>)}</nav>
     <div className="admin-case-panel admin-card">
       <div className="admin-case-panel-heading"><span className="admin-eyebrow">{sections[sectionIndex].letter} / {sections.length.toString().padStart(2, '0')}</span><h2>{sections[sectionIndex].title}</h2></div>

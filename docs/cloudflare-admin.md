@@ -6,6 +6,10 @@ On 28 October 2026, the `kraftt-admin-data` D1 database and workspace tables wer
 
 The Case Studies intake module was published later on 28 October 2026 as Worker version `ac91d12c-42e4-451b-8233-07dadb42c12e`. It has A–G form sections, 3–5 key-decision rows, verified result rows, permission fields and a “Not measured” option. Existing version 1 and 2 workspace backups receive an empty case-study list during validation. The admin build, targeted lint, source TypeScript check and migration/backup test passed. Access still redirects unauthenticated requests; authenticated editing remains to be checked in the owner's session.
 
+Each case study can now be downloaded as a self-contained HTML file or a PDF from its editor or list row. Both exports contain the current A–G notes, including permission and source fields, and remain labelled as private working notes. Blank answers appear as “Not provided”; they do not create metrics. The files are generated in the browser and are not stored in D1. The HTML escapes note text and embeds its print stylesheet. The PDF uses bundled local fonts; if a note contains a glyph those fonts cannot render, the admin reports it and the HTML export preserves the original text.
+
+The export update was deployed on 29 October 2026 as Worker version `3d1fd2fa-bb63-4b74-b3f3-30b874211afb`. Admin build/validation, case-study HTML/PDF tests, targeted lint and source TypeScript check passed. The live root and `/api/workspace` still redirect unauthenticated requests through Cloudflare Access; an authenticated download remains to be checked in the owner's session.
+
 The API checks the signed Cloudflare Access JWT against the configured team domain and application audience, then permits only `krafttdigital@gmail.com` and `tech.krafttdigital@gmail.com`. Keep the existing Access **All traffic** policy. The Worker also rejects cross-origin saves and uses revision checks to prevent silent overwrites from another device. The audience in `wrangler.admin.jsonc` must still match the live Access application when you deploy; if the application is recreated, update it first.
 
 ### One-time setup and deployment
