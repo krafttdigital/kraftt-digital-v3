@@ -8,7 +8,7 @@ const bundled = await build({
 const users = await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].text).toString('base64')}`);
 const rows = new Map();
 const db = {
-  async exec() {},
+  async exec() { throw Error('User directory must use the applied D1 migration, not runtime DDL.'); },
   prepare(sql) {
     let args = [];
     return {

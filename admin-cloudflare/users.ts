@@ -18,13 +18,6 @@ type AccessEnv = { ACCESS_ACCOUNT_ID?: string; ACCESS_POLICY_TOKEN?: string; ACC
 let tableReady: Promise<void> | undefined;
 export async function ensureUsersTable(db: D1Database) {
   tableReady ??= (async () => {
-    await db.exec(`CREATE TABLE IF NOT EXISTS admin_users (
-      email TEXT PRIMARY KEY NOT NULL,
-      name TEXT NOT NULL DEFAULT '',
-      role TEXT NOT NULL CHECK (role IN ('owner', 'member')),
-      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-    );`);
     const count = await db.prepare('SELECT COUNT(*) AS total FROM admin_users').first<{ total: number }>();
     if (!count?.total) {
       await db.prepare("INSERT OR IGNORE INTO admin_users (email, name, role) VALUES (?, ?, 'owner')").bind(OWNER_EMAIL, 'Kraftt Digital').run();

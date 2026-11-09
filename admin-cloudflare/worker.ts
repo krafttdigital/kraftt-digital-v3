@@ -105,9 +105,9 @@ const worker = {
     if (!env.DB) return response({ error: 'D1 database is not bound. Complete the deployment setup.' }, 503);
     const email = await verifiedEmail(request, env);
     if (!email) return response({ error: 'Cloudflare Access sign-in required.' }, 401);
-    try { await ensureUsersTable(env.DB); } catch { return response({ error: 'Admin user directory is temporarily unavailable.' }, 503); }
+    try { await ensureUsersTable(env.DB); } catch (error) { console.error('Admin user directory setup failed', error); return response({ error: 'Admin user directory is temporarily unavailable.' }, 503); }
     let user;
-    try { user = await activeUser(env.DB, email); } catch { return response({ error: 'Admin user directory is temporarily unavailable.' }, 503); }
+    try { user = await activeUser(env.DB, email); } catch (error) { console.error('Admin user lookup failed', error); return response({ error: 'Admin user directory is temporarily unavailable.' }, 503); }
     if (!user) return response({ error: 'This email is not authorised for the admin.' }, 403);
     if (path === '/api/me') return request.method === 'GET' ? response({ email: user.email, name: user.name, canManageUsers: user.email === OWNER_EMAIL }) : response({ error: 'Method not allowed.' }, 405);
     if (path === '/api/users') {
