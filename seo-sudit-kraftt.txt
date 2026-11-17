@@ -1,0 +1,88 @@
+KRAFTT DIGITAL — SEO, AEO AND GEO AUDIT
+Date: 10 November 2026 (India time)
+Site: https://krafttdigital.in
+Repository reviewed: D:\07-Live Sites\kraftt-digital-v3 (main branch)
+GEO in this report means Generative Engine Optimization. Geographic landing pages are discussed separately.
+
+EXECUTIVE SUMMARY
+The site's technical search foundation is mostly sound. A crawl of every URL in the live XML sitemap found 160/160 returning HTTP 200, each with a title, meta description, self-referencing canonical, one H1, and parseable JSON-LD. robots.txt allows crawling and points to the sitemap. The submitted location and region examples are not blocked by robots or noindex.
+
+The largest opportunity is to improve the distinct value of the 112 geographic pages, especially the city-service combinations. They account for 70% of the sitemap. Their templates are useful for visitors, but much of the service, process, proof and FAQ content repeats across markets. The owner previously supplied Search Console examples marked “Discovered – currently not indexed” with “Last crawled: N/A”; this audit could not refresh those private Search Console reports. A discovered URL has not necessarily been fetched, so the evidence does not establish a content-quality rejection. Still, publishing many similar URLs creates a weak case for prioritizing all of them for crawling.
+
+The two Diwali offers ended on 8 November 2026. On 10 November, both are still indexable and in the sitemap; the offers hub still advertises them in its metadata and marquee, while llms.txt calls one a “Current offer.” Their detail pages do display a closed state. This mismatch should be corrected first.
+
+WHAT WAS CHECKED
+- All 160 live sitemap URLs: HTTP status, title, description, canonical, robots meta, H1 count, JSON-LD syntax, and duplicate titles/descriptions.
+- Live robots.txt, sitemap.xml and llms.txt; sample homepage, service, tool, work, city, country and offer pages.
+- Source code for route generation, metadata, structured data, geographic content, tools, offers, internal navigation and image handling.
+- No browser window was opened. Core Web Vitals, rendered mobile layout, Search Console account data, actual indexing, rankings, AI citations and conversion analytics were not measured. Google's PageSpeed API returned HTTP 429, so this report gives no performance score.
+
+LIVE INVENTORY AND VERIFIED TECHNICAL RESULTS
+Sitemap URLs: 160 total. Breakdown: 87 location (16 city hubs + 71 city-service pages), 25 region (5 country hubs + 20 country-service pages), 15 service/bundle, 10 work, 7 tools, 2 offer detail, 14 other.
+All 160 sitemap pages: HTTP 200; title present; description present; self-canonical present; exactly one H1 in server HTML; at least one parseable JSON-LD script. No duplicate titles or descriptions detected by exact comparison. No sitemap URL returned noindex.
+robots.txt: “User-Agent: * / Allow: /” plus the sitemap URL. /thank-you and /admin are noindex and absent from the sitemap. Unknown city and country routes return 404.
+The homepage, country hubs and country-service pages expose reciprocal regional hreflang sets in the samples checked. Do not remove them without testing the whole cluster.
+Important distinction: HTTP 200, valid metadata and a sitemap entry make a URL eligible for discovery; they do not guarantee Google will crawl, index, rank or cite it.
+
+PRIORITY 1 — CLOSE THE EXPIRED OFFER LOOP
+Evidence: app/data/offers.ts and app/data/diwaliGrowthOffer.ts set 8 November 2026 23:59:59 IST as expiry. Live /offers, /offers/diwali-growth-website and /offers/campaign-festive-season-offer remain indexable and in sitemap.xml. /offers has a description naming the Diwali offer. Live llms.txt labels the Diwali page “Current offers.” The detail page's schema marks the expired offer SoldOut, which is better than pretending it is available, but the broader site still promotes the campaign.
+Action: Decide whether each expired URL is a useful historical page. If yes, show an unmistakable expired notice, replace application prompts with an evergreen service/contact path, remove it from active-offer listings and the sitemap if no longer a target search page, and consider noindex. If there is a genuinely equivalent replacement, use a permanent redirect instead. Refresh /offers metadata and copy so it describes only live offers, or repurpose the hub. Update llms.txt from the same offer data or remove its time-sensitive “Current offers” block. Do not change the past deadline or imply slots remain.
+Relevant files: app/offers/page.tsx, app/offers/diwali-growth-website/page.tsx, app/offers/campaign-festive-season-offer/page.tsx, app/data/offers.ts, app/data/diwaliGrowthOffer.ts, app/sitemap.ts, app/llms.txt/route.ts.
+
+PRIORITY 1 — CURATE THE GEOGRAPHIC INDEX
+Evidence: 112/160 sitemap URLs are geographic. app/data/geo/geo-services.ts generates 71 Indian city-service and 20 international country-service combinations. These share components in app/location/_components/LocationServicePage.tsx and app/components/geo/GeoServicePage.tsx. City hubs have distinct localContext text, and the pages correctly explain remote service instead of claiming local offices. Service pages, however, largely reuse the same package, workflow, related work and FAQ text with a market name inserted. Previously supplied Search Console examples include /location/amritsar, /location/delhi and /region/uae/web-design-development as “Discovered – currently not indexed,” not crawled. Today's live samples return HTTP 200, index/follow and self-canonical.
+Action: Keep the strong directory hierarchy, but select a small priority set based on real leads, service capacity and distinctive evidence. Bathinda and nearby Punjab markets are natural first candidates because the business is based there; verify which other cities have actual demand. For each priority city-service page, add something a generic service page cannot answer: a market-specific buying question, verified local project/context where available, audience or regulatory nuance, original comparison, documented delivery detail, and useful local internal links. Never imply a client or office is local when it is not. Consolidate or noindex low-value combinations until they can justify a separate page, and remove non-index targets from the sitemap. Avoid submitting all 112 URLs for manual indexing at once.
+Search Console check: For a representative hub and service URL, inspect live URL availability, referring page, Google-selected canonical, crawl allowed, and sitemap source. Compare indexed vs discovered totals by route family after changes. Do not equate “Discovered – currently not indexed” with a technical block or a spam penalty.
+Relevant files: app/data/geo/*, app/location/[city]/[service]/page.tsx, app/region/[country]/[service]/page.tsx, app/location/_components/LocationServicePage.tsx, app/components/geo/GeoServicePage.tsx, app/sitemap.ts.
+
+PRIORITY 2 — BUILD FIRST-HAND ANSWER CONTENT
+The tools are a positive starting point. The live website-cost calculator and other tool pages include explanations, calculation methods, worked examples and FAQs in app/tools/editorial.ts and app/tools/components/ToolEditorial.tsx. The website-cost page names Kraftt's own package prices rather than claiming a market-wide average. Keep those distinctions visible.
+The site has no public /blog, /insights or /resources route in the inspected app tree. Its main informational assets are tools, service pages and case studies. For search and AI answers, add a small number of substantive, firsthand guides linked from the relevant tools and services. Good candidates: a dated breakdown of what changes website cost in India; what launch SEO and schema actually include; how a brand, site and enquiry route fit together; and practical lessons from documented builds. Use actual Kraftt decisions, screenshots, methods, source dates and limitations. Update them when packages change. Do not mass-generate near-identical question pages.
+Make the first paragraph of each guide answer the searcher's question directly, then show a table or short steps, a worked example, and links to the tool, relevant service and evidence. This is for readers and parsers; there is no special “AI chunking” requirement.
+
+PRIORITY 2 — MAKE CASE STUDY EVIDENCE EASY TO ATTRIBUTE
+The work pages already label case studies, portfolio work and Kraftt products, and several clearly distinguish published work from measured outcomes. Keep this. Where permission and records exist, put a compact evidence box near each result: what changed; metric and unit; date range; source (Search Console, analytics or client statement); and a qualification where attribution is uncertain. Dated screenshots should have capture date and query/location if they show search results. For unmeasured projects, describe delivered work and client feedback without quantitative performance claims.
+The Shree Hari Spintex review includes client-reported sales and order numbers; the review data labels those as not independently verified. Preserve that context every place an excerpt appears. A single brand-name search screenshot should be described as one observed result, not proof of broad SEO superiority. These distinctions help both human trust and AI citation accuracy.
+Article schema is used for case studies, but app/data/seo.ts currently does not populate publication or update dates. Add datePublished/dateModified only where source records establish them, and keep page-visible dates aligned. Do not invent dates to fill schema fields.
+Relevant files: app/work/[slug]/page.tsx, app/data/caseStudyFlow.ts, app/data/reviews.ts, app/data/seo.ts.
+
+PRIORITY 2 — USE SCHEMA FOR CLARITY, NOT AS A RANKING PROMISE
+Existing graph: Organization and WebSite site-wide; WebPage/BreadcrumbList across pages; Service on service/geographic pages; Article on case studies; WebApplication on tools; FAQPage on many pages. The 160-page crawl found parseable JSON-LD, but did not validate every property against Google's rich-result rules. The organization graph uses Bathinda, Punjab without inventing a street address or local branches. That is appropriate while an office address is not public/confirmed.
+Keep business name, URL, logo, contact details and sameAs consistent with the visible site and external profiles. Validate representative page types with Google's Rich Results Test and Search Console enhancement reports. FAQ text should stay visible and accurate, but do not expect FAQ rich results for this commercial site: Google has limited that display mainly to authoritative government and health sites. Structured data can clarify entities; it cannot make an unsupported outcome true.
+Relevant file: app/data/seo.ts and each page's JsonLd call.
+
+PRIORITY 3 — MAINTAIN CRAWL SIGNALS AND SPEED
+Sitemap lastmod appears on only 10/160 entries, all dated 15–16 October 2026. Omitting unknown dates is preferable to inventing them. Introduce a real content-update date for maintained pages and emit lastmod only from that record; update it when substantive content changes. As the geographic index is curated, sitemap should list only canonical URLs intended for search.
+The homepage hero image is an optimized-format 53 KB WebP in source; several case-study and result images are much larger. Some result carousels explicitly use unoptimized images. Measure actual mobile transfer and Core Web Vitals before changing image strategy. Prioritize the homepage, /services, /tools/website-cost-calculator, one work page and one geographic page. Review LCP image delivery, CLS, INP, image dimensions and unused JavaScript using field data and a repeatable lab run. No LCP/CLS/INP claim is made here because they were not measured.
+Maintain the existing noindex on /thank-you and /admin. Keep 404s for unsupported city/country slugs. Check that important hub and service pages remain reachable through normal links, not only XML. Current Footer and location/region directories provide link paths.
+
+AEO / GEO CONCLUSION
+For Google AI Overviews and AI Mode, Google's current guidance says standard SEO foundations and genuinely useful, unique content remain the path; there is no special technical eligibility file or schema for inclusion. llms.txt can be retained as a factual machine-readable directory, but it is not a Google indexing requirement and currently needs its expired-offer reference corrected. Prioritize clear answers, original business evidence, accurate entities, crawlable HTML, image context and consistent source dates. Do not promise AI citations or rankings.
+
+RECOMMENDED WORK ORDER
+1. This week: retire or repurpose the expired offer promotions across /offers, metadata, sitemap and llms.txt; keep the public price/deadline historically accurate.
+2. This week: inspect 6 representative Search Console URLs (Bathinda hub/service, another Punjab hub/service, one metro city/service, one region/service). Record discovery source and Google-selected canonical.
+3. Next 2 weeks: pick priority geographic pages; add market-specific firsthand material, consolidate or noindex the rest, and regenerate sitemap accordingly.
+4. Next 2–4 weeks: publish 2–3 original answer guides linked from the website-cost tool, SEO service and case studies. Add verifiable evidence/date boxes to key work pages.
+5. After publishing: validate representative structured data, crawl the new sitemap, check internal links, and compare GSC discovery/crawl/indexing and query impressions by page family. Review mobile Core Web Vitals from real data.
+
+SUCCESS MEASURES (NO GUARANTEES)
+- Fewer stale or expired promotional URLs in active discovery paths.
+- Priority geo pages crawled and indexed at a higher proportion than the present broad template set.
+- More non-brand impressions and qualified visits for tool, guide and service questions.
+- Search Console reports fewer avoidable canonical, structured-data or crawl errors.
+- Case-study outcome claims remain traceable to dated sources.
+- Mobile Core Web Vitals improve or remain good after content and media updates.
+
+LIMITS AND SOURCE NOTES
+This is an audit, not a change to the public site. It used a live HTTP crawl and current local source, which may include unpublished edits; an observation is called “live” only where fetched from krafttdigital.in. The owner-supplied Search Console indexing examples are historical input, not a fresh account export. Server-HTML checks do not replace a rendered mobile accessibility or Core Web Vitals audit. The Google PageSpeed API request was rate-limited (HTTP 429). JSON-LD syntax checks do not establish rich-result eligibility or search ranking.
+
+Official references consulted:
+- Google: AI features and your website — https://developers.google.com/search/docs/appearance/ai-features
+- Google: Optimizing for generative AI features — https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+- Google: Sitemaps overview — https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
+- Google: Canonicalization — https://developers.google.com/search/docs/crawling-indexing/canonicalization
+- Google: Localized versions and hreflang — https://developers.google.com/search/docs/specialty/international/localized-versions
+- Google: LocalBusiness structured data — https://developers.google.com/search/docs/appearance/structured-data/local-business
+- Google: FAQ rich-result changes — https://developers.google.com/search/blog/2023/08/howto-faq-changes
+- Google: Spam policies (doorway and scaled content) — https://developers.google.com/search/docs/essentials/spam-policies

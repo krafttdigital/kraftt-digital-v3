@@ -38,6 +38,7 @@ export function WebsiteCostCalculator() {
   const [urgency, setUrgency] = useState<string | null>(null);
   const [result, setResult] = useState<Estimate | null>(null);
   const resultRef = useRef<HTMLElement>(null);
+  const lastTracked = useRef('');
   const values = [siteType, pages, seo, brand, urgency];
   const answered = values.filter(Boolean).length;
 
@@ -64,7 +65,11 @@ export function WebsiteCostCalculator() {
       addons,
       auditHref: `/audit?tier=${encodeURIComponent(packageName.toLowerCase().replaceAll(' ', '-'))}&addons=${queryAddons}&siteType=${siteType}&pages=${pages}&urgency=${urgency}`,
     });
-    trackEvent('tool_complete', { cta_location: 'tool' });
+    const signature = JSON.stringify([siteType, pages, seo, brand, urgency, currency]);
+    if (lastTracked.current !== signature) {
+      trackEvent('tool_complete', { cta_location: 'tool' });
+      lastTracked.current = signature;
+    }
     revealResult(resultRef);
   }
 

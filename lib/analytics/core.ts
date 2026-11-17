@@ -4,6 +4,12 @@ export const EVENTS = [
   'tool_start', 'tool_complete', 'case_study_cta_click', 'outbound_click', 'service_cta_click',
   'case_study_chapter_view', 'case_study_callout_open', 'case_study_clip_play', 'case_study_live_site_click',
   'kraftt_page_view',
+  'offer_landing_view', 'hero_cta_click', 'proof_section_view', 'case_study_click',
+  'fit_cta_click', 'offer_details_view', 'form_view', 'form_start', 'form_submit',
+  'form_error', 'sticky_cta_click', 'faq_interaction',
+  'hero_apply_click', 'hero_form_start', 'hero_form_submit', 'project_view', 'project_click',
+  'package_details_view', 'price_section_view', 'sticky_apply_click',
+  'final_form_start', 'final_form_submit',
 ] as const;
 export type EventName = typeof EVENTS[number];
 const contextKeys = ['page_path', 'page_type', 'service', 'place', 'source', 'band', 'cta_location', 'cta_label', 'package_name',

@@ -31,7 +31,6 @@ const projectBanners: Record<string, { src: string; alt: string }> = {
   'employee-os': { src: '/assets/projects/employee-os/employee-os-dashboard.webp', alt: 'Employee OS Windows dashboard for local employee, attendance and payroll management' },
 };
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {

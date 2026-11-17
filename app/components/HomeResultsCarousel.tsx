@@ -59,12 +59,13 @@ export function HomeResultsCarousel({ slides }: { slides: HomeResultSlide[] }) {
 
   useEffect(() => {
     if (!visible || !pageVisible || paused || reduceMotion || count < 2) return;
-    const timer = window.setTimeout(() => move(1), 6000);
+    const timer = window.setTimeout(() => move(1), 3000);
     return () => window.clearTimeout(timer);
   }, [visible, pageVisible, paused, reduceMotion, count, index, move]);
 
   const handleSwipeStart = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== 'touch' || (event.target instanceof Element && event.target.closest('button'))) return;
+    if ((event.pointerType === 'mouse' && event.button !== 0) || (event.target instanceof Element && event.target.closest('button, a'))) return;
+    setPaused(true);
     swipeRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -72,6 +73,7 @@ export function HomeResultsCarousel({ slides }: { slides: HomeResultSlide[] }) {
   const handleSwipeEnd = (event: PointerEvent<HTMLDivElement>) => {
     const start = swipeRef.current;
     swipeRef.current = null;
+    setPaused(false);
     if (!start || start.pointerId !== event.pointerId) return;
     const x = event.clientX - start.x;
     const y = event.clientY - start.y;
@@ -96,23 +98,21 @@ export function HomeResultsCarousel({ slides }: { slides: HomeResultSlide[] }) {
           role="region"
           aria-roledescription="carousel"
           aria-label="Case study results"
-          onPointerEnter={(event) => { if (event.pointerType === 'mouse') setPaused(true); }}
-          onPointerLeave={(event) => { if (event.pointerType === 'mouse') setPaused(false); }}
           onFocusCapture={(event) => { if (event.target instanceof HTMLElement && event.target.matches(':focus-visible')) setPaused(true); }}
           onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}
         >
           <div className={styles.visual} key={active.id}>
-            <div className={styles.mobileCarouselStage} onPointerDown={handleSwipeStart} onPointerUp={handleSwipeEnd} onPointerCancel={() => { swipeRef.current = null; }}>
-              <div className={`${styles.peek} ${styles.peekPrevious}`} aria-hidden="true"><Image src={previous.mobileSrc ?? previous.src} alt="" fill loading="lazy" unoptimized sizes="45vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} /></div>
+            <div className={styles.mobileCarouselStage} onPointerDown={handleSwipeStart} onPointerUp={handleSwipeEnd} onPointerCancel={() => { swipeRef.current = null; setPaused(false); }}>
+              <div className={`${styles.peek} ${styles.peekPrevious}`} aria-hidden="true"><Image src={previous.mobileSrc ?? previous.src} alt="" fill loading="lazy" sizes="45vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} /></div>
               <div className={styles.imageFrame}>
                 <div className={styles.imageCanvas}>
-                  <Image className={active.mobileSrc ? styles.desktopImage : undefined} src={active.src} alt={active.alt} fill loading="lazy" unoptimized sizes="(max-width: 760px) 75vw, 60vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} />
-                  {active.mobileSrc && <Image className={styles.mobileImage} src={active.mobileSrc} alt={`${active.alt} on mobile`} fill loading="lazy" unoptimized sizes="(max-width: 760px) 75vw, 1px" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} />}
+                  <Image className={active.mobileSrc ? styles.desktopImage : undefined} src={active.src} alt={active.alt} fill loading="lazy" sizes="(max-width: 760px) 75vw, 60vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} />
+                  {active.mobileSrc && <Image className={styles.mobileImage} src={active.mobileSrc} alt={`${active.alt} on mobile`} fill loading="lazy" sizes="(max-width: 760px) 75vw, 1px" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} />}
                 </div>
               </div>
-              <div className={`${styles.peek} ${styles.peekNext}`} aria-hidden="true"><Image src={next.mobileSrc ?? next.src} alt="" fill loading="lazy" unoptimized sizes="45vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} /></div>
-              <button className={`${styles.mobileNav} ${styles.mobileNavPrevious}`} type="button" onClick={() => move(-1)} aria-label="Previous result">←</button>
-              <button className={`${styles.mobileNav} ${styles.mobileNavNext}`} type="button" onClick={() => move(1)} aria-label="Next result">→</button>
+              <div className={`${styles.peek} ${styles.peekNext}`} aria-hidden="true"><Image src={next.mobileSrc ?? next.src} alt="" fill loading="lazy" sizes="45vw" draggable={false} style={{ objectFit: 'contain', objectPosition: 'center' }} /></div>
+              <button className={`${styles.stageNav} ${styles.stageNavPrevious}`} type="button" onClick={() => move(-1)} aria-label="Previous result">←</button>
+              <button className={`${styles.stageNav} ${styles.stageNavNext}`} type="button" onClick={() => move(1)} aria-label="Next result">→</button>
             </div>
             <span className={styles.imageLabel}>Supplied capture / published work</span>
           </div>
@@ -134,12 +134,8 @@ export function HomeResultsCarousel({ slides }: { slides: HomeResultSlide[] }) {
         </div>
 
         <div className={styles.controls}>
-          <p>Swipe to explore on mobile</p>
+          <p>Swipe or drag to explore</p>
           <div className={styles.progress} aria-hidden="true"><span style={{ width: `${((index + 1) / count) * 100}%` }} /></div>
-          <div className={styles.buttons}>
-            <button type="button" onClick={() => move(-1)} aria-label="Previous result">←</button>
-            <button type="button" onClick={() => move(1)} aria-label="Next result">→</button>
-          </div>
         </div>
       </div>
     </section>

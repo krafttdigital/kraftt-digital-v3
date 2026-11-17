@@ -44,7 +44,6 @@ const marketplaceLogos = [
   { name: 'Meesho', src: '/assets/marketplaces/meesho.png' },
 ];
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {

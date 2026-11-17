@@ -2,11 +2,17 @@ import Link from 'next/link';
 import {
   BarChart3,
   Calculator,
+  Clock3,
+  Columns2,
   FileText,
   Gauge,
   Globe2,
+  Heart,
   ReceiptText,
   Share2,
+  Tags,
+  Truck,
+  Wallet,
   type LucideIcon,
 } from 'lucide-react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
@@ -24,6 +30,12 @@ const toolIcons: Record<string, LucideIcon> = {
   'roas-calculator': Calculator,
   'gst-calculator': ReceiptText,
   'gst-invoice-generator': FileText,
+  'discount-profit-calculator': Tags,
+  'cod-rto-cost-calculator': Truck,
+  'instagram-engagement-calculator': Heart,
+  'project-pricing-calculator': Clock3,
+  'marketplace-settlement-calculator': Wallet,
+  'website-quote-comparison': Columns2,
 };
 
 const toolDetailFacts: Record<string, { number: string; facts: [string, string][] }> = {
@@ -55,6 +67,30 @@ const toolDetailFacts: Record<string, { number: string; facts: [string, string][
     number: '07',
     facts: [['Live', 'Invoice totals'], ['PDF', 'Direct download'], ['0', 'Data stored']],
   },
+  'discount-profit-calculator': {
+    number: '08',
+    facts: [['%', 'Price cut'], ['Per unit', 'Contribution'], ['Units', 'Extra sales needed']],
+  },
+  'cod-rto-cost-calculator': {
+    number: '09',
+    facts: [['COD', 'Order share'], ['RTO', 'Return rate'], ['Per order', 'Failure cost']],
+  },
+  'instagram-engagement-calculator': {
+    number: '10',
+    facts: [['04', 'Interaction types'], ['02', 'Audience measures'], ['%', 'Engagement rate']],
+  },
+  'project-pricing-calculator': {
+    number: '11',
+    facts: [['Hours', 'Delivery effort'], ['Cost', 'Project outlay'], ['%', 'Target margin']],
+  },
+  'marketplace-settlement-calculator': {
+    number: '12',
+    facts: [['Fees', 'Actual deductions'], ['Payout', 'Cash due'], ['Margin', 'After costs']],
+  },
+  'website-quote-comparison': {
+    number: '13',
+    facts: [['02', 'Proposals'], ['1–5', 'Years compared'], ['Scope', 'And ownership']],
+  },
 };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -70,14 +106,14 @@ export function Button({ children, href, variant = 'primary', className = '', ..
   return <button className={classes} {...props}>{children}</button>;
 }
 
-export function ToolCard({ tool, index, featured = false }: { tool: ToolDefinition; index: number; featured?: boolean }) {
+export function ToolCard({ tool, featured = false }: { tool: ToolDefinition; featured?: boolean }) {
   const Icon = toolIcons[tool.slug] ?? Calculator;
 
   return (
     <article className={`tool-card${featured ? ' tool-card-featured' : ''}`}>
       <Link className="tool-card-hit" href={`/tools/${tool.slug}`} aria-label={`Open ${tool.name}`}>
         <div className="tool-card-top">
-          <span>0{index + 1}</span>
+          <span>{toolDetailFacts[tool.slug].number}</span>
           <i aria-hidden="true"><Icon size={20} strokeWidth={1.45} /></i>
           <strong>Free</strong>
         </div>

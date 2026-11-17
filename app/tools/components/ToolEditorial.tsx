@@ -25,7 +25,7 @@ export function ToolEditorial({ slug }: { slug: string }) {
           <h2 id="tool-guide-title">{guide.headline}</h2>
           <p>{guide.introduction}</p>
         </div>
-        <div className="tool-guide-context"><span>What to know first</span><p>{guide.context}</p></div>
+        <div className="tool-guide-context"><span>What to know first</span><div><p>{guide.context}</p>{isWebsiteCost ? <p><Link href="/services/web-design-development">Compare website scopes</Link> · <Link href="/work/mittal-architect">See the Mittal Architect project</Link></p> : slug === 'social-media-cost-calculator' ? <p><Link href="/services/social-media-management">Compare monthly social scopes</Link> · <Link href="/work/kiraq-jewellery">See Kiraq’s brand and storefront work</Link> (a related brand project, not evidence of monthly social results).</p> : null}</div></div>
 
         {isWebsiteCost && <div className="tool-guide-prices" aria-labelledby="tool-guide-prices-title">
           <div className="tool-guide-prices-intro"><div><p className="tool-eyebrow">Kraftt starting prices · India</p><h3 id="tool-guide-prices-title">Website and store package prices</h3></div><p>Published starting prices in INR. A written proposal confirms the deliverables and exact quote.</p></div>

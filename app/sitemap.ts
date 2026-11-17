@@ -7,6 +7,7 @@ import { services } from './data/services';
 import { absoluteUrl } from './data/seo';
 import { locationHubPaths, locationServicePaths, regionHubPaths, regionServicePaths } from './data/geo';
 import { tools } from './tools/data';
+import { businessTools } from './tools/businessModels';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -29,10 +30,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Only publish lastmod where a meaningful page update has a known date.
   const recentlyUpdated = new Map<string, string>([
-    ['/offers', '2026-10-16'],
-    [diwaliGrowthOffer.pagePath, '2026-10-15'],
-    ['/tools', '2026-10-16'],
+    ['/offers', '2026-11-13'],
+    ['/offers/campaign-festive-season-offer', '2026-11-13'],
+    ['/services/web-design-development', '2026-11-13'],
+    ...['bathinda', 'barnala', 'delhi', 'gurugram'].map((city): [string, string] => [`/location/${city}`, '2026-11-13']),
+    [diwaliGrowthOffer.pagePath, '2026-11-13'],
+    ['/tools', '2026-11-15'],
     ...tools.map((tool): [string, string] => [`/tools/${tool.slug}`, '2026-10-16']),
+    ...businessTools.map((tool): [string, string] => [`/tools/${tool.slug}`, '2026-11-15']),
   ]);
 
   return [...routes].map((route) => ({

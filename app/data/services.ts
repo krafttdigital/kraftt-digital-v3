@@ -49,11 +49,11 @@ const tier = (
 
 export const coreServiceSlugs = [
   "web-design-development",
-  "brand-identity",
   "ecommerce-store-development",
-  "marketplace-catalogue-building",
+  "brand-identity",
   "ecommerce-seo",
-  "social-media-management"
+  "social-media-management",
+  "marketplace-catalogue-building"
 ] as const;
 
 export const services: Service[] = [
@@ -61,7 +61,7 @@ export const services: Service[] = [
     "slug": "web-design-development",
     "name": "Web Design & Development",
     "category": "Websites & Commerce",
-    "headline": "Websites that explain your value, showcase your work and make enquiries straightforward.",
+    "headline": "Websites that communicate your value, showcase your work and make the next step clear.",
     "idealClient": "Founders launching a service, established businesses replacing a dated website, and professionals who need a credible online presence.",
     "problemSolved": "An absent or outdated website, weak search visibility, or enquiry paths that fail to qualify the right visitors.",
     "tiers": [
@@ -128,10 +128,12 @@ export const services: Service[] = [
     "mainDeliverables": [
       "Business discovery and page structure",
       "Responsive website design and development",
-      "Launch SEO: titles, descriptions, headings, indexing checks and applicable structured data within scope",
+      "Package-specific launch SEO; schema, Search Console and GEO/AEO follow the selected tier",
       "Agreed contact, WhatsApp or booking paths and functional checks",
       "Handover guidance; ongoing maintenance quoted separately"
     ],
+    "scopeClarification": "Starter includes basic on-page SEO; Search Console, JSON-LD and GEO/AEO are listed add-ons. Business includes on-page SEO and Search Console, with JSON-LD and GEO/AEO optional. Growth includes agreed launch SEO, relevant JSON-LD, Search Console and GEO/AEO work. Ongoing SEO and analytics setup are separate unless stated in the proposal.",
+    "scopeDetails": [{ "label": "Search and answer foundations", "text": "Agreed work may include clear page headings, useful answers, crawl checks and accurate entity markup. These are implementation tasks, with no guarantee of rankings or AI citations." }],
     "notIncluded": [
       "Domain, hosting and third-party subscriptions are separate.",
     ],
@@ -159,7 +161,7 @@ export const services: Service[] = [
       },
       {
         "title": "Launch",
-        "detail": "Domain connection, Search Console configuration, and a final pass on speed and mobile rendering."
+        "detail": "Domain connection, Search Console configuration where included, and a final pass on speed and mobile rendering."
       }
     ],
     "faqs": [
@@ -202,7 +204,7 @@ export const services: Service[] = [
     "slug": "brand-identity",
     "name": "Brand Identity & System",
     "category": "Brand & Content",
-    "headline": "Clarify what your business stands for and give it a consistent identity.",
+    "headline": "Distinctive identities designed for consistency, recognition and long-term use.",
     "idealClient": "New businesses building an identity, established businesses rebranding, and teams that need consistent brand guidance.",
     "problemSolved": "An absent or mismatched logo, inconsistent visual and verbal identity, or no practical brand reference for the team.",
     "tiers": [
@@ -342,7 +344,7 @@ export const services: Service[] = [
     "slug": "ecommerce-store-development",
     "name": "E-commerce Store Development",
     "category": "Websites & Commerce",
-    "headline": "Shopify, Wix and WooCommerce stores with clear products and a usable buying journey.",
+    "headline": "Online stores that bring your brand to life and make the journey from discovery to purchase clear.",
     "scopeClarification": "What we handle: setup, listings, descriptions, images, training and platform management. What you handle: inventory, orders, shipping, returns and customer support. Need help with operations? Ask about our optional monthly operations service.",
     "scopeDetails": [{ "label": "Online stores:", "text": "Shopify, Wix, WooCommerce" }],
     "idealClient": "Product businesses launching or improving a store, moving platforms, or needing catalogue setup and platform guidance.",
@@ -494,7 +496,7 @@ export const services: Service[] = [
     "slug": "ecommerce-seo",
     "name": "SEO Services",
     "category": "Search & Social",
-    "headline": "Ongoing search work for business websites and online stores, with clear priorities and monthly reporting.",
+    "headline": "Research-led SEO that strengthens your website, answers relevant searches and measures progress against agreed goals.",
     "scopeDetails": [
       { "label": "SEO built into your website project:", "text": "a defined scope delivered with the build." },
       { "label": "Ongoing SEO:", "text": "a separate monthly service." },
@@ -627,7 +629,7 @@ export const services: Service[] = [
     "slug": "social-media-management",
     "name": "Social Media Strategy & Management",
     "category": "Search & Social",
-    "headline": "Planned content that communicates your work, expertise and offers consistently.",
+    "headline": "Brand-consistent content with a clear message, purposeful visuals and a useful next step.",
     "scopeClarification": "What we do: strategy, design, posting, account management and reporting. We can also create AI-generated reels. What we do not do: shoot or edit video.",
     "idealClient": "Brands needing consistent monthly content, teams working across platforms, and businesses that want useful reporting alongside publishing.",
     "problemSolved": "Quiet or inconsistent profiles, no shared content calendar, and outdated profile details that make the business harder to understand.",
@@ -779,7 +781,7 @@ export const services: Service[] = [
     slug: 'marketplace-catalogue-building',
     name: 'Marketplace Catalogue Building',
     category: 'Stores & Marketplaces',
-    headline: 'Structured product catalogues for Amazon, Flipkart, Myntra and Meesho, with setup support and platform training.',
+    headline: 'Organised product information, purposeful imagery and marketplace-ready listings that help shoppers decide.',
     scopeClarification: 'What we handle: setup, listings, descriptions, images, training and platform management. What you handle: inventory, orders, shipping, returns and customer support. Need help with operations? Ask about our optional monthly operations service.',
     scopeDetails: [{ label: 'Marketplaces:', text: 'Amazon, Flipkart, Myntra, Meesho' }],
     idealClient: 'Indian product businesses preparing to sell through Amazon, Flipkart, Myntra or Meesho and teams that need an organised catalogue before launch.',

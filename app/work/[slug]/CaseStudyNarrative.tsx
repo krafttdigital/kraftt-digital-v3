@@ -1,13 +1,16 @@
 'use client';
 
+import { clientCityByProject } from '../../data/geo/clientEvidence';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { lazy, Suspense, useEffect, useRef, useState, type TouchEvent } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type PointerEvent } from 'react';
 import type { CaseStudyContent } from '../../data/caseStudies';
 import type { CaseStudyFlow, StoryImage } from '../../data/caseStudyFlow';
 import type { Project } from '../../data/projects';
 import type { ClientReview } from '../../data/reviews';
 import { trackEvent } from '../../../lib/analytics/core';
+import { AnimatedTestimonials, type Testimonial } from '../../../components/ui/animated-testimonials';
 import styles from './CaseStudyNarrative.module.css';
 
 const chapters = [
@@ -31,12 +34,10 @@ const caseStudyBanners: Record<string, string> = {
 
 const LessonMotionPlayer = lazy(() => import('./LessonMotionPlayer'));
 
-function swipeDirection(start: { x: number; y: number } | null, event: TouchEvent<HTMLElement>) {
+function swipeDirection(start: { x: number; y: number } | null, event: PointerEvent<HTMLElement>) {
   if (!start) return 0;
-  const touch = event.changedTouches[0];
-  if (!touch) return 0;
-  const x = touch.clientX - start.x;
-  const y = touch.clientY - start.y;
+  const x = event.clientX - start.x;
+  const y = event.clientY - start.y;
   return Math.abs(x) > 45 && Math.abs(x) > Math.abs(y) * 1.25 ? (x < 0 ? 1 : -1) : 0;
 }
 
@@ -69,18 +70,13 @@ export function CaseStudyNarrative({ study, flow, project, nextStories, reviews 
   const [enhanced, setEnhanced] = useState(false);
   const [revealActive, setRevealActive] = useState(false);
   const [mobileDesktop, setMobileDesktop] = useState(false);
-  const [reviewIndex, setReviewIndex] = useState(0);
   const [resultIndex, setResultIndex] = useState(0);
-  const [pauseReviews, setPauseReviews] = useState(false);
   const [pauseResults, setPauseResults] = useState(false);
   const [allowAutoplay, setAllowAutoplay] = useState(false);
-  const [reviewVisible, setReviewVisible] = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
   const [lessonVisible, setLessonVisible] = useState(false);
-  const reviewSectionRef = useRef<HTMLDivElement>(null);
   const resultSectionRef = useRef<HTMLDivElement>(null);
-  const reviewTouchRef = useRef<{ x: number; y: number } | null>(null);
-  const resultTouchRef = useRef<{ x: number; y: number } | null>(null);
+  const resultDragRef = useRef<{ id: number; x: number; y: number } | null>(null);
   const lessonMotionRef = useRef<HTMLDivElement>(null);
   const tracked = useRef(new Set<string>());
 
@@ -95,26 +91,18 @@ export function CaseStudyNarrative({ study, flow, project, nextStories, reviews 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        if (entry.target === reviewSectionRef.current) setReviewVisible(entry.isIntersecting);
         if (entry.target === resultSectionRef.current) setResultVisible(entry.isIntersecting);
         if (entry.target === lessonMotionRef.current) setLessonVisible(entry.isIntersecting);
       }
     }, { threshold: 0.2 });
-    if (reviewSectionRef.current) observer.observe(reviewSectionRef.current);
     if (resultSectionRef.current) observer.observe(resultSectionRef.current);
     if (lessonMotionRef.current) observer.observe(lessonMotionRef.current);
     return () => observer.disconnect();
-  }, [reviews.length]);
-
-  useEffect(() => {
-    if (!allowAutoplay || !reviewVisible || pauseReviews || reviews.length < 2) return;
-    const timer = window.setInterval(() => setReviewIndex((index) => (index + 1) % reviews.length), 8000);
-    return () => window.clearInterval(timer);
-  }, [allowAutoplay, reviewVisible, pauseReviews, reviewIndex, reviews.length]);
+  }, []);
 
   useEffect(() => {
     if (!allowAutoplay || !resultVisible || pauseResults || flow.results.length < 2) return;
-    const timer = window.setInterval(() => setResultIndex((index) => (index + 1) % flow.results.length), 6000);
+    const timer = window.setInterval(() => setResultIndex((index) => (index + 1) % flow.results.length), 3000);
     return () => window.clearInterval(timer);
   }, [allowAutoplay, resultVisible, pauseResults, resultIndex, flow.results.length]);
 
@@ -180,7 +168,6 @@ export function CaseStudyNarrative({ study, flow, project, nextStories, reviews 
     trackEvent('case_study_callout_open', { case_study: project.slug, cta_label: `problem_${index + 1}` });
   };
   const showBefore = Boolean(flow.start.before);
-  const activeReview = reviews[reviewIndex];
   const activeResult = flow.results[resultIndex];
 
   return (
@@ -198,6 +185,7 @@ export function CaseStudyNarrative({ study, flow, project, nextStories, reviews 
             <p className={styles.identityIntro}>{study.overview}</p>
             <p className={styles.factIntro}>A quick picture of the business</p>
             <dl className={styles.identityFacts}>
+              {clientCityByProject[project.slug] && <div><dt>Client location</dt><dd>{clientCityByProject[project.slug]}, India</dd></div>}
               <div><dt>01 / Offering</dt><dd>{flow.identity.sells}</dd></div>
               <div><dt>02 / Audience</dt><dd>{flow.identity.buyers}</dd></div>
               <div><dt>03 / Discovery</dt><dd>{flow.identity.discovery}</dd></div>
@@ -284,18 +272,22 @@ export function CaseStudyNarrative({ study, flow, project, nextStories, reviews 
           <div><span className={styles.ledgerMarker}>02</span><h3>Why we made it</h3><p className={styles.ledgerExplainer}>The visitor problem it addresses</p><ul>{flow.ledger.intended.map((item) => <li key={item}>{item}</li>)}</ul></div>
           <div><span className={styles.ledgerMarker}>03</span><h3>What the evidence shows</h3><p className={styles.ledgerExplainer}>The honest read of available proof</p>{flow.ledger.measured?.source && flow.ledger.measured.period ? <p>{flow.ledger.measured.value}<small>{flow.ledger.measured.source} · {flow.ledger.measured.period}</small></p> : <p>{flow.ledger.note}</p>}</div>
         </div>
-        {activeReview && <div ref={reviewSectionRef} className={styles.testimonialSection} onPointerEnter={(event) => { if (event.pointerType === 'mouse') setPauseReviews(true); }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') setPauseReviews(false); }} onFocusCapture={(event) => { if (event.target instanceof HTMLElement && event.target.matches(':focus-visible')) setPauseReviews(true); }} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setPauseReviews(false); }}>
-          <div className={styles.carouselHeading}><div><span>Client voice</span><h3>In their words.</h3></div>{reviews.length > 1 && <div className={styles.carouselControls}><button type="button" aria-label="Previous testimonial" onClick={() => setReviewIndex((reviewIndex - 1 + reviews.length) % reviews.length)}>←</button><span>{String(reviewIndex + 1).padStart(2, '0')} / {String(reviews.length).padStart(2, '0')}</span><button type="button" aria-label="Next testimonial" onClick={() => setReviewIndex((reviewIndex + 1) % reviews.length)}>→</button></div>}</div>
-          <div className={styles.testimonialCard} key={activeReview.id} onTouchStart={(event) => { reviewTouchRef.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }} onTouchEnd={(event) => { const direction = swipeDirection(reviewTouchRef.current, event); reviewTouchRef.current = null; if (direction) setReviewIndex((index) => (index + direction + reviews.length) % reviews.length); }} onTouchCancel={() => { reviewTouchRef.current = null; }}>
-            <div><span className={styles.quoteMark} aria-hidden="true">“</span><blockquote><p>{activeReview.review}</p>{activeReview.translation && <div className={styles.translation}><strong>English translation</strong><p>{activeReview.translation}</p></div>}<footer><strong>{activeReview.clientName}</strong><span>{activeReview.role} · {activeReview.company}</span></footer></blockquote>{activeReview.evidenceNote && <small className={styles.reviewContext}>{activeReview.evidenceNote}</small>}</div>
-            {activeReview.sourceImages?.[0] && <figure className={styles.reviewImage}><Image src={activeReview.sourceImages[0].src} alt={activeReview.sourceImages[0].alt} width={850} height={500} loading="lazy" sizes="(max-width: 760px) 90vw, 320px" /><figcaption>{activeReview.sourceImages[0].label} · supplied WhatsApp screenshot</figcaption></figure>}
-          </div>
-          {reviews.length > 1 && <><div className={styles.carouselDots} aria-label="Choose testimonial">{reviews.map((review, index) => <button key={review.id} type="button" aria-label={`Show testimonial ${index + 1}`} aria-current={reviewIndex === index ? 'true' : undefined} onClick={() => setReviewIndex(index)} />)}</div>{allowAutoplay && <p className={styles.autoNote}>Moves automatically while in view · hover or focus to pause</p>}</>}
-        </div>}
-        <div ref={resultSectionRef} className={styles.evidenceSection} onPointerEnter={(event) => { if (event.pointerType === 'mouse') setPauseResults(true); }} onPointerLeave={(event) => { if (event.pointerType === 'mouse') setPauseResults(false); }} onFocusCapture={(event) => { if (event.target instanceof HTMLElement && event.target.matches(':focus-visible')) setPauseResults(true); }} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setPauseResults(false); }}>
-          <div className={styles.carouselHeading}><div><span>Results</span><h3>{project.slug === 'gate-seeds' ? 'What was published.' : 'What appeared in search.'}</h3><p>{project.slug === 'gate-seeds' ? 'No results screenshots have been supplied for this project. These published screens show the delivered work.' : 'Original screenshots from the project’s results folder. They record individual views; search and AI results can change by time and place.'}</p></div>{flow.results.length > 1 && <div className={styles.carouselControls}><button type="button" aria-label="Previous result image" onClick={() => setResultIndex((resultIndex - 1 + flow.results.length) % flow.results.length)}>←</button><span>{String(resultIndex + 1).padStart(2, '0')} / {String(flow.results.length).padStart(2, '0')}</span><button type="button" aria-label="Next result image" onClick={() => setResultIndex((resultIndex + 1) % flow.results.length)}>→</button></div>}</div>
-          <figure className={styles.evidenceCard} key={activeResult.src} onTouchStart={(event) => { resultTouchRef.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }} onTouchEnd={(event) => { const direction = swipeDirection(resultTouchRef.current, event); resultTouchRef.current = null; if (direction) setResultIndex((index) => (index + direction + flow.results.length) % flow.results.length); }} onTouchCancel={() => { resultTouchRef.current = null; }}><div className={`${styles.evidenceImage} ${activeResult.portrait || activeResult.mobileSrc ? styles.portraitEvidence : ''}`}><Image className={activeResult.mobileSrc ? styles.desktopCapture : undefined} src={activeResult.src} alt={activeResult.alt} width={1600} height={900} loading="lazy" unoptimized sizes="(max-width: 760px) 92vw, 1000px" />{activeResult.mobileSrc && <Image className={styles.mobileCapture} src={activeResult.mobileSrc} alt={`${activeResult.alt} on mobile`} width={390} height={844} loading="lazy" unoptimized sizes="(max-width: 760px) 70vw, 1px" />}</div><figcaption><div><span>{activeResult.kind}</span>{activeResult.query && <small>Search: “{activeResult.query}”</small>}</div><div><h4>{activeResult.title}</h4><p>{activeResult.caption}</p><small>{activeResult.kind === 'Published work' ? 'Published page capture' : 'Supplied 18 Oct 2026 · Original capture date unknown'}</small></div></figcaption></figure>
-          {flow.results.length > 1 && <><div className={styles.carouselDots} aria-label="Choose result image">{flow.results.map((result, index) => <button key={result.src} type="button" aria-label={`Show result image ${index + 1}`} aria-current={resultIndex === index ? 'true' : undefined} onClick={() => setResultIndex(index)} />)}</div>{allowAutoplay && <p className={styles.autoNote}>Moves automatically while in view · hover or focus to pause</p>}</>}
+        {reviews.length > 0 && <AnimatedTestimonials variant="work" testimonials={reviews.map((review): Testimonial => ({
+          id: review.id,
+          name: review.clientName,
+          role: review.role,
+          company: review.company,
+          content: review.review,
+          translation: review.translation,
+          evidenceNote: review.evidenceNote,
+          sourceImages: review.sourceImages,
+          logo: flow.identity.logo?.src,
+          relationshipLabel: project.relationshipLabel,
+        }))} />}
+        <div ref={resultSectionRef} className={styles.evidenceSection} onFocusCapture={(event) => { if (event.target instanceof HTMLElement && event.target.matches(':focus-visible')) setPauseResults(true); }} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setPauseResults(false); }}>
+          <div className={styles.carouselHeading}><div><span>Results</span><h3>{project.slug === 'gate-seeds' ? 'What was published.' : 'What appeared in search.'}</h3><p>{project.slug === 'gate-seeds' ? 'No results screenshots have been supplied for this project. These published screens show the delivered work.' : 'Original screenshots from the project’s results folder. They record individual views; search and AI results can change by time and place.'}</p></div></div>
+          <figure className={styles.evidenceCard} key={activeResult.src} onPointerDown={(event) => { if ((event.pointerType === 'mouse' && event.button !== 0) || (event.target instanceof Element && event.target.closest('button, a'))) return; resultDragRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId); setPauseResults(true); }} onPointerUp={(event) => { const start = resultDragRef.current; resultDragRef.current = null; setPauseResults(false); if (!start || start.id !== event.pointerId) return; const direction = swipeDirection(start, event); if (direction) setResultIndex((index) => (index + direction + flow.results.length) % flow.results.length); }} onPointerCancel={() => { resultDragRef.current = null; setPauseResults(false); }}><div className={`${styles.evidenceImage} ${activeResult.portrait || activeResult.mobileSrc ? styles.portraitEvidence : ''}`}><Image className={activeResult.mobileSrc ? styles.desktopCapture : undefined} src={activeResult.src} alt={activeResult.alt} width={activeResult.portrait ? 390 : 1600} height={activeResult.portrait ? 844 : 900} loading="lazy" unoptimized draggable={false} sizes="(max-width: 760px) 92vw, 1000px" />{activeResult.mobileSrc && <Image className={styles.mobileCapture} src={activeResult.mobileSrc} alt={`${activeResult.alt} on mobile`} width={390} height={844} loading="lazy" unoptimized draggable={false} sizes="(max-width: 760px) 70vw, 1px" />}{flow.results.length > 1 && <div className={styles.evidenceOverlayControls}><button type="button" aria-label="Previous result image" onClick={() => setResultIndex((index) => (index - 1 + flow.results.length) % flow.results.length)}>←</button><span>{String(resultIndex + 1).padStart(2, '0')} / {String(flow.results.length).padStart(2, '0')}</span><button type="button" aria-label="Next result image" onClick={() => setResultIndex((index) => (index + 1) % flow.results.length)}>→</button></div>}</div><figcaption><div><span>{activeResult.kind}</span>{activeResult.query && <small>Search: “{activeResult.query}”</small>}</div><div><h4>{activeResult.title}</h4><p>{activeResult.caption}</p><small>{activeResult.kind === 'Published work' ? 'Published page capture' : 'Supplied 18 Oct 2026 · Original capture date unknown'}</small></div></figcaption></figure>
+          {flow.results.length > 1 && <><div className={styles.carouselDots} aria-label="Choose result image">{flow.results.map((result, index) => <button key={result.src} type="button" aria-label={`Show result image ${index + 1}`} aria-current={resultIndex === index ? 'true' : undefined} onClick={() => setResultIndex(index)} />)}</div>{allowAutoplay && <p className={styles.autoNote}>Moves every 3 seconds while in view · focus or drag to pause</p>}</>}
         </div>
       </section>
 

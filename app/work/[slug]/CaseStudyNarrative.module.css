@@ -160,8 +160,8 @@
 .carouselDots button { width: 30px; height: 6px; padding: 0; border: 0; border-radius: 4px; background: #c5b5a3; cursor: pointer; }
 .carouselDots button[aria-current='true'] { background: #60442d; }
 .evidenceCard { overflow: hidden; margin: 0; border: 1px solid #c9baaa; background: #f8f5f0; }
-.evidenceImage { display: grid; height: clamp(260px, 44vw, 590px); place-items: center; padding: clamp(12px, 2vw, 28px); background: #e7ded2; }
-.evidenceImage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.evidenceImage { position: relative; display: grid; height: clamp(260px, 44vw, 590px); place-items: center; padding: clamp(12px, 2vw, 28px); background: #e7ded2; }
+.evidenceImage img { display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; }
 .evidenceCard figcaption { display: flex; align-items: start; gap: 18px; padding: 19px 23px; }
 .evidenceCard figcaption span { flex: none; padding: 6px 9px; border-radius: 99px; background: #e8dcc8; color: #765333; font-size: 9px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .evidenceCard figcaption p { margin: 3px 0 0; color: #44392f; font-size: 13px; line-height: 1.55; }
@@ -247,8 +247,18 @@
 @keyframes slideReveal { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .testimonialCard, .evidenceCard { animation: slideReveal 380ms ease-out both; }
 .autoNote { margin: 10px 0 0; color: #806f5e; font-size: 10px; text-align: center; }
-.evidenceCard { height: clamp(490px, 43vw, 580px); min-height: 0; }
+.evidenceCard { height: clamp(490px, 43vw, 580px); min-height: 0; cursor: grab; }
+.evidenceCard:active { cursor: grabbing; }
+.evidenceOverlayControls { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.evidenceOverlayControls button { position: absolute; top: 50%; display: grid; width: 48px; height: 48px; place-items: center; transform: translateY(-50%); border: 1px solid #a68c72; border-radius: 50%; background: #fffdf9ed; color: #211b18; font: inherit; font-size: 21px; cursor: pointer; pointer-events: auto; }
+.evidenceOverlayControls button:first-child { left: 16px; }
+.evidenceOverlayControls button:last-child { right: 16px; }
+.evidenceOverlayControls button:hover { background: var(--raw-umber); color: #fffaf2; }
+.evidenceOverlayControls button:focus-visible { outline: 3px solid var(--raw-umber); outline-offset: 3px; }
+.evidenceOverlayControls span { position: absolute; bottom: 14px; left: 50%; padding: 6px 12px; transform: translateX(-50%); background: #fffdf9e8; color: #5f4832; font-size: 11px; font-weight: 750; white-space: nowrap; }
 .evidenceImage { height: 100%; min-height: 0; }
+.portraitEvidence { grid-template-rows: minmax(0, 1fr); overflow: hidden; }
+.portraitEvidence > img:not(.desktopCapture) { width: auto; max-width: 100%; height: 100%; max-height: 100%; aspect-ratio: 390 / 844; object-fit: contain; justify-self: center; align-self: center; }
 .evidenceImage img.mobileCapture { display: none; }
 .testimonialCard, .evidenceCard { touch-action: pan-y; }
 .evidenceCard figcaption { min-height: 0; overflow-y: auto; }
@@ -293,6 +303,9 @@
   .ledger > div + div { border: 1px solid #c8bbae; }
   .evidenceCard { grid-template-columns: 1fr; height: auto; min-height: 0; }
   .evidenceImage { height: auto; min-height: 0; aspect-ratio: 16 / 10; border-right: 0; border-bottom: 1px solid #c9baaa; }
+  .evidenceOverlayControls button { width: 40px; height: 40px; }
+  .evidenceOverlayControls button:first-child { left: 8px; }
+  .evidenceOverlayControls button:last-child { right: 8px; }
   .portraitEvidence { height: clamp(360px, 112vw, 520px); aspect-ratio: auto; }
   .evidenceImage img.desktopCapture { display: none; }
   .evidenceImage img.mobileCapture { display: block; }

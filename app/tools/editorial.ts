@@ -1,3 +1,4 @@
+import { businessGuides } from './businessGuides';
 export type ToolGuide = {
   eyebrow: string;
   headline: string;
@@ -12,6 +13,7 @@ export type ToolGuide = {
 };
 
 export const toolGuides: Record<string, ToolGuide> = {
+  ...businessGuides,
   'website-cost-calculator': {
     eyebrow: 'Website cost in India',
     headline: 'What does a business website cost in India?',

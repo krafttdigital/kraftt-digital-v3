@@ -44,6 +44,8 @@ try {
     assert.equal((await member.json()).canManageUsers, false);
     assert.equal((await worker.fetch(request(await token('tech.krafttdigital@gmail.com'), '/api/users'), env)).status, 403);
     assert.equal((await worker.fetch(request(await token('tech.krafttdigital@gmail.com'), '/api/users', 'POST'), env)).status, 403);
+    assert.equal((await worker.fetch(request(await token('tech.krafttdigital@gmail.com'), '/api/agency'), env)).status, 403);
+    assert.equal((await worker.fetch(request(await token('tech.krafttdigital@gmail.com'), '/api/agency', 'PUT'), env)).status, 403);
     assert.equal((await worker.fetch(request(await token('outsider@example.com')), env)).status, 403);
     assert.equal((await worker.fetch(new Request('https://admin.krafttdigital.in/api/users'), env)).status, 401);
     assert.equal((await worker.fetch(request('invalid.jwt.signature'), env)).status, 401);

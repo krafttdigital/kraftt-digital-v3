@@ -117,3 +117,8 @@ export function isOfferClaimable(offer: Offer, now = new Date()) {
 export function getFeaturedOffer() {
   return offers[0];
 }
+
+/** One availability rule for listings, forms and machine-readable references. */
+export function activeOffers(candidates: readonly Offer[], now = new Date()) {
+  return candidates.filter(offer => isOfferClaimable(offer, now));
+}

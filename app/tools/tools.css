@@ -584,3 +584,22 @@
   .tool-card-link > span,
   .tool-bar-track span { transition: none; }
 }
+
+/* New calculators use the existing tool form/result system. */
+.business-tool-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 24px; }
+.business-tool-controls .tool-btn { width: auto; flex: 1 1 170px; }
+.business-tool .tool-form-heading > p:last-child { color: var(--dusk); font-size: 14px; line-height: 1.6; margin: 14px 0; }
+.business-tool .business-tool-error { color: #9a3322; }
+.business-proposal { min-width: 0; margin: 24px 0 0; padding: 12px 0 0; border: 0; border-top: 1px solid var(--bone); }
+.business-proposal legend { padding-right: 12px; font-weight: 600; color: var(--midnight); }
+.business-tool-results { padding: 30px 0; }
+.business-tool-results .tool-result-list dd { overflow-wrap: anywhere; min-width: 0; }
+.business-tool-results .tool-result-list > div { gap: 12px; }
+.business-tool-notes { padding-left: 20px; color: var(--dusk); font-size: 14px; line-height: 1.65; }
+.business-tool-notes li { margin-bottom: 10px; overflow-wrap: anywhere; }
+.business-tool input:focus-visible, .business-tool select:focus-visible, .business-tool textarea:focus-visible { outline: 2px solid var(--raw-umber); outline-offset: 2px; }
+@media (max-width: 600px) {
+  .business-tool-results .tool-result-list > div { grid-template-columns: minmax(0, 1fr); }
+  .business-tool-results .tool-result-list dd { text-align: left; }
+  .tool-detail-workspace .business-tool :is(input, select, textarea) { font-size: 16px; }
+}

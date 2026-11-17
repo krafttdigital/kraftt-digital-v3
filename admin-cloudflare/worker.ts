@@ -1,5 +1,6 @@
 import { BACKUP_LIMIT, validateWorkspace } from '../lib/quotation/storage';
 import { OWNER_EMAIL, accessConfigured, activeUser, addUser, ensureUsersTable, listUsers, normalizeEmail, normalizeName, removeUser, updateUser } from './users';
+import { agencyRequest } from './agency-api';
 import type { D1Database, Fetcher } from '@cloudflare/workers-types';
 
 interface Env {
@@ -101,7 +102,7 @@ const worker = {
   async fetch(request: Request, env: Env): Promise<Response> {
     const path = new URL(request.url).pathname;
     if (!path.startsWith('/api/')) return env.ASSETS.fetch(request as never) as unknown as Promise<Response>;
-    if (!['/api/workspace', '/api/me', '/api/users'].includes(path)) return response({ error: 'Not found.' }, 404);
+    if (!['/api/workspace', '/api/me', '/api/users', '/api/agency'].includes(path)) return response({ error: 'Not found.' }, 404);
     if (!env.DB) return response({ error: 'D1 database is not bound. Complete the deployment setup.' }, 503);
     const email = await verifiedEmail(request, env);
     if (!email) return response({ error: 'Cloudflare Access sign-in required.' }, 401);
@@ -109,6 +110,7 @@ const worker = {
     let user;
     try { user = await activeUser(env.DB, email); } catch (error) { console.error('Admin user lookup failed', error); return response({ error: 'Admin user directory is temporarily unavailable.' }, 503); }
     if (!user) return response({ error: 'This email is not authorised for the admin.' }, 403);
+    if (path === '/api/agency') return user.email === OWNER_EMAIL ? agencyRequest(request, env.DB) : response({ error: 'Only the owner can open agency records.' }, 403);
     if (path === '/api/me') return request.method === 'GET' ? response({ email: user.email, name: user.name, canManageUsers: user.email === OWNER_EMAIL }) : response({ error: 'Method not allowed.' }, 405);
     if (path === '/api/users') {
       if (user.email !== OWNER_EMAIL) return response({ error: 'Only the owner can manage users.' }, 403);

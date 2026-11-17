@@ -1,188 +1,126 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Check, Clock3, X } from 'lucide-react';
-import { Footer } from '../../components/Footer';
+import { ArrowRight, Check, LayoutGrid, MessageCircle, Monitor, Palette, Search, ShieldCheck } from 'lucide-react';
 import { JsonLd } from '../../components/JsonLd';
-import { Reveal } from '../../components/Reveal';
-import { SiteHeader } from '../../components/SiteHeader';
+import { projects } from '../../data/projects';
+import { contactEmail, whatsappUrl } from '../../data/site';
 import { formatInr, getFeaturedOffer, isOfferClaimable } from '../../data/offers';
-import { projectBySlug } from '../../data/projects';
 import { absoluteUrl, createPageMetadata, createPageSchema, faqSchema, serviceSchema } from '../../data/seo';
-import { OfferClaimCta, OfferValidity } from '../OfferAvailability';
 import { OfferEnquiryForm } from '../OfferEnquiryForm';
-import { OfferProofCarousel } from '../OfferProofCarousel';
-import { PageFaq } from '@/components/ui/faq-6';
+import { CampaignTracker } from './CampaignTracker';
+import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
-
 const offer = getFeaturedOffer();
-const offerFaqs = [
-  { question: 'What is included in the ₹30,000 offer?', answer: 'A five-page responsive website, the listed brand identity deliverables and the first month of social media for one platform.' },
-  { question: 'Are third-party costs included?', answer: 'No. Hosting, domains, subscriptions, advertising spend and other external costs are excluded.' },
-  { question: 'How long is the offer available?', answer: 'The offer is available through Diwali, 8 November 2026, India time.' },
-  { question: 'What happens after I enquire?', answer: 'Kraftt checks fit, confirms the final scope and timeline, and shares the proposal directly. No payment is taken through this form.' },
+const faqs = [
+  { question: 'What is included in ₹30,000?', answer: 'A five-page responsive website, starter brand identity and the first month of social content for one platform. The full checklist is above.' },
+  { question: 'Are domain and hosting included?', answer: 'No. Domain, hosting, subscriptions and other third-party costs are separate.' },
+  { question: 'Is paid advertising included?', answer: 'No. Ad spend and ad management are outside this package.' },
+  { question: 'Can I get an e-commerce website?', answer: 'A large product catalogue needs a different scope. Tell us what you plan to sell and we can recommend the right approach.' },
+  { question: 'Can I purchase only one service?', answer: 'The ₹30,000 festive price is for all three together. A standalone service needs a separate scope.' },
+  { question: 'What happens after I apply?', answer: 'We check fit, confirm scope and timeline, then send a proposal. No payment is needed to enquire.' },
+  { question: 'What happens after the first social month?', answer: 'Further social support can be discussed and scoped separately.' },
+  { question: 'How is the timeline decided?', answer: 'We confirm it in the proposal after reviewing your content, access and requirements.' },
 ];
+const projectLabels: Record<string, string> = {
+  'kiraq-jewellery': 'Brand + Website',
+  'elixir-beverages': 'Brand + Website',
+  'mittal-architect': 'Website + Search',
+};
+const projectBanner: Record<string, { src: string; alt: string; height: number }> = {
+  'kiraq-jewellery': { src: '/assets/offers/kiraq-case-study-banner.webp', alt: 'Kiraq Jewellery brand identity, storefront and administration collage', height: 675 },
+  'elixir-beverages': { src: '/assets/offers/elixir-case-study-banner.webp', alt: 'Elixir Beverages brand identity and website collage', height: 720 },
+  'mittal-architect': { src: '/assets/offers/mittal-case-study-banner.webp', alt: 'Mittal Architect website, portfolio and search presence collage', height: 675 },
+};
+const proofProjects = offer.proofProjectSlugs.map(slug => projects.find(project => project.slug === slug)).filter((project): project is NonNullable<typeof project> => Boolean(project?.hero));
+const inclusionIcons = { website: Monitor, branding: Palette, social: LayoutGrid };
+const inclusionHeadings = { website: 'Your digital home.', branding: 'Look consistent and credible.', social: 'Launch with content ready.' };
+const inclusionItems = {
+  website: ['5 responsive pages', 'Complete on-page SEO', 'WhatsApp + contact form', 'Basic lead capture', 'Search Console setup'],
+  branding: ['Primary logo', 'Secondary logo', 'Icon logo', 'Colour palette', 'Typography system', 'Brand voice & tone guide'],
+  social: ['First month · one platform', '15 designed posts', '10 stories', 'Captions + hashtags', 'Profile setup'],
+};
 
 export function generateMetadata(): Metadata {
-  const active = isOfferClaimable(offer);
-  const description = active
-    ? `Get a five-page website, brand identity and first month of social media for ${formatInr(offer.offerPrice)}. Festive offer available through Diwali 2026.`
-    : 'Enquire about a coordinated Kraftt Digital website, brand identity and social launch.';
-
   return createPageMetadata({
-    title: `Festive Season Offer | Website, Brand & Social for ${formatInr(offer.offerPrice)} | Kraftt Digital`,
-    description,
+    title: 'Starter Business Launch | Website, Brand & Social for ₹30,000 | Kraftt Digital',
+    description: 'A five-page website, brand identity and first month of social media for ₹30,000. Festive offer through 8 November 2026.',
     path: offer.pagePath,
-    label: active ? 'Festive season offer' : 'Kraftt Digital offer',
+    label: 'Starter Business Launch',
   });
 }
 
 export default function FestiveSeasonOfferPage() {
-  const initialExpired = !isOfferClaimable(offer);
-  const pageUrl = absoluteUrl(offer.pagePath);
-  const totalBenefit = offer.individualServiceValue - offer.offerPrice;
-  const proofProjects = offer.proofProjectSlugs.flatMap((slug) => {
-    const project = projectBySlug(slug);
-    if (!project?.hero) return [];
+  const active = isOfferClaimable(offer);
+  const benefit = offer.individualServiceValue - offer.offerPrice;
+  const whatsApp = whatsappUrl(active ? "Hi Kraftt, I'm interested in the ₹30,000 Starter Business Launch offer. Please share the next steps." : "Hi Kraftt, I saw your closed Starter Business Launch campaign. I'd like to discuss a current website, brand and social scope.");
+  return <main id="campaign-landing" className={styles.page}>
+    <JsonLd data={createPageSchema({
+      name: offer.name + ' Festive Season Offer', description: offer.supportingLine, path: offer.pagePath,
+      breadcrumbs: [{ name: 'Home', path: '/' }, { name: offer.name, path: offer.pagePath }],
+      entities: [serviceSchema({ name: offer.name, description: offer.supportingLine, path: offer.pagePath }), faqSchema(faqs, offer.pagePath)],
+    })} />
+    <header className={styles.header}>
+      <Link className={styles.wordmark} href="/" aria-label="Kraftt Digital home">Kraftt<span>.</span></Link>
+      <div><span>{active ? 'Offer ends 8 Nov' : 'Offer closed'}</span><a href={whatsApp} target="_blank" rel="noopener noreferrer" aria-label="Ask Kraftt on WhatsApp"><MessageCircle size={19} aria-hidden="true" /></a></div>
+    </header>
 
-    return [{
-      slug: project.slug,
-      name: project.name,
-      projectType: project.projectType,
-      industry: project.industry,
-      relationshipLabel: project.relationshipLabel,
-      hero: project.hero,
-    }];
-  });
-  const description = `${offer.name}: a five-page website, brand identity and first month of social media for ${formatInr(offer.offerPrice)}.`;
-  const marqueeMessage = initialExpired
-    ? `${offer.name} · Campaign closed · General project enquiries are open`
-    : `${offer.name} · Website + Brand + Social · ${formatInr(offer.offerPrice)} · Total benefit ${formatInr(totalBenefit)} · Valid through ${offer.expiryLabel}`;
-
-  return (
-    <main className="campaign-offer-page">
-      <JsonLd data={createPageSchema({
-        name: `${offer.name} Festive Season Offer`,
-        description,
-        path: offer.pagePath,
-        breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Festive season offer', path: offer.pagePath }],
-        entities: [serviceSchema({ name: offer.name, description, path: offer.pagePath }), faqSchema(offerFaqs, offer.pagePath)],
-      })} />
-      <SiteHeader />
-
-      <aside className="campaign-offer-marquee" aria-label={marqueeMessage}>
-        <div className="campaign-offer-marquee-track" aria-hidden="true">
-          {[0, 1].map((group) => (
-            <div className="campaign-offer-marquee-group" key={group}>
-              {[0, 1, 2].map((item) => <span key={item}>{marqueeMessage}<i>◆</i></span>)}
-            </div>
-          ))}
+    <section id="campaign-hero" className={styles.hero} aria-labelledby="campaign-title">
+      <div className={styles.heroCopy}>
+        <p className={styles.eyebrow}>Festive business launch offer</p>
+        <h1 id="campaign-title">Launch your business.<br /><em>Ready to be trusted.</em></h1>
+        <p className={styles.heroSubline}>Website + Brand + Social</p>
+        <p className={styles.heroLead}>Everything you need for a credible digital launch — <strong>₹30,000.</strong></p>
+        <div className={styles.heroHighlights} aria-label="Offer highlights">
+          <span><Monitor aria-hidden="true" />5-page website</span>
+          <span><Palette aria-hidden="true" />Complete brand identity</span>
+          <span><LayoutGrid aria-hidden="true" />15 posts + 10 stories</span>
         </div>
-      </aside>
-
-      <section className="campaign-conversion-hero" aria-labelledby="campaign-offer-title">
-        <div className="campaign-offer-summary">
-          <div className="campaign-offer-kicker">
-            <span>Festive season offer</span>
-            <OfferValidity expiresAt={offer.expiresAt} expiryLabel={offer.expiryLabel} initialExpired={initialExpired} />
-          </div>
-          <p className="eyebrow eyebrow-dark">{offer.name}</p>
-          <h1 id="campaign-offer-title">Website. Brand. Social.<br /><em>One clear launch.</em></h1>
-          <p className="campaign-offer-lede">A complete digital launch for businesses ready to look credible, get discovered and start receiving enquiries.</p>
-
-          <div className="campaign-offer-price-row">
-            <div className="campaign-offer-price"><span>Festive offer</span><strong>{formatInr(offer.offerPrice)}</strong></div>
-            <div className="campaign-offer-saving">
-              <span>Your total benefit {formatInr(totalBenefit)}</span>
-              <p><s>{formatInr(offer.regularBundlePrice)}</s> regular bundle</p>
-              <p><s>{formatInr(offer.individualServiceValue)}</s> individual value</p>
-            </div>
-          </div>
-
-          <ul className="campaign-quick-value" aria-label="Offer highlights">
-            <li><Check size={15} aria-hidden="true" /> Five-page website</li>
-            <li><Check size={15} aria-hidden="true" /> Complete brand identity</li>
-            <li><Check size={15} aria-hidden="true" /> First month of social</li>
-          </ul>
-
-          <div className="campaign-motion-card">
-            <video autoPlay loop muted playsInline preload="auto" aria-hidden="true">
-              <source src="/assets/offers/shopping-options.mp4" type="video/mp4" />
-            </video>
-            <div><span>One coordinated offer</span><strong>Website + brand + social</strong></div>
-          </div>
-          <a className="campaign-detail-link" href="#what-you-get">See everything included <span aria-hidden="true">↓</span></a>
+        <div className={styles.heroPrice} aria-label="Festive price and saving">
+          <div><small>Individual value</small><s>{formatInr(offer.individualServiceValue)}</s></div>
+          <ArrowRight size={20} aria-hidden="true" />
+          <div><small>Festive price</small><strong>{formatInr(offer.offerPrice)}</strong></div>
+          <span className={styles.saving}>Save {formatInr(benefit)}</span>
         </div>
+        <a className={styles.primaryCta} href="#hero-application" data-campaign-event="hero_apply_click">{active ? 'APPLY NOW' : 'SEND AN ENQUIRY'} <ArrowRight size={17} aria-hidden="true" /></a>
+        <p className={styles.microcopy}>Takes under 2 minutes · No payment now</p>
+        <p className={styles.deadline}>{active ? 'Offer ends 8 November 2026 · India time' : 'This festive offer has ended. Ask about a current scope.'}</p>
+      </div>
+      <div id="hero-application" className={styles.heroForm}>
+        <a className={styles.whatsappEnquiry} href={whatsApp} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} aria-hidden="true" /> Enquire on WhatsApp <ArrowRight size={16} aria-hidden="true" /></a>
+        <OfferEnquiryForm offer={offer} pageUrl={absoluteUrl(offer.pagePath)} initialExpired={!active} campaign campaignPlacement="hero" />
+      </div>
+    </section>
 
-        <div className="campaign-form-column" id="offer-enquiry">
-          <div className="campaign-form-assurance">
-            <span>Website + Brand + First month Social</span>
-            <strong>{formatInr(offer.offerPrice)} · Enquire in under two minutes.</strong>
-            <small>No payment now · No long brief · Direct reply</small>
-          </div>
-          <OfferEnquiryForm offer={offer} pageUrl={pageUrl} initialExpired={initialExpired} compact />
-          <ol className="campaign-next-steps" aria-label="What happens next">
-            <li><span>01</span> Send interest</li><li><span>02</span> We check fit</li><li><span>03</span> Receive proposal</li>
-          </ol>
-        </div>
-      </section>
+    <section id="campaign-projects" className={styles.section} aria-labelledby="campaign-projects-title">
+      <div className={styles.sectionHead}><p className={styles.eyebrow}>Proof in the work</p><h2 id="campaign-projects-title">Real work. <em>Real businesses.</em></h2></div>
+      <div className={styles.projects}>{proofProjects.map(project => <Link className={styles.projectCard} href={`/work/${project.slug}`} key={project.slug} data-campaign-event="project_click" data-project={project.slug}>
+        {projectBanner[project.slug] && <div className={styles.projectImage}><Image src={projectBanner[project.slug].src} alt={projectBanner[project.slug].alt} width={1200} height={projectBanner[project.slug].height} sizes="(max-width: 700px) 92vw, (max-width: 1050px) 45vw, 30vw" /></div>}
+        <div><span><strong>{project.name}</strong><small>{projectLabels[project.slug]}</small></span><ArrowRight size={18} aria-hidden="true" /></div>
+      </Link>)}</div>
+    </section>
 
-      <section className="campaign-inclusions" id="what-you-get" aria-labelledby="campaign-inclusions-title">
-        <Reveal className="campaign-section-heading">
-          <div><p className="eyebrow eyebrow-dark">Everything included · 01—03</p><h2 id="campaign-inclusions-title">Three launch essentials.<br /><em>One clear investment.</em></h2></div>
-          <p>One team coordinates the customer-facing pieces your business needs to launch with clarity.</p>
-        </Reveal>
-        <div className="campaign-inclusions-grid">
-          {offer.inclusions.map((inclusion, index) => (
-            <Reveal className="campaign-inclusion-card" key={inclusion.id} delay={index * 0.07}>
-              <div><span>{String(index + 1).padStart(2, '0')}</span><small>{inclusion.items.length} inclusions</small></div>
-              <h3>{inclusion.title}</h3><p>{inclusion.summary}</p>
-              <ul>{inclusion.items.map((item) => <li key={item}><Check size={15} aria-hidden="true" /><span>{item}</span></li>)}</ul>
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="campaign-value-bar">
-          <div><span>You receive</span><strong>Website + Branding + Social</strong></div>
-          <div><span>Festive investment</span><strong>{formatInr(offer.offerPrice)}</strong></div>
-          <OfferClaimCta expiresAt={offer.expiresAt} initialExpired={initialExpired} />
-        </Reveal>
-      </section>
+    <section id="campaign-details" className={`${styles.section} ${styles.included}`} aria-labelledby="campaign-details-title">
+      <div className={styles.sectionHead}><p className={styles.eyebrow}>What you get</p><h2 id="campaign-details-title">Everything included.</h2></div>
+      <div className={styles.inclusionGrid}>{offer.inclusions.map(item => {
+        const Icon = inclusionIcons[item.id as keyof typeof inclusionIcons];
+        const items = inclusionItems[item.id as keyof typeof inclusionItems];
+        return <article key={item.id} className={styles.inclusionCard}><div className={styles.cardIcon}>{Icon && <Icon size={24} strokeWidth={1.5} aria-hidden="true" />}</div><p className={styles.eyebrow}>{item.title}</p><h3>{inclusionHeadings[item.id as keyof typeof inclusionHeadings]}</h3><ul>{items?.map(detail => <li key={detail}><Check size={16} aria-hidden="true" />{detail}</li>)}</ul></article>;
+      })}</div>
+    </section>
 
-      <section className="campaign-fit" aria-labelledby="campaign-fit-title">
-        <Reveal className="campaign-fit-intro" direction="left">
-          <p className="eyebrow">Who this is for</p><h2 id="campaign-fit-title">Best for a business ready to launch—not keep planning.</h2>
-          <p>Choose this offer when you need a credible first presence across website, identity and social together.</p>
-          <OfferClaimCta expiresAt={offer.expiresAt} initialExpired={initialExpired} />
-        </Reveal>
-        <div className="campaign-fit-cards">
-          <Reveal className="campaign-fit-card is-positive"><strong><Check size={18} aria-hidden="true" /> Strong fit</strong><ul>{offer.bestFor.map((item) => <li key={item}><Check size={15} aria-hidden="true" /><span>{item}</span></li>)}</ul></Reveal>
-          <Reveal className="campaign-fit-card" delay={0.07}><strong><X size={18} aria-hidden="true" /> Better with another scope</strong><ul>{offer.notFor.map((item) => <li key={item}><X size={15} aria-hidden="true" /><span>{item}</span></li>)}</ul><Link href="/services">See other services <ArrowUpRight size={14} aria-hidden="true" /></Link></Reveal>
-        </div>
-      </section>
+    <section className={`${styles.section} ${styles.outcomes}`} aria-labelledby="campaign-outcomes-title"><div className={styles.sectionHead}><p className={styles.eyebrow}>One team. One launch.</p><h2 id="campaign-outcomes-title">Ready to show up.</h2></div><div className={styles.outcomeGrid}><div><ShieldCheck aria-hidden="true" /><strong>Look credible</strong></div><div><Search aria-hidden="true" /><strong>Get discovered</strong></div><div><MessageCircle aria-hidden="true" /><strong>Start receiving enquiries</strong></div></div></section>
 
-      <section className="campaign-proof" aria-labelledby="campaign-proof-title">
-        <Reveal className="campaign-section-heading">
-          <div><p className="eyebrow eyebrow-dark">Genuine project proof</p><h2 id="campaign-proof-title">See the kind of work<br /><em>your launch can build on.</em></h2></div>
-          <p>Real Kraftt projects combining websites, identity, content and enquiry journeys.</p>
-        </Reveal>
-        <Reveal>
-          <OfferProofCarousel projects={proofProjects} />
-        </Reveal>
-      </section>
+    <section className={`${styles.section} ${styles.fit}`} aria-labelledby="campaign-fit-title"><div className={styles.sectionHead}><p className={styles.eyebrow}>The right fit</p><h2 id="campaign-fit-title">Is this for you?</h2></div><div className={styles.fitGrid}><div><h3>Good fit</h3><ul>{['Starting a new business', 'Local business going digital', 'Founder launching a new offer', 'Relying on Instagram or WhatsApp', 'Need website + branding + social together'].map(value => <li key={value}><Check size={16} aria-hidden="true" />{value}</li>)}</ul></div><div><h3>Another scope fits better</h3><ul>{['Large e-commerce catalogue', 'Major established-business rebuild', 'Only one standalone service'].map(value => <li key={value}><span aria-hidden="true">×</span>{value}</li>)}</ul></div></div></section>
 
-      <section className="campaign-terms" aria-labelledby="campaign-terms-title">
-        <Reveal className="campaign-terms-card" direction="left">
-          <Clock3 size={22} aria-hidden="true" /><div><p className="eyebrow">Offer terms</p><h2 id="campaign-terms-title">Clear before you enquire.</h2><ul>{offer.terms.map((term) => <li key={term}><Check size={14} aria-hidden="true" /><span>{term}</span></li>)}</ul></div>
-        </Reveal>
-      </section>
+    <section id="campaign-price" className={`${styles.section} ${styles.priceSection}`} aria-labelledby="campaign-price-title"><div><p className={styles.eyebrow}>The investment</p><h2 id="campaign-price-title">One clear investment.</h2><p>Website + Brand + Social</p></div><div className={styles.pricePanel}><div><span>Individual value</span><s>{formatInr(offer.individualServiceValue)}</s></div><div><span>Regular Kraftt bundle</span><s>{formatInr(offer.regularBundlePrice)}</s></div><div className={styles.priceNow}><span>Festive price</span><strong>{formatInr(offer.offerPrice)}</strong></div><p>Save {formatInr(benefit)} versus individual purchase</p><small>{active ? 'Valid through 8 November 2026 · India time' : 'This festive offer has ended.'}</small><a className={styles.primaryCta} href="#hero-application">{active ? 'APPLY NOW' : 'SEND AN ENQUIRY'} <ArrowRight size={17} aria-hidden="true" /></a><small>No payment required to enquire.</small></div></section>
 
-      <section className="page-faq-section campaign-page-faq" aria-labelledby="campaign-faq-title"><div className="page-faq-inner">
-        <Reveal className="page-faq-heading" direction="left"><div><p className="eyebrow eyebrow-dark">Quick answers · offer FAQ</p><h2 id="campaign-faq-title">Know the details<br /><em>before you enquire.</em></h2></div><div><p>What is included, what remains separate and what happens after you submit an enquiry.</p><span className="page-faq-actions"><OfferClaimCta expiresAt={offer.expiresAt} initialExpired={initialExpired} /></span></div></Reveal>
-        <PageFaq title={`${offer.name} questions`} items={offerFaqs} categoryTitles={['Offer essentials', 'Delivery and conditions']} />
-      </div></section>
+    <section className={`${styles.section} ${styles.process}`} aria-labelledby="campaign-process-title"><div className={styles.sectionHead}><p className={styles.eyebrow}>Three steps</p><h2 id="campaign-process-title">How it works.</h2></div><ol><li><span>01</span><strong>Apply</strong><p>Share basic business details.</p></li><li><span>02</span><strong>We check fit</strong><p>Kraftt reviews what you need.</p></li><li><span>03</span><strong>Get your proposal</strong><p>We confirm scope, timeline and next steps.</p></li></ol></section>
 
-      <OfferClaimCta className="button button-accent" expiresAt={offer.expiresAt} initialExpired={initialExpired} sticky />
-      <Footer />
-    </main>
-  );
+    <section id="campaign-faq" className={`${styles.section} ${styles.faq}`} aria-labelledby="campaign-faq-title"><div className={styles.sectionHead}><p className={styles.eyebrow}>The essentials</p><h2 id="campaign-faq-title">Questions, answered.</h2></div><div className={styles.faqList}>{faqs.map(({ question, answer }) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+    <footer className={styles.footer}><span>Kraftt Digital · Starter Business Launch</span><div><a href={`mailto:${contactEmail}`}>{contactEmail}</a><Link href="/legal/privacy-policy">Privacy</Link></div></footer>
+    <CampaignTracker expiresAt={offer.expiresAt} initialExpired={!active} />
+  </main>;
 }

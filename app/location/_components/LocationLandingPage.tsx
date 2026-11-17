@@ -1,3 +1,4 @@
+import { LocalWorkEvidence } from './LocalWorkEvidence';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, MapPin, Users, Video } from 'lucide-react';
@@ -94,6 +95,8 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
           {market.nearbyAreas.length > 0 && <div className={styles.nearbyAreas}><span><MapPin size={15} aria-hidden="true" /> Also serving nearby</span><ul>{market.nearbyAreas.map((area) => <li key={area}>{area}</li>)}</ul></div>}
         </div>
       </section>
+
+      <LocalWorkEvidence city={market.slug} name={market.name} />
 
       <section className={`home-services-play section-light ${styles.servicesSection}`} data-service-count={String(featuredServices.length).padStart(2, '0')} id="what-we-build">
         <div className="home-services-play-inner">

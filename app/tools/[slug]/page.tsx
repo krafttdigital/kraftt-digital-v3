@@ -1,3 +1,5 @@
+import { BusinessCalculator } from '../components/BusinessCalculator';
+import { businessTools } from '../businessModels';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { JsonLd } from '../../components/JsonLd';
@@ -14,7 +16,6 @@ import { toolBySlug, tools } from '../data';
 import { toolGuides } from '../editorial';
 
 const dynamicToolSlugs = tools.map((tool) => tool.slug).filter((slug) => slug !== 'digital-presence-score');
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 export function generateStaticParams() { return dynamicToolSlugs.map((slug) => ({ slug })); }
 
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function Calculator({ slug }: { slug: string }) {
+  if (businessTools.some(tool => tool.slug === slug)) return <BusinessCalculator key={slug} slug={slug} />;
   switch (slug) {
     case 'website-cost-calculator': return <WebsiteCostCalculator />;
     case 'social-media-cost-calculator': return <SocialMediaCostCalculator />;

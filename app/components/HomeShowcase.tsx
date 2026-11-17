@@ -20,7 +20,7 @@ type HomeShowcaseProps = {
 
 export function HomeShowcase({
   eyebrow = 'Branding · Websites · E-commerce · SEO · Social Media',
-  intro = 'A founder-led studio that explains what you need before you pay for it, then builds it customly.',
+  intro = 'Websites, online stores and brand identities shaped around your business. We begin with research, explain the choices and agree the scope around your priorities and budget.',
   isHomepage = true,
 }: HomeShowcaseProps = {}) {
   return (
@@ -48,10 +48,11 @@ export function HomeShowcase({
             <span>Research</span><i /><span>Choice</span>
           </div>
           <Image
-            src="/kraftt-flat-team-hero-transparent.png"
+            src="/kraftt-flat-team-hero-transparent.webp"
             alt="Kraftt team planning a connected brand, website and digital growth system"
             fill
             priority
+            unoptimized
             sizes="(max-width: 900px) 96vw, 55vw"
           />
           <p><strong>K.</strong><span>One clear presence<br />across every surface</span></p>

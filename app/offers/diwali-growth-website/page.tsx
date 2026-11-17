@@ -29,7 +29,7 @@ const benefitIcons = [BadgePercent, BarChart3, Wrench, Globe, Palette];
 const faqs = [
   { question: 'What does the Growth Website include?', answer: 'Basic branding, an 8–10 page responsive website, agreed launch SEO and JSON-LD schema markup, GEO and AEO implementation, Google Search Console setup, WhatsApp and email enquiry routes, and a blog section. The final page list is agreed in your proposal.' },
   { question: 'When can the website be delivered?', answer: `The estimate is ${diwaliGrowthDelivery}. The timeline begins after the agreed content, access and approvals are complete.` },
-  { question: 'How long is the offer available?', answer: `Limited project slots are available until ${offer.expiryLabel}, or until they are taken. A slot is held only after the proposal is accepted and the advance is paid.` },
+  { question: 'How long is the offer available?', answer: `This campaign ran until ${offer.expiryLabel}, subject to project availability. A slot is held only after the proposal is accepted and the advance is paid.` },
   { question: 'Are hosting and domain renewal included?', answer: 'The .in domain is included for its first year. The client pays for renewal, hosting and other third-party costs.' },
   { question: 'Are ad spend and ad management included?', answer: 'No. The offer includes five static AI ad creatives for your own campaigns. Ad spend and campaign management are separate.' },
   { question: 'What is included in maintenance?', answer: 'Three months of maintenance and support are included, with one monthly analytics report during each of those months. The reports have no separate value in the ₹16,000 benefit total.' },
@@ -94,8 +94,8 @@ export default function DiwaliGrowthWebsitePage() {
         <div className={styles.heroKicker}>
           <p className={styles.overline}>{offer.name}</p>
         </div>
-        <h1 id="diwali-growth-title">Limited Slot&apos;s. <em>Apply for your digital presence.</em></h1>
-        <p className={styles.heroTagline}>Get your business a new digital look this Diwali.</p>
+        <h1 id="diwali-growth-title">{expired ? <>Diwali campaign closed.<em>Plan your next website.</em></> : <>Limited slots.<em>Apply for your digital presence.</em></>}</h1>
+        <p className={styles.heroTagline}>{expired ? "Offer ended 8 November 2026 · India time." : "Get your business a new digital look this Diwali."}</p>
         <p className={styles.heroDescription}>Bring a high-end website, search foundations and clear enquiry paths together in one digital presence.</p>
         {/* <div className={styles.heroFacts}><span><strong>{formatInr(offer.offerPrice)}</strong> Growth Website</span><span><strong>{formatInr(diwaliGrowthBenefitTotal)}</strong> in added benefits</span></div> */}
         <p className={styles.delivery}><Clock3 size={16} aria-hidden="true" /> Estimated delivery: <strong>{diwaliGrowthDelivery}.</strong></p>

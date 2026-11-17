@@ -29,7 +29,6 @@ const bundleProcess = [
   { label: 'Start', title: 'Project starts', detail: 'Once approved and access is shared, work begins with visible milestones and regular updates.', badge: 'Visible milestones' },
 ];
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {

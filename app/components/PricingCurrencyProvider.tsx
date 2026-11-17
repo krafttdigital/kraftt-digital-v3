@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import {
   formatRegionalAmount,
   regionalizePriceCopy,
@@ -10,7 +10,23 @@ import {
 
 const PricingCurrencyContext = createContext<PricingCurrency>('INR');
 
-export function PricingCurrencyProvider({ currency, children }: { currency: PricingCurrency; children: ReactNode }) {
+export function PricingCurrencyProvider({ children }: { children: ReactNode }) {
+  const [currency, setCurrency] = useState<PricingCurrency>('INR');
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/pricing-currency', { signal: controller.signal, cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((result: unknown) => {
+        if (!result || typeof result !== 'object' || !('currency' in result)) return;
+        if (result.currency !== 'INR' && result.currency !== 'USD') return;
+        setCurrency(result.currency);
+      })
+      .catch(() => {});
+
+    return () => controller.abort();
+  }, []);
+
   return <PricingCurrencyContext.Provider value={currency}>{children}</PricingCurrencyContext.Provider>;
 }
 

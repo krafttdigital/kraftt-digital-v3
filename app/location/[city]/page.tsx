@@ -4,7 +4,6 @@ import { LocationLandingPage } from '../_components/LocationLandingPage';
 import { locationBySlug, locations } from '../../data/geo';
 import { createPageMetadata } from '../../data/seo';
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {

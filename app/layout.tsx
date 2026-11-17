@@ -11,15 +11,13 @@ import './globals.css';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { JsonLd } from './components/JsonLd';
 import { PricingCurrencyProvider } from './components/PricingCurrencyProvider';
-import { SiteLoader } from './components/SiteLoader';
-import { detectPricingCurrency } from './data/pricing.server';
 import { metadataByPath, organizationAndWebsiteSchema } from './data/seo';
 import { siteUrl } from './data/site';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['300', '400'],
+  weight: ['300', '400', '700'],
 });
 
 const outfit = Outfit({
@@ -79,9 +77,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const currency = await detectPricingCurrency();
-
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
@@ -95,8 +91,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className={`${cormorant.variable} ${outfit.variable}`}>
         <PublicRouteOnly>{analyticsConfig.gtmId && <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${analyticsConfig.gtmId}`} height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} title="Google Tag Manager" /></noscript>}</PublicRouteOnly>
         <AnalyticsRuntime services={Object.fromEntries(services.map(service => [service.name, SERVICE_MAP[service.slug]]))} paths={[...sitemap().map(item => new URL(item.url).pathname.replace(/\/$/, '') || '/'), '/offers', '/thank-you']} />
-        <PublicRouteOnly><SiteLoader /></PublicRouteOnly>
-        <PricingCurrencyProvider currency={currency}>
+        <PricingCurrencyProvider>
           <JsonLd data={organizationAndWebsiteSchema()} />
           {children}
           <PublicRouteOnly><FloatingWhatsApp /></PublicRouteOnly>

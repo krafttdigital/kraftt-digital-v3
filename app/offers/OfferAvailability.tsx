@@ -17,7 +17,7 @@ export function useOfferExpired(expiresAt: string, initialExpired: boolean, forc
     return () => window.clearTimeout(timer);
   }, [expiresAt, forcedExpired]);
 
-  return expired;
+  return forcedExpired || expired;
 }
 
 export function OfferValidity({

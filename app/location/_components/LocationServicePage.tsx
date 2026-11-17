@@ -1,3 +1,4 @@
+import { LocalWorkEvidence } from './LocalWorkEvidence';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Clock3 } from 'lucide-react';
@@ -101,6 +102,8 @@ export function LocationServicePage({ market, service, siblingServices }: Locati
 
         </div>
       </section>
+
+      <LocalWorkEvidence city={market.slug} name={market.name} service={service.slug} />
 
       <section className="service-simple-packages" id="packages" aria-labelledby="service-packages-title">
         <div className="service-simple-shell">

@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useRef, useState, type FormEvent } from 'react';
 import { trackFormSuccess } from '../../../lib/analytics/core';
-import type { Offer } from '../../data/offers';
+import { isOfferClaimable, type Offer } from '../../data/offers';
+import { ClosedOffer } from '../ClosedOffer';
 import { useOfferExpired } from '../OfferAvailability';
 import { submitOfferEnquiry } from '../offerSubmission';
 import styles from './page.module.css';
@@ -20,7 +21,7 @@ export function DiwaliGrowthEnquiryForm({ offer, pageUrl, initialExpired }: { of
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = formRef.current;
-    if (!form || inFlightRef.current || !form.reportValidity()) return;
+    if (!form || inFlightRef.current || !isOfferClaimable(offer) || !form.reportValidity()) return;
 
     inFlightRef.current = true;
     setErrorMessage('');
@@ -43,7 +44,7 @@ export function DiwaliGrowthEnquiryForm({ offer, pageUrl, initialExpired }: { of
     }
   }
 
-  return <form ref={formRef} className={styles.form} data-analytics-form="offer_enquiry" action={offer.formEndpoint} method="POST" onSubmit={handleSubmit}>
+  return <ClosedOffer offer={offer} initialExpired={expired}><form ref={formRef} className={styles.form} data-analytics-form="offer_enquiry" action={offer.formEndpoint} method="POST" onSubmit={handleSubmit}>
     <input type="hidden" name="offer_id" value={offer.id} />
     <input type="hidden" name="offer_name" value={offer.name} />
     <input type="hidden" name="offer_price_inr" value={offer.offerPrice} />
@@ -66,5 +67,5 @@ export function DiwaliGrowthEnquiryForm({ offer, pageUrl, initialExpired }: { of
     <p className={styles.formNote}>We check fit, then send a proposal. No payment now.</p>
     {state === 'success' && <p className={styles.success} role="status"><strong>Enquiry received.</strong> Kraftt will review it and reply directly.</p>}
     {state === 'error' && <p className={styles.error} role="alert"><strong>Your enquiry was not sent.</strong> {errorMessage}</p>}
-  </form>;
+  </form></ClosedOffer>;
 }

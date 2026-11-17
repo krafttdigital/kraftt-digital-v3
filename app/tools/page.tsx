@@ -17,7 +17,7 @@ export default function ToolsPage() {
       <JsonLd data={createPageSchema({ name: pageTitle, description: pageDescription, path: '/tools', breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Tools', path: '/tools' }] })} />
       <header className="tool-hub-hero">
         <div className="tool-hub-hero-copy">
-          <p className="tool-eyebrow">Kraftt utility desk · 07 free tools</p>
+          <p className="tool-eyebrow">Kraftt utility desk · {tools.length} free tools</p>
           <h1>Useful answers.<br /><em>Without the guesswork.</em></h1>
         </div>
         <div className="tool-hub-hero-detail">
@@ -31,7 +31,7 @@ export default function ToolsPage() {
 
       <section className="tool-hub-proof" aria-label="Tools suite benefits">
         <p>Built for useful decisions</p>
-        <div><strong>07</strong><span>Free tools</span></div>
+        <div><strong>{tools.length}</strong><span>Free tools</span></div>
         <div><strong>0</strong><span>Logins required</span></div>
         <div><strong>Live</strong><span>Results in place</span></div>
         <div><strong>Clear</strong><span>Results before enquiry</span></div>
@@ -40,11 +40,15 @@ export default function ToolsPage() {
       <main>
         <section className="tool-group tool-group-primary" aria-labelledby="growth-tools-title">
           <div className="tool-group-heading"><span>01</span><div><p className="tool-eyebrow">Plan before you spend</p><h2 id="growth-tools-title">Digital growth,<br /><em>made measurable.</em></h2><p>Check visibility, estimate costs and model likely returns before choosing the next step.</p></div></div>
-          <div className="tool-card-grid">{growthTools.map((tool, index) => <ToolCard tool={tool} index={index} featured={index === 0} key={tool.slug} />)}</div>
+          <div className="tool-card-grid">
+            {growthTools.map((tool) => <ToolCard key={tool.slug} tool={tool} featured={tool.slug === 'digital-presence-score'} />)}
+          </div>
         </section>
         <section className="tool-group tool-group-secondary" aria-labelledby="utility-tools-title">
-          <div className="tool-group-heading"><span>02</span><div><p className="tool-eyebrow">Everyday business utility</p><h2 id="utility-tools-title">Simple tools for<br /><em>real business work.</em></h2><p>Calculate GST or prepare an invoice quickly—without accounts, sign-ups or stored data.</p></div></div>
-          <div className="tool-card-grid tool-card-grid-secondary">{utilityTools.map((tool, index) => <ToolCard tool={tool} index={index} key={tool.slug} />)}</div>
+          <div className="tool-group-heading"><span>02</span><div><p className="tool-eyebrow">Everyday business utility</p><h2 id="utility-tools-title">Simple tools for<br /><em>real business work.</em></h2><p>Check costs, contribution and pricing, calculate GST or prepare an invoice—without accounts or stored inputs.</p></div></div>
+          <div className="tool-card-grid tool-card-grid-secondary">
+            {utilityTools.map((tool) => <ToolCard key={tool.slug} tool={tool} />)}
+          </div>
         </section>
       </main>
     </ToolPage>

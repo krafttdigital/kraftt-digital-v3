@@ -22,8 +22,8 @@
     }
   ],
   "vars": {
-    "ACCESS_TEAM_DOMAIN": "twilight-grass-87d1.cloudflareaccess.com",
+    "ACCESS_ACCOUNT_ID": "bb26343ad536ce42fc95a788b5725b52",
     "ACCESS_AUD": "16aea161563102dd7a7d952e4943ade0a74dde1ab3b534a11364cabd6842507c",
-    "ACCESS_ACCOUNT_ID": "bb26343ad536ce42fc95a788b5725b52"
+    "ACCESS_TEAM_DOMAIN": "twilight-grass-87d1.cloudflareaccess.com"
   }
 }

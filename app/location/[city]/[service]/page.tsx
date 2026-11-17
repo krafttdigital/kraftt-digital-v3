@@ -5,7 +5,6 @@ import { enabledLocationServices, isLocationServiceEnabled, locationBySlug, loca
 import { createPageMetadata } from '../../../data/seo';
 import { serviceBySlug } from '../../../data/services';
 
-export const dynamic = 'force-dynamic';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
