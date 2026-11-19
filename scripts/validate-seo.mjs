@@ -3,6 +3,7 @@ import { loadProjectModule } from './quotation-test-modules.mjs';
 const metadataMaster = JSON.parse(await readFile(new URL('../app/data/metadata-master.json', import.meta.url), 'utf8'));
 const { formatServicePrice, geographicCurrency } = loadProjectModule('app/data/pricing.ts');
 const { serviceBySlug } = loadProjectModule('app/data/services.ts');
+const { siteUrl } = loadProjectModule('app/data/site.ts');
 const baseUrl = (process.env.SEO_VALIDATE_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 
 const decode = (value = '') => value
@@ -32,21 +33,39 @@ const productionUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) =
 if (productionUrls.length === 0) throw new Error('Sitemap contains no URLs.');
 
 const failures = [];
+const origin = new URL(siteUrl).origin;
+const paths = new Map();
+for (const value of productionUrls) {
+  let url;
+  try { url = new URL(value); } catch {
+    failures.push(`Invalid sitemap URL: ${value}`);
+    continue;
+  }
+  if (url.origin !== origin || url.search || url.hash || url.username || url.password || value !== url.href) {
+    failures.push(`Sitemap URL must be a canonical site path: ${value}`);
+    continue;
+  }
+  const key = url.pathname.replace(/\/$/, '') || '/';
+  if (paths.has(key)) failures.push(`Duplicate sitemap path: ${value}`);
+  else paths.set(key, value);
+}
 for (const path of Object.keys(metadataMaster)) {
-  if (!productionUrls.some(url => new URL(url).pathname === path)) failures.push(`${path}: metadata master route absent from sitemap`);
+  if (!paths.has(path)) failures.push(`${path}: metadata master route absent from sitemap`);
 }
 const titles = new Map();
 const descriptions = new Map();
 const ogImages = new Set();
 
-for (const canonicalUrl of productionUrls) {
+for (const canonicalUrl of paths.values()) {
   const path = new URL(canonicalUrl).pathname;
-  const response = await fetch(`${baseUrl}${path}`);
+  const response = await fetch(`${baseUrl}${path}`, { redirect: 'manual' });
   const html = await response.text();
   const pageTitle = title(html);
   const description = attribute(html, 'meta', 'name', 'description');
   const canonical = attribute(html, 'link', 'rel', 'canonical', 'href');
   const robots = attribute(html, 'meta', 'name', 'robots');
+  const googlebot = attribute(html, 'meta', 'name', 'googlebot');
+  const robotsHeader = response.headers.get('x-robots-tag') ?? '';
   const ogTitle = attribute(html, 'meta', 'property', 'og:title');
   const ogDescription = attribute(html, 'meta', 'property', 'og:description');
   const ogUrl = attribute(html, 'meta', 'property', 'og:url');
@@ -67,7 +86,9 @@ for (const canonicalUrl of productionUrls) {
     failures.push(`${path}: metadata differs from approved copy or regional pricing`);
   }
   if (canonical !== canonicalUrl) failures.push(`${path}: canonical ${canonical || '(missing)'} does not match ${canonicalUrl}`);
-  if (robots.toLowerCase().includes('noindex') || robots.toLowerCase().includes('nofollow') || !robots.toLowerCase().includes('index') || !robots.toLowerCase().includes('follow')) failures.push(`${path}: index/follow robots missing`);
+  if (/\b(?:noindex|none)\b/i.test([robots, googlebot, robotsHeader].join(','))) failures.push(`${path}: noindex directive in page metadata or response headers`);
+  const directives = robots.toLowerCase().split(',').map(value => value.trim());
+  if (!directives.includes('index') || !directives.includes('follow') || directives.includes('nofollow')) failures.push(`${path}: index/follow robots missing`);
   if (!ogTitle || !ogDescription || ogUrl !== canonicalUrl || !ogImage) failures.push(`${path}: incomplete Open Graph metadata`);
   if (twitterCard !== 'summary_large_image' || !twitterTitle || !twitterDescription) failures.push(`${path}: incomplete Twitter metadata`);
   if (jsonLdScripts.length < 2) failures.push(`${path}: expected global and page JSON-LD`);
@@ -90,7 +111,9 @@ for (const endpoint of ['/robots.txt', '/llms.txt']) {
 
 const thankYouResponse = await fetch(`${baseUrl}/thank-you`);
 const thankYouHtml = await thankYouResponse.text();
-if (productionUrls.some((url) => new URL(url).pathname === '/thank-you')) failures.push('/thank-you must not be in the sitemap');
+for (const path of ['/admin', '/admin/legacy', '/thank-you']) {
+  if (paths.has(path)) failures.push(`${path} must not be in the sitemap`);
+}
 if (!attribute(thankYouHtml, 'meta', 'name', 'robots').toLowerCase().includes('noindex')) failures.push('/thank-you: noindex missing');
 
 if (failures.length) {
@@ -100,4 +123,4 @@ if (failures.length) {
 }
 
 console.log(`SEO validation passed for ${productionUrls.length} sitemap URLs.`);
-console.log(`Verified HTTP 200, unique metadata, exact canonicals, social metadata and valid rendered JSON-LD.`);
+console.log('Verified unique sitemap paths, direct HTTP 200, exact canonicals, indexing directives, social metadata and valid rendered JSON-LD.');

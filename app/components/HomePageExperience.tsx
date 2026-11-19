@@ -188,7 +188,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
   };
 
   return (
-    <main>
+    <main className={geographicContext ? undefined : 'kraftt-home'}>
       <RegionalJsonLd data={{
         ...createPageSchema({
           name: schemaContext.name,

@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import ts from 'typescript';
 
 // Read the same TypeScript article registry used by static route generation.
-function load(file, mocks = {}) {
+function load(file, mocks = {}, globals = {}) {
   const filename = path.resolve(file);
   const source = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
@@ -15,10 +15,11 @@ function load(file, mocks = {}) {
   vm.runInNewContext(source, {
     exports: testModule.exports,
     module: testModule,
+    ...globals,
     require(name) {
       if (name in mocks) return mocks[name];
       assert.ok(name.startsWith('.'), `Unexpected module in article data: ${name}`);
-      return load(path.resolve(path.dirname(filename), name + '.ts'), mocks);
+      return load(path.resolve(path.dirname(filename), name + '.ts'), mocks, globals);
     },
   }, { filename });
   return testModule.exports;
@@ -39,6 +40,48 @@ test('publication status controls routes, including past drafts and future dated
   assert.equal(fixtureRegistry.findPublishedPost(published.slug).slug, published.slug);
   assert.equal(fixtureRegistry.findPublishedPost(draft.slug), undefined);
   assert.equal(fixtureRegistry.findPublishedPost('missing-article'), undefined);
+});
+
+test('sitemap omits drafts and future articles until their India publication date', () => {
+  const draft = { ...posts[0], slug: 'draft', status: 'draft', publishedAt: '2026-11-01' };
+  const scheduled = { ...posts[0], slug: 'scheduled', publishedAt: '2026-11-20', updatedAt: '2026-11-20' };
+  const current = { ...posts[0], slug: 'current', publishedAt: '2026-11-18', updatedAt: '2026-11-19' };
+  const origin = 'https://krafttdigital.in';
+  const mock = {
+    './articles/small-business-website-design': { smallBusinessWebsitePost: draft },
+    './articles/brand-identity-for-startups': { startupBrandingPost: scheduled },
+    './data/bundles': { bundles: [] },
+    './data/diwaliGrowthOffer': { diwaliGrowthOffer: { pagePath: '/offers/diwali-growth-website' } },
+    './data/offers': { offers: [{ pagePath: '/offers/campaign-festive-season-offer' }] },
+    './data/geo': { locationHubPaths: [], locationServicePaths: [], regionHubPaths: [], regionServicePaths: [] },
+    './data/projects': { projects: [] },
+    './data/services': { services: [] },
+    './data/seo': { absoluteUrl: value => value === '/' ? origin : origin + value },
+    './tools/data': { tools: [{ slug: 'digital-presence-score' }] },
+  };
+  const fixture = load('app/blog/posts.ts', mock);
+  mock['./blog/posts'] = { publishedPosts: () => [...fixture.publishedPosts(), current] };
+  const sitemapAt = (instant) => {
+    class FixedDate extends Date {
+      constructor() { super(instant); }
+    }
+    const routes = load('app/sitemap.ts', mock, { Date: FixedDate }).default();
+    return new Map(routes.map(route => [new URL(route.url).pathname, route]));
+  };
+
+  const beforeMidnight = sitemapAt('2026-11-19T18:29:59Z');
+  assert.equal(beforeMidnight.has('/blog/draft'), false);
+  assert.equal(beforeMidnight.has('/blog/scheduled'), false);
+  assert.equal(beforeMidnight.get('/blog').lastModified, '2026-11-18');
+  assert.equal(beforeMidnight.get('/blog/current').lastModified, '2026-11-19');
+  assert.equal(beforeMidnight.get('/tools/digital-presence-score').lastModified, undefined);
+  assert.ok(beforeMidnight.has('/offers/diwali-growth-website'));
+  assert.ok(beforeMidnight.has('/offers/campaign-festive-season-offer'));
+
+  const atMidnight = sitemapAt('2026-11-19T18:30:00Z');
+  assert.equal(atMidnight.has('/blog/draft'), false);
+  assert.equal(atMidnight.get('/blog/scheduled').lastModified, '2026-11-20');
+  assert.equal(atMidnight.get('/blog').lastModified, '2026-11-20');
 });
 
 test('article slugs, dates and table-of-contents anchors are valid and distinct', () => {

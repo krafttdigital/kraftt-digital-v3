@@ -2,13 +2,14 @@
 
 import { formContext, trackEvent, trackFormSuccess } from '../../lib/analytics/core';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
 import { parseLeadHandoff } from '../data/handoff';
 import { usePricingCurrency } from '../components/PricingCurrencyProvider';
-import { pricingEnquiry, pricingMarket } from '../data/pricing';
+import { isPricingCurrency, pricingEnquiry, pricingMarket, type PricingCurrency } from '../data/pricing';
 
 const formspreeEndpoint = 'https://formspree.io/f/mgawjopk';
 const fields = [
@@ -19,26 +20,55 @@ const fields = [
   ['message', 'Project details'],
 ] as const;
 
+type ContactSelection = {
+  query: string | null;
+  serviceSlug: string;
+  place: string;
+  source: string;
+  band: string;
+  region: PricingCurrency | null;
+  estimateCurrency: PricingCurrency | null;
+};
+
+function ContactQuery({ sync, region }: { sync: (query: string, region: PricingCurrency) => void; region: PricingCurrency }) {
+  const query = useSearchParams().toString();
+  useEffect(() => sync(query, region), [query, region, sync]);
+  return null;
+}
+
 export function ContactForm() {
   const currency = usePricingCurrency();
   const formRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  useEffect(() => {
-    const form = formRef.current;
-    if (!form) return;
-    const handoff = parseLeadHandoff(new URLSearchParams(window.location.search));
-    const setValue = (name: string, value: string) => {
-      const field = form.elements.namedItem(name);
-      if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement) field.value = value;
-    };
-    setValue('service', handoff.service?.name ?? '');
-    setValue('service_slug', handoff.service?.slug ?? '');
-    setValue('place', handoff.place);
-    setValue('source', handoff.source);
-    setValue('band', handoff.band);
+  const [selection, setSelection] = useState<ContactSelection>({
+    query: null, serviceSlug: '', place: '', source: '', band: '', region: null, estimateCurrency: null,
+  });
+
+  const sync = useCallback((query: string, region: PricingCurrency) => {
+    setSelection(current => {
+      if (current.query === query) {
+        if (current.region === region) return current;
+        return { ...current, region, estimateCurrency: current.estimateCurrency && region };
+      }
+      const params = new URLSearchParams(query);
+      const { service, place, source, band } = parseLeadHandoff(params);
+      const estimate = pricingEnquiry(params, region, service?.slug);
+      const compatible = estimate.package_id || (service && !params.get('package') && params.get('custom_scope') === 'yes');
+      return {
+        query, region, serviceSlug: service?.slug ?? '', place, source, band,
+        estimateCurrency: compatible && isPricingCurrency(estimate.estimate_currency) ? estimate.estimate_currency : null,
+      };
+    });
   }, []);
+
+  const service = services.find(item => item.slug === selection.serviceSlug);
+  const quoteParams = new URLSearchParams(selection.estimateCurrency ? selection.query ?? '' : '');
+  if (selection.estimateCurrency) {
+    quoteParams.set('quote_currency', selection.region === currency ? selection.estimateCurrency : currency);
+  }
+  const pricing = pricingEnquiry(quoteParams, currency, service?.slug);
 
   function validForm() {
     const form = formRef.current;
@@ -47,8 +77,8 @@ export function ContactForm() {
 
   function submission(form: HTMLFormElement) {
     const data = new FormData(form);
-    const params = new URLSearchParams(window.location.search);
-    const pricing = pricingEnquiry(params, currency, parseLeadHandoff(params).service?.slug);
+    data.set('service', service?.name ?? '');
+    data.set('service_slug', service?.slug ?? '');
     for (const [name, value] of Object.entries(pricing)) data.set(name, value);
     return data;
   }
@@ -87,6 +117,7 @@ export function ContactForm() {
       if (!response.ok) throw new Error('Could not send enquiry');
       trackFormSuccess('contact_enquiry', form);
       form.reset();
+      setSelection(current => ({ ...current, serviceSlug: '', estimateCurrency: null }));
       setState('success');
     } catch {
       setState('error');
@@ -97,22 +128,32 @@ export function ContactForm() {
 
   return (
     <form ref={formRef} id="enquiry" className="audit-form contact-form" action={formspreeEndpoint} method="POST" onSubmit={sendForm}>
+      <Suspense fallback={null}><ContactQuery sync={sync} region={currency} /></Suspense>
       <input type="hidden" name="_subject" value="New Kraftt website enquiry" />
-      <input type="hidden" name="service_slug" defaultValue="" />
-      <input type="hidden" name="place" defaultValue="" />
-      <input type="hidden" name="source" defaultValue="" />
-      <input type="hidden" name="band" defaultValue="" />
+      <input type="hidden" name="service_slug" value={service?.slug ?? ''} />
+      <input type="hidden" name="place" value={selection.place} />
+      <input type="hidden" name="source" value={selection.source} />
+      <input type="hidden" name="band" value={selection.band} />
       <input type="hidden" name="pricing_market" value={pricingMarket(currency)} />
       <input type="hidden" name="pricing_currency" value={currency} />
       <div className="audit-field-grid">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your name" required /></label>
         <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@business.com" required /></label>
         <label><span>Business or brand</span><input name="business" autoComplete="organization" placeholder="Business name" /></label>
-        <label><span>What do you need?</span><select name="service" defaultValue=""><option value="">Not sure yet</option>{services.map((service) => <option key={service.slug} value={service.name}>{service.name}</option>)}</select></label>
+        <label><span>What do you need?</span><select name="service" value={service?.name ?? ''} disabled={state === 'sending'} onChange={event => {
+          const serviceSlug = services.find(item => item.name === event.target.value)?.slug ?? '';
+          setSelection(current => current.serviceSlug === serviceSlug ? current : { ...current, serviceSlug, estimateCurrency: null });
+        }}><option value="">Not sure yet</option>{services.map(item => <option key={item.slug} value={item.name}>{item.name}</option>)}</select></label>
         <label className="audit-field-span"><span>A few words about your project *</span><textarea name="message" rows={3} maxLength={1000} placeholder="What are you trying to improve or launch?" required /></label>
       </div>
       <label className="audit-consent"><input type="checkbox" name="consent" value="Yes" required /><span>I agree to Kraftt using these details to reply to my enquiry. See the <Link href="/legal/privacy-policy">privacy policy</Link>.</span></label>
       <p className="contact-form-note">Pricing region: {currency === 'INR' ? 'India · INR' : 'International · USD'}</p>
+      <div aria-live="polite">
+        {pricing.estimate_summary && <div className="contact-form-note">
+          <strong>Calculator estimate ({pricing.estimate_currency})</strong>
+          <ul>{pricing.estimate_summary.split('\n').map(line => <li key={line}>{line}</li>)}</ul>
+        </div>}
+      </div>
       <div className="contact-form-actions">
         <button className="button button-accent" type="submit" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send enquiry'} <span aria-hidden="true">→</span></button>
         <button className="button button-outline-dark" type="button" onClick={sendWhatsApp}>Send on WhatsApp <span aria-hidden="true">↗</span></button>

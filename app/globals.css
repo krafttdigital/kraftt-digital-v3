@@ -3728,6 +3728,9 @@ p { line-height: 1.65; }
   animation: home-showcase-image-in .9s .12s both cubic-bezier(.22, 1, .36, 1);
 }
 
+.kraftt-home .kraftt-hero-copy,
+.kraftt-home .kraftt-hero-visual { animation: none; }
+
 .kraftt-hero-visual::before {
   content: '';
   position: absolute;

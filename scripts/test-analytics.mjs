@@ -158,8 +158,8 @@ for (const [file, component, formId] of formFiles) {
     const fetcher = () => { count++; return new Promise(resolve => { complete = () => resolve(new Response(JSON.stringify({ ok: success }), { status: success ? 200 : 422, headers: { 'Content-Type': 'application/json' } })); }); };
     const savedFetch = globalThis.fetch; globalThis.fetch = fetcher;
     const mocks = {
-      react: { useRef: initial => ({ current: initial === null ? fakeForm : initial }), useState: value => [value, () => {}], useEffect() {} },
-      'react/jsx-runtime': jsx, 'next/link': { default: 'a' }, '../data/services': { services: [] },
+      react: { useRef: initial => ({ current: initial === null ? fakeForm : initial }), useState: value => [value, () => {}], useEffect() {}, useCallback: fn => fn, Suspense: 'suspense' },
+      'react/jsx-runtime': jsx, 'next/link': { default: 'a' }, 'next/navigation': {}, '../data/services': { services: [] },
       '../data/site': { whatsappUrl: () => 'https://wa.me/000' },
       '../components/PricingCurrencyProvider': { usePricingCurrency: () => 'INR' },
       '../data/pricing': { formatPrice: () => '₹999 INR · one-time', pricingMarket: () => 'india', pricingEnquiry: () => ({ pricing_currency: 'INR' }) },

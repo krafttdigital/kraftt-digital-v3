@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { contactEmail } from '@/app/data/site';
 
 export type Faq6Item = {
   id: string;
@@ -81,7 +82,7 @@ export default function Faq({ data, id, className = '' }: FaqProps) {
 
       <div className="faq6-contact">
         <span>Still have a question? Ask us directly.</span>
-        <a href="mailto:hello@krafttdigital.in">hello@krafttdigital.in <i aria-hidden="true">↗</i></a>
+        <a href={`mailto:${contactEmail}`}><span>{contactEmail}</span><i aria-hidden="true">↗</i></a>
       </div>
     </section>
   );
