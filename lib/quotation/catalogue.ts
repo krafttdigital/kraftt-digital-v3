@@ -1,4 +1,7 @@
 import { blankLine, blankPackage, copy, uid, type Quotation } from './model';
+import { addOnIds, formatPrice, priceFor, regionalizePriceCopy, type PriceId } from '../../app/data/pricing';
+import type { Service } from '../../app/data/services';
+import type { Bundle } from '../../app/data/bundles';
 
 export type CatalogueItem = {
   id: string; name: string; group: string; kind: 'service' | 'bundle'; fee: string;
@@ -6,21 +9,27 @@ export type CatalogueItem = {
   components: string[]; delivery: string; exclusions: string; notes: string;
   recurringGroup?: string;
 };
-type ServiceSource = { slug: string; name: string; headline: string; notIncluded: string[]; tiers: { name: string; price: string; timeline: string; deliverables: string[]; notIncluded: string[]; addOns?: string[] }[] };
-type BundleSource = { slug: string; name: string; headline: string; price: string; timeline: string; deliverables: string[]; inclusions: { title: string; items: string[] }[]; notIncluded: string[]; scopeNote: string; continuation: string };
-export function buildCatalogue(services: ServiceSource[], bundles: BundleSource[]): CatalogueItem[] {
-  const fee = (value: string) => value.match(/₹\s*([\d,]+(?:\.\d{1,2})?)/)?.[1].replaceAll(',', '') || '';
-  const period = (value: string) => /\/month|per month/i.test(value) ? 'month' : /\/year|per year/i.test(value) ? 'year' : '';
+function indiaPrice(id: PriceId | null) {
+  const record = id ? priceFor(id, 'INR') : null;
+  return {
+    fee: record?.amount == null ? '' : String(record.amount),
+    period: record?.cadence === 'monthly' ? 'month' : record?.cadence === 'yearly' ? 'year' : '',
+    priceLabel: formatPrice(id, 'INR'),
+  };
+}
+
+export function buildCatalogue(services: Service[], bundles: Bundle[]): CatalogueItem[] {
   // Add-ons repeat across tiers and services. Keep one entry for each name and INR price.
   const extras = new Map<string, CatalogueItem>();
-  for (const service of services) for (const tier of service.tiers) for (const raw of tier.addOns || []) {
-    const match = raw.match(/^(.*?)\s+—\s+(₹.*)$/);
-    const name = (match?.[1] || raw).trim(), price = match?.[2] || 'Custom quote';
+  const addOns = services.flatMap(service => service.tiers.flatMap(tier => [
+    ...addOnIds(tier.priceId).map(id => ({ name: priceFor(id, 'INR').name, price: indiaPrice(id) })),
+    ...(tier.quotedAddOns ?? []).map(name => ({ name, price: indiaPrice(null) })),
+  ]));
+  for (const { name, price } of addOns) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const amount = fee(price), billingPeriod = period(price);
-    const id = `addon-${slug}-${amount || 'custom'}-${billingPeriod || 'once'}`;
+    const id = `addon-${slug}-${price.fee || 'custom'}-${price.period || 'once'}`;
     if (!extras.has(id)) extras.set(id, {
-      id, name, group: 'Service add-ons', kind: 'service', fee: amount, priceLabel: price, period: billingPeriod,
+      id, name, group: 'Service add-ons', kind: 'service', ...price,
       description: name, deliverables: [], components: [], delivery: '', exclusions: '', notes: '',
       // Independent add-ons can be agreed together; monthly/annual maintenance are alternatives.
       recurringGroup: /^(Monthly|Annual) maintenance \/ support$/i.test(name) ? 'Maintenance / Support' : name,
@@ -29,16 +38,16 @@ export function buildCatalogue(services: ServiceSource[], bundles: BundleSource[
   return [
     ...services.flatMap(service => service.tiers.map((tier, index) => ({
       id: `service-${service.slug}-${index}`, name: `${service.name} — ${tier.name}`, group: service.name, kind: 'service' as const,
-      fee: fee(tier.price), priceLabel: tier.price, period: period(tier.price),
+      ...indiaPrice(tier.priceId),
       description: service.headline, deliverables: [...tier.deliverables], components: [], delivery: tier.timeline,
       exclusions: [...new Set([...service.notIncluded, ...tier.notIncluded])].join('\n'), notes: '',
     }))),
     ...extras.values(),
     ...bundles.map(bundle => ({
-      id: `bundle-${bundle.slug}`, name: bundle.name, group: 'Bundles', kind: 'bundle' as const, fee: fee(bundle.price), priceLabel: bundle.price,
-      period: '', description: bundle.headline, deliverables: [],
+      id: `bundle-${bundle.slug}`, name: bundle.name, group: 'Bundles', kind: 'bundle' as const, ...indiaPrice(null),
+      description: bundle.headline, deliverables: [],
       components: bundle.inclusions.map(component => `${component.title}: ${component.items.join('; ')}`),
-      delivery: bundle.timeline, exclusions: bundle.notIncluded.join('\n'), notes: [bundle.scopeNote, bundle.continuation].filter(Boolean).join('\n'),
+      delivery: bundle.timeline, exclusions: bundle.notIncluded.join('\n'), notes: [bundle.scopeNote, regionalizePriceCopy(bundle.continuation, 'INR')].filter(Boolean).join('\n'),
     })),
   ];
 }

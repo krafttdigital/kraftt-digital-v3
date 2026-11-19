@@ -50,6 +50,7 @@ export function Footer() {
         <Link href="/partner-program">Partner Program</Link>
         <Link href="/offers">Offers</Link>
         <Link href="/tools">Tools</Link>
+        <Link href="/blog">Insights</Link>
         <Link href="/location">Service areas in India</Link>
         <Link href="/region">International markets</Link>
         <Link href="/audit">Paid Digital Presence Audit</Link>
@@ -80,6 +81,7 @@ export function Footer() {
             <Link href="/partner-program">Partner Program</Link>
             <Link href="/offers">Offers</Link>
             <Link href="/tools">Tools</Link>
+            <Link href="/blog">Insights</Link>
             <Link href="/location">Service areas in India</Link>
             <Link href="/region">International markets</Link>
             <Link href="/audit">Paid Digital Presence Audit</Link>

@@ -3,7 +3,6 @@ import { contactEmail, contactPhone, siteUrl } from './site';
 import type { ClientReview } from './reviews';
 import metadataMaster from './metadata-master.json';
 import { services, coreServices } from './services';
-import { bundles } from './bundles';
 import { projects } from './projects';
 import { tools } from '../tools/data';
 
@@ -38,6 +37,7 @@ type PageMetadataInput = {
   noIndex?: boolean;
   languages?: Record<string, string>;
   locale?: string;
+  pricingDescription?: string;
 };
 
 export function createPageMetadata({
@@ -51,10 +51,13 @@ export function createPageMetadata({
   noIndex = false,
   languages,
   locale = 'en_IN',
+  pricingDescription,
 }: PageMetadataInput): Metadata {
   const master = metadataByPath[path];
   title = master?.title ?? title;
   description = master?.description ?? description;
+  const socialDescription = master?.ogDescription ?? description;
+  if (pricingDescription) description = `${description} ${pricingDescription}.`;
   languages ??= noIndex ? undefined : { 'en-IN': path, 'x-default': path };
   const isHomepage = path === '/';
   const canonical = isHomepage ? `${siteOrigin}/` : absoluteUrl(path);
@@ -88,7 +91,7 @@ export function createPageMetadata({
       siteName: brandName,
       locale,
       title: master?.ogTitle ?? title,
-      description: master?.ogDescription ?? description,
+      description: pricingDescription ? `${socialDescription} ${pricingDescription}.` : socialDescription,
       url: canonical,
       images: [{
         url: ogImage,
@@ -126,7 +129,7 @@ export function createPageSchema({
   name = master?.title ?? name;
   description = master?.description ?? description;
   const pageType = path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage'
-    : ['/services', '/work', '/tools'].includes(path) ? 'CollectionPage' : 'WebPage';
+    : ['/services', '/work', '/tools', '/blog'].includes(path) ? 'CollectionPage' : 'WebPage';
   const collection = path === '/services'
     ? [...coreServices, ...services.filter(s => ['landing-pages', 'app-development', 'dashboards-internal-tools'].includes(s.slug))].map(s => ({ name: s.name, path: `/services/${s.slug}` }))
     : path === '/work' ? projects.map(p => ({ name: p.name, path: `/work/${p.slug}` }))
@@ -213,13 +216,8 @@ export function serviceSchema({
   serviceType?: string;
 }): Record<string, unknown> {
   const url = absoluteUrl(path);
-  const service = services.find(s => path === `/services/${s.slug}`);
-  const bundle = bundles.find(b => path === `/services/bundles/${b.slug}`);
-  const scopes = service?.tiers.map(t => ({ name: t.name, description: t.deliverables.join('; ') }))
-    ?? (bundle ? [{ name: bundle.name, description: bundle.deliverables.join('; ') }] : []);
   return {
     '@type': 'Service',
-    ...(scopes.length ? { offers: scopes.map(scope => ({ '@type': 'Offer', ...scope, url, seller: { '@id': organizationId } })) } : {}),
     '@id': `${url}#service`,
     name,
     description,

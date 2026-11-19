@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=900,height=540">
+  <title>Kraftt service showcase artwork</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/marketplace-packages.js"></script>
+  <link rel="stylesheet" href="artwork.css">
+</head>
+<body>
+  <div id="root" data-composition-id="service-showcase" data-width="900" data-height="540" data-start="0" data-duration="7">
+    <section id="web" class="clip" data-start="0" data-duration="1.4" data-track-index="0">
+      <div class="artifact window desktop">
+        <div class="chrome"><span class="lights"></span>Gate Seeds</div>
+        <img src="assets/gate-seeds-desktop.webp" alt="Published Gate Seeds desktop homepage">
+      </div>
+      <div class="accent phone">
+        <img src="assets/gate-seeds-mobile.webp" alt="Published Gate Seeds mobile homepage">
+      </div>
+    </section>
+
+    <section id="brand" class="clip" data-start="1.4" data-duration="1.4" data-track-index="0">
+      <div class="artifact window">
+        <div class="chrome"><span class="lights"></span>Elixir Beverages · Brand guidelines</div>
+        <div class="brand-pages">
+          <img src="assets/elixir-logo.webp" alt="Approved Elixir logo applications">
+          <img src="assets/elixir-palette.webp" alt="Elixir Beverages colour palette">
+        </div>
+      </div>
+      <div class="accent caption">Logo rules · Colour system</div>
+    </section>
+
+    <section id="search" class="clip" data-start="2.8" data-duration="1.4" data-track-index="0">
+      <div class="artifact window">
+        <div class="chrome"><span class="lights"></span>Elixir Beverages · Branded Google search</div>
+        <img class="search-capture" src="assets/elixir-search.webp" alt="Supplied Google search view for Elixir Beverages">
+      </div>
+      <div class="accent caption">One observed search result</div>
+    </section>
+
+    <section id="store" class="clip" data-start="4.2" data-duration="1.4" data-track-index="0">
+      <div class="artifact window">
+        <div class="chrome"><span class="lights"></span>The Vibed Vines · Storefront</div>
+        <img class="store-capture" src="assets/vibed-vines-shop.webp" alt="The Vibed Vines shop with search, filters and a product grid">
+      </div>
+      <div class="accent caption">Product search · Category filters</div>
+    </section>
+
+    <section id="catalogue" class="clip" data-start="5.6" data-duration="1.4" data-track-index="0">
+      <div class="artifact window">
+        <div class="chrome"><span class="lights"></span>Marketplace packages · India</div>
+        <div class="catalogue-content">
+          <h2>Product upload allowances</h2>
+          <div class="package-grid">
+            <div data-package="marketplace-1"><strong></strong><span>Up to <b></b></span></div>
+            <div data-package="marketplace-2"><strong></strong><span>Up to <b></b></span></div>
+            <div data-package="marketplace-3"><strong></strong><span>Up to <b></b></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="accent platforms" aria-label="Supported marketplaces">
+        <img src="assets/amazon.webp" alt="Amazon">
+        <img src="assets/flipkart.webp" alt="Flipkart">
+        <img src="assets/myntra.webp" alt="Myntra">
+        <img src="assets/meesho.webp" alt="Meesho">
+      </div>
+    </section>
+  </div>
+  <script>
+    for (const { id, name, productAllowance } of window.showcaseMarketplacePackages) {
+      const packageCard = document.querySelector('[data-package="' + id + '"]');
+      packageCard.querySelector('strong').textContent = name;
+      packageCard.querySelector('b').textContent = productAllowance;
+    }
+
+    const timeline = gsap.timeline({ paused: true });
+    ['web', 'brand', 'search', 'store', 'catalogue'].forEach((id, index) => {
+      const start = index * 1.4;
+      timeline.fromTo('#' + id + ' .artifact', { y: 18, scale: .97, opacity: index ? .45 : 1 },
+        { y: 0, scale: 1, opacity: 1, duration: .55, ease: 'power3.out' }, start);
+      timeline.fromTo('#' + id + ' .accent', { x: 20, y: 14, opacity: 0 },
+        { x: 0, y: 0, opacity: 1, duration: .42, ease: 'power2.out' }, start + .16);
+    });
+    window.__timelines['service-showcase'] = timeline;
+  </script>
+</body>
+</html>

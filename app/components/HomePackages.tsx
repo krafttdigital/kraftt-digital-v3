@@ -3,34 +3,14 @@
 import Link from 'next/link';
 import { ArrowRight, Layers3 } from 'lucide-react';
 import { bundles } from '../data/bundles';
-import { pricing, formatRegionalAmount, regionalizePriceCopy } from '../data/pricing';
-import { serviceBySlug } from '../data/services';
+import { formatPrice } from '../data/pricing';
 import { usePricingCurrency } from './PricingCurrencyProvider';
 
 export function HomePackages() {
   const currency = usePricingCurrency();
-  const selectedSlugs = currency === 'INR'
-    ? ['starter-business-launch', 'local-business-dominator', 'd2c-brand-launch-kit', 'full-digital-presence']
-    : ['starter-business-launch', 'd2c-brand-launch-kit', 'full-digital-presence'];
-  const entries = selectedSlugs.flatMap((slug) => {
-    const bundle = bundles.find((item) => item.slug === slug);
-    if (!bundle) return [];
-    const price = regionalizePriceCopy(bundle.price, currency);
-    return [{ name: bundle.name, href: `/services/bundles/${bundle.slug}`, headline: bundle.headline,
-      audience: bundle.idealClient, deliverables: bundle.deliverables, timeline: bundle.timeline,
-      price, amount: Number(price.replace(/[^\d.]/g, '')) }];
-  });
-
-  if (currency === 'USD') {
-    const service = serviceBySlug('web-design-development');
-    const growth = service?.tiers.find((tier) => tier.name === 'Growth — Full Build');
-    if (service && growth) entries.push({ name: 'Web Design & Development — Growth tier',
-      href: `/services/${service.slug}`, headline: service.headline, audience: service.idealClient,
-      deliverables: growth.deliverables, timeline: growth.timeline,
-      price: formatRegionalAmount(pricing.websiteCalculator.growth[currency], currency),
-      amount: pricing.websiteCalculator.growth[currency] });
-  }
-  entries.sort((a, b) => a.amount - b.amount);
+  const entries = bundles.map(bundle => ({ name: bundle.name, href: `/services/bundles/${bundle.slug}`,
+    headline: bundle.headline, audience: bundle.idealClient, deliverables: bundle.deliverables,
+    timeline: bundle.timeline, price: formatPrice(null, currency) }));
 
   return <section className="services-flow-bundles" aria-labelledby="home-packages-title">
     <div className="services-flow-showcase-heading services-flow-bundles-heading"><p>Connected packages</p><h2 id="home-packages-title">Choose where to start.</h2></div>

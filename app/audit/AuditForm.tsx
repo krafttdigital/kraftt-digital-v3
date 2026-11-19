@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
 import { usePricingCurrency } from '../components/PricingCurrencyProvider';
-import { regionalizePriceCopy } from '../data/pricing';
+import { formatPrice, pricingEnquiry, pricingMarket } from '../data/pricing';
 import { parseLeadHandoff } from '../data/handoff';
 
 const formspreeEndpoint = 'https://formspree.io/f/mgawjopk';
@@ -24,7 +24,7 @@ const messageFields = [
 
 export function AuditForm() {
   const currency = usePricingCurrency();
-  const auditPrice = regionalizePriceCopy('₹999', currency);
+  const auditPrice = formatPrice('audit', currency);
   const formRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(false);
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -94,11 +94,19 @@ export function AuditForm() {
     return form;
   }
 
+  function submission(form: HTMLFormElement) {
+    const data = new FormData(form);
+    const params = new URLSearchParams(window.location.search);
+    const pricing = pricingEnquiry(params, currency, parseLeadHandoff(params).service?.slug);
+    for (const [name, value] of Object.entries(pricing)) data.set(name, value);
+    return data;
+  }
+
   function handleWhatsApp() {
     const form = getValidForm();
     if (!form) return;
 
-    const data = new FormData(form);
+    const data = submission(form);
     const details = messageFields
       .map(([name, label]) => [label, String(data.get(name) ?? '').trim()] as const)
       .filter(([, value]) => value)
@@ -107,7 +115,9 @@ export function AuditForm() {
 
     const source = String(data.get('source') || 'page');
     const service = String(data.get('service') || 'my business');
-    const message = `Hi Kraftt, I would like to request the ${auditPrice} Digital Presence Audit for ${service} (from the ${source} page).\n\n${details}\n\nI consent to Kraftt using these details to review my business and contact me about the audit.`;
+    const estimate = data.get('estimate_summary');
+    const extra = estimate ? `\nCalculator estimate (${data.get('estimate_currency')}):\n${estimate}` : '';
+    const message = `Hi Kraftt, I would like to request the ${auditPrice} Digital Presence Audit for ${service} (from the ${source} page).\n\n${details}${extra}\n\nI consent to Kraftt using these details to review my business and contact me about the audit.`;
     trackEvent('whatsapp_click', { ...formContext(form), form_id: 'audit_request', cta_location: 'form', cta_label: 'whatsapp', destination_type: 'whatsapp' });
     window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
   }
@@ -122,7 +132,7 @@ export function AuditForm() {
     try {
       const response = await fetch(formspreeEndpoint, {
         method: 'POST',
-        body: new FormData(form),
+        body: submission(form),
         headers: { Accept: 'application/json' },
       });
 
@@ -144,6 +154,8 @@ export function AuditForm() {
       <input type="hidden" name="place" defaultValue="" />
       <input type="hidden" name="source" defaultValue="" />
       <input type="hidden" name="band" defaultValue="" />
+      <input type="hidden" name="pricing_market" value={pricingMarket(currency)} />
+      <input type="hidden" name="pricing_currency" value={currency} />
 
       <div className="audit-field-grid audit-field-grid-compact">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your full name" required /></label>

@@ -125,7 +125,7 @@ function findNode(tree, predicate) {
   for (const child of Array.isArray(children) ? children.flat(Infinity) : [children]) { const found = findNode(child, predicate); if (found) return found; }
   return null;
 }
-for (const [name, validState] of [['GstCalculator', ['exclusive', '25000', '18', '', 'yes', false]], ['RoasCalculator', ['25000', '100000', '', false]]]) {
+for (const [name, validState] of [['GstCalculator', ['exclusive', '25000', '18', '', 'yes', false]], ['RoasCalculator', ['INR', '25000', '100000', '', false]]]) {
   for (const valid of [true, false]) {
     window.location = new URL(base + '/tools/roas-calculator');
     window.dataLayer = [];
@@ -136,7 +136,7 @@ for (const [name, validState] of [['GstCalculator', ['exclusive', '25000', '18',
       '../../../lib/analytics/core': analytics,
       './CalculatorPrimitives': { Field: 'field', OptionQuestion: 'options', ResultPanel: 'result', formatINR: String, revealResult() {} },
       './ToolSuite': { Button: 'button', ResultActions: 'actions' },
-      '../../components/PricingCurrencyProvider': { usePricingCurrency: () => 'INR' },
+      './InputCurrencySelect': { InputCurrencySelect: 'currency-select' },
       '../../data/pricing': { formatRegionalAmount: String },
     });
     const form = findNode(loaded[name](), node => node.type === 'form');
@@ -161,7 +161,8 @@ for (const [file, component, formId] of formFiles) {
       react: { useRef: initial => ({ current: initial === null ? fakeForm : initial }), useState: value => [value, () => {}], useEffect() {} },
       'react/jsx-runtime': jsx, 'next/link': { default: 'a' }, '../data/services': { services: [] },
       '../data/site': { whatsappUrl: () => 'https://wa.me/000' },
-      '../components/PricingCurrencyProvider': { usePricingCurrency: () => 'INR' }, '../data/pricing': { regionalizePriceCopy: text => text },
+      '../components/PricingCurrencyProvider': { usePricingCurrency: () => 'INR' },
+      '../data/pricing': { formatPrice: () => '₹999 INR · one-time', pricingMarket: () => 'india', pricingEnquiry: () => ({ pricing_currency: 'INR' }) },
       '../data/handoff': { parseLeadHandoff: () => ({}) }, '../../app/data/offers': {},
       '../data/offers': { isOfferClaimable: offer => offer.status === 'active' && Date.now() <= Date.parse(offer.expiresAt) }, './ClosedOffer': { ClosedOffer: 'div' },
       './OfferAvailability': { useOfferExpired: () => false }, './offerSubmission': { submitOfferEnquiry }, '../../lib/analytics/core': analytics,

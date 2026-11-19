@@ -87,7 +87,7 @@ export default function OffersPage() {
               <Link className={styles.cardLink} href={offer.pagePath} aria-label={`View ${offer.name} details`}>
                 <div className={styles.cardTop}><span>{number}</span><i><OfferIcon size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>{active ? 'Open for enquiries' : 'Offer closed'}</strong></div>
                 <div className={styles.cardBody}><p className={styles.cardLabel}>{label}</p><h3>{offer.name}</h3><p className={styles.cardDescription}>{description}</p></div>
-                <div className={styles.cardPrice}><strong>{formatInr(offer.offerPrice)}</strong><span>{active ? 'Offer investment' : 'Listed offer price'}</span></div>
+                <div className={styles.cardPrice}><strong>{formatInr(offer.offerPrice)}</strong><span>{active ? 'Offer investment · INR' : 'Historical offer price · INR'}</span></div>
                 <ul className={styles.highlights}>{highlights.map(({ icon: Icon, text }) => <li key={text}><Icon size={16} strokeWidth={1.6} aria-hidden="true" /><span>{text}</span></li>)}</ul>
                 <div className={styles.cardAction}><span>{active ? `Valid through ${offer.expiryLabel}` : 'View the offer details'}</span><strong>Explore offer <ArrowRight size={17} aria-hidden="true" /></strong></div>
               </Link>

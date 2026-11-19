@@ -1,3 +1,4 @@
+import { formatPrice } from '../data/pricing';
 import { bundles } from '../data/bundles';
 import { projects } from '../data/projects';
 import { absoluteUrl } from '../data/seo';
@@ -5,6 +6,7 @@ import { services } from '../data/services';
 import { contactEmail, contactPhone } from '../data/site';
 import { tools } from '../tools/data';
 import { enabledLocationServices, enabledRegionServices, locations, regions } from '../data/geo';
+import { publishedPosts } from '../blog/posts';
 
 export const dynamic = 'force-static';
 
@@ -23,7 +25,7 @@ export function GET() {
     `- Working process: ${absoluteUrl('/process')}`,
     `- About Kraftt: ${absoluteUrl('/about')}`,
     `- Free introductory call request: ${absoluteUrl('/contact')}`,
-    `- Optional paid Digital Presence Audit (₹999 / $24): ${absoluteUrl('/audit')}`,
+    `- Optional paid Digital Presence Audit (${formatPrice("audit", "INR")} / ${formatPrice("audit", "USD")}): ${absoluteUrl('/audit')}`,
     `- Contact: ${absoluteUrl('/contact')}`,
     `- Offers and availability: ${absoluteUrl('/offers')} — Check the page for current availability; historical campaign prices do not apply to new projects.`,
     `- Kraftt Partner Program: ${absoluteUrl('/partner-program')} — Refer an eligible business and earn 15% of the final collected professional fee after delivery and complete client payment.`,
@@ -49,6 +51,10 @@ export function GET() {
     '',
     '## Free tools',
     ...tools.map((tool) => `- ${tool.name}: ${absoluteUrl(`/tools/${tool.slug}`)} — ${tool.description}`),
+    '',
+    '## Insights',
+    `- Article index: ${absoluteUrl('/blog')}`,
+    ...publishedPosts().map((post) => `- ${post.title}: ${absoluteUrl(`/blog/${post.slug}`)} — ${post.description}`),
     '',
     '## Markets served',
     `- Indian service areas: ${absoluteUrl('/location')}`,

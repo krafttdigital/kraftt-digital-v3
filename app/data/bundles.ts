@@ -4,7 +4,6 @@ export type Bundle = {
   headline: string;
   idealClient: string;
   problemSolved: string;
-  price: string;
   timeline: string;
   deliverables: string[];
   inclusions: {
@@ -28,7 +27,6 @@ export const bundles: Bundle[] = [
     "headline": "For a new business that needs a clear identity, a credible website and an active first social channel.",
     "idealClient": "New businesses launching a defined offer.",
     "problemSolved": "A brand, business website and first social channel need to launch together.",
-    "price": "₹35,000 / $799",
     "timeline": "Brand + website build · 1 month of social management",
     "deliverables": [
       "Business Website · one-time",
@@ -85,7 +83,7 @@ export const bundles: Bundle[] = [
       "A written proposal can confirm the required inputs and review stages."
     ],
     "relatedProjectSlug": "elixir-beverages",
-    "continuation": "Optional continuation: Social Starter at ₹12,000 / $299 per month.",
+    "continuation": "Optional continuation: Social Starter at {{social-1}}.",
     "scopeNote": "Social delivery begins on the agreed calendar date. Website and brand milestones are confirmed after discovery."
   },
   {
@@ -94,7 +92,6 @@ export const bundles: Bundle[] = [
     "headline": "For product businesses ready to bring their brand, Shopify store and launch materials together.",
     "idealClient": "Product businesses preparing a coordinated brand and Shopify launch.",
     "problemSolved": "The identity, store and launch material need one coherent direction.",
-    "price": "₹80,000 / $1,799",
     "timeline": "Brand + store + creative kit · 1 month of SEO",
     "deliverables": [
       "Growth Store · one-time",
@@ -165,7 +162,7 @@ export const bundles: Bundle[] = [
       "A written proposal can confirm the required inputs and review stages."
     ],
     "relatedProjectSlug": "kiraq-jewellery",
-    "continuation": "Optional continuation: SEO Starter at ₹12,000 / $299 per month.",
+    "continuation": "Optional continuation: SEO Starter at {{ecomseo-1}}.",
     "scopeNote": "Creative production is a bundle inclusion, not campaign management. Client provides accurate product information and handles inventory, orders, shipping, returns and customer support. Marketplace setup is separate."
   },
   {
@@ -174,7 +171,6 @@ export const bundles: Bundle[] = [
     "headline": "For established businesses ready to align their brand, website, search presence and social communication.",
     "idealClient": "Established businesses whose current digital presentation undersells their work.",
     "problemSolved": "Brand, website, search and social communication need a coordinated rebuild.",
-    "price": "₹110,000 / $2,499",
     "timeline": "Brand + website build · 3 months of social and SEO",
     "deliverables": [
       "Growth Website · one-time",
@@ -244,7 +240,7 @@ export const bundles: Bundle[] = [
       "A written proposal can confirm the required inputs and review stages."
     ],
     "relatedProjectSlug": "shree-hari-spintex",
-    "continuation": "Optional continuation: Social Growth ₹22,000 / $599 per month + SEO Starter ₹12,000 / $299 per month. Both together: ₹34,000 / $898 per month.",
+    "continuation": "Optional continuation: Social Growth ({{social-2}}) and SEO Starter ({{ecomseo-1}}).",
     "scopeNote": "SEO is tailored to the business website. Three months means the included service period, not a ranking or sales deadline. Custom CRM development is separately scoped."
   },
   {
@@ -253,7 +249,6 @@ export const bundles: Bundle[] = [
     "headline": "For Indian service businesses that need stronger search visibility, clearer proof of their work and easier contact through their website and WhatsApp.",
     "idealClient": "Indian service businesses serving a defined geographic market.",
     "problemSolved": "People need to find the business, assess its work and enquire easily.",
-    "price": "₹55,000 · India only",
     "timeline": "India only · Website build + 2 months of social and SEO",
     "deliverables": [
       "Business Website · one-time",
@@ -323,7 +318,7 @@ export const bundles: Bundle[] = [
       "A written proposal can confirm the required inputs and review stages."
     ],
     "relatedProjectSlug": "mittal-architect",
-    "continuation": "Optional continuation: Social Starter ₹12,000/month + SEO Starter ₹12,000/month. Both together: ₹24,000/month.",
+    "continuation": "Optional continuation: Social Starter ({{social-1}}) and SEO Starter ({{ecomseo-1}}).",
     "scopeNote": "Designed for businesses serving a defined geographic market. The wider Kraftt offer remains available across India and internationally. Brand identity is not included in this bundle."
   }
 ];

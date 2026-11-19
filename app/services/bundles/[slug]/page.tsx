@@ -4,14 +4,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Clock3, Layers3, Minus, X } from 'lucide-react';
 import { Footer } from '../../../components/Footer';
-import { JsonLd } from '../../../components/JsonLd';
-import { RegionalPriceCopy } from '../../../components/PricingCurrencyProvider';
+import { RegionalJsonLd } from '../../../components/RegionalJsonLd';
+import { PriceText, PricingControls, PricingWhatsApp, RegionalPriceCopy } from '../../../components/PricingCurrencyProvider';
 import { Reveal } from '../../../components/Reveal';
 import { SiteHeader } from '../../../components/SiteHeader';
 import { bundleBySlug, bundles } from '../../../data/bundles';
 import { projectBySlug } from '../../../data/projects';
 import { createPageMetadata, createPageSchema, faqSchema, serviceSchema } from '../../../data/seo';
-import { whatsappUrl } from '../../../data/site';
 import { PageFaq } from '@/components/ui/faq-6';
 
 const projectProofBanners: Record<string, { src: string; alt: string }> = {
@@ -55,10 +54,10 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
   const relatedBanner = relatedProject ? projectProofBanners[relatedProject.slug] : undefined;
   const bundleNumber = bundles.findIndex((item) => item.slug === bundle.slug) + 1;
   const namedInclusionCount = bundle.inclusions.reduce((total, inclusion) => total + inclusion.items.length, 0);
-  const bundleMessage = whatsappUrl(`Hi Kraftt, I would like to request a free call about the ${bundle.name} bundle.`);
+  const bundleMessage = `Hi Kraftt, I would like to request a free call about the ${bundle.name} bundle.`;
   const bundleFaqs = [
     { question: `What is included in the ${bundle.name} bundle?`, answer: `The bundle connects ${bundle.deliverables.join(', ')}. The detailed inclusions, responsibilities and review stages are confirmed in the written proposal.` },
-    { question: `How much does the ${bundle.name} bundle cost?`, answer: `The published bundle investment is ${bundle.price}. Third-party subscriptions, platform charges, hosting and advertising budgets remain separate unless the proposal states otherwise.` },
+    { question: `How much does the ${bundle.name} bundle cost?`, answer: `Request a quote. The proposal confirms the price for the agreed bundle scope. Third-party subscriptions, platform charges, hosting and advertising budgets remain separate unless the proposal states otherwise.` },
     { question: 'How long does the bundle engagement take?', answer: `${bundle.timeline}. Exact milestones depend on receiving the required information, access and approvals on time.` },
     { question: 'Can the ongoing services continue after the included period?', answer: bundle.continuation },
     { question: 'How do I know whether this bundle is the right fit?', answer: `${bundle.idealClient} It is designed to solve this situation: ${bundle.problemSolved} A free introductory call can confirm whether the bundle or one focused service is the clearer route.` },
@@ -66,7 +65,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="bundle-detail-v3">
-      <JsonLd data={createPageSchema({
+      <RegionalJsonLd data={createPageSchema({
         name: `${bundle.name} Bundle | Kraftt Digital`,
         description: bundle.headline,
         path: `/services/bundles/${bundle.slug}`,
@@ -81,6 +80,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
 
       <section className="bundle-detail-hero" aria-labelledby="bundle-detail-title">
         <div className="bundle-detail-hero-inner">
+          <PricingControls />
           <Reveal className="bundle-detail-kicker" direction="left">
             <Link href="/services"><ArrowLeft size={15} /> All services</Link>
             <span>Bundle {String(bundleNumber).padStart(2, '0')} / {String(bundles.length).padStart(2, '0')}</span>
@@ -93,7 +93,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
               <p>{bundle.headline}</p>
               <div className="bundle-detail-actions">
                 <Link href="#included">See what is included <span aria-hidden="true">↓</span></Link>
-                <a href={bundleMessage}>Discuss this bundle <ArrowRight size={15} /></a>
+                <PricingWhatsApp id={null} message={bundleMessage} >Discuss this bundle <ArrowRight size={15} /></PricingWhatsApp>
               </div>
             </Reveal>
 
@@ -103,7 +103,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
                 <Layers3 size={19} strokeWidth={1.5} />
               </div>
               <dl>
-                <div><dt>Investment</dt><dd><RegionalPriceCopy>{bundle.price}</RegionalPriceCopy></dd></div>
+                <div><dt>Investment</dt><dd><PriceText id={null} /></dd></div>
                 <div><dt>Included period</dt><dd>{bundle.timeline}</dd></div>
                 <div><dt>Connected scopes</dt><dd>{String(bundle.deliverables.length).padStart(2, '0')}</dd></div>
               </dl>
@@ -247,8 +247,8 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
       </section>
 
       <section className="page-faq-section" id="bundle-faq" aria-labelledby="bundle-faq-title"><div className="page-faq-inner">
-        <Reveal className="page-faq-heading" direction="left"><div><p className="eyebrow eyebrow-dark">Before you decide · 05 focused answers</p><h2 id="bundle-faq-title">Questions before you<br /><em>choose this bundle.</em></h2></div><div><p>Clear answers about scope, investment, timing and continuation.</p><span className="page-faq-actions"><a href={bundleMessage}>Discuss this bundle <ArrowRight size={15} /></a><Link href="/audit">Request the ₹999 audit <ArrowUpRight size={15} /></Link></span></div></Reveal>
-        <PageFaq title={`${bundle.name} bundle questions`} items={bundleFaqs} categoryTitles={['Bundle scope', 'Delivery and continuation']} />
+        <Reveal className="page-faq-heading" direction="left"><div><p className="eyebrow eyebrow-dark">Before you decide · 05 focused answers</p><h2 id="bundle-faq-title">Questions before you<br /><em>choose this bundle.</em></h2></div><div><p>Clear answers about scope, investment, timing and continuation.</p><span className="page-faq-actions"><PricingWhatsApp id={null} message={bundleMessage} >Discuss this bundle <ArrowRight size={15} /></PricingWhatsApp><Link href="/audit">Explore the paid audit <ArrowUpRight size={15} /></Link></span></div></Reveal>
+        <PageFaq title={`${bundle.name} bundle questions`} items={bundleFaqs.map(faq => ({ ...faq, answer: <RegionalPriceCopy>{faq.answer}</RegionalPriceCopy> }))} categoryTitles={['Bundle scope', 'Delivery and continuation']} />
       </div></section>
 
       {relatedProject && (
@@ -315,7 +315,7 @@ export default async function BundlePage({ params }: { params: Promise<{ slug: s
         <Reveal direction="right">
           <p>Discuss the listed scope, timing, client inputs and optional monthly continuation. A paid audit is available separately when deeper research would help.</p>
           <div>
-            <a href={bundleMessage}>Discuss This Bundle <ArrowRight size={15} /></a>
+            <PricingWhatsApp id={null} message={bundleMessage} >Discuss This Bundle <ArrowRight size={15} /></PricingWhatsApp>
             <Link href="/audit">Explore the Paid Audit <ArrowRight size={15} /></Link>
           </div>
         </Reveal>

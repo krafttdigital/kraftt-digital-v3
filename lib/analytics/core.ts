@@ -62,6 +62,7 @@ export function pageContext(path: string): Params {
   const service = SERVICE_MAP[parts.at(-1) ?? ''];
   const page_type = clean === '/' ? 'home' : service ? 'service' : parts[0] === 'work' && parts[1] ? 'case_study'
     : parts[0] === 'tools' && parts[1] ? 'tool' : parts[0] === 'services' && parts[1] === 'bundles' ? 'bundle'
+      : parts[0] === 'blog' && parts[1] ? 'article'
       : token(parts[0]) || 'unknown';
   return { page_path: clean, page_type, service: service ?? '',
     case_study: page_type === 'case_study' ? token(parts[1]) : '',

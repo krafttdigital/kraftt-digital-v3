@@ -7,7 +7,7 @@ import { AnimatedServiceIcon } from '../../components/AnimatedServiceIcon';
 import { Footer } from '../../components/Footer';
 import { HomeShowcase } from '../../components/HomeShowcase';
 import { JsonLd } from '../../components/JsonLd';
-import { RegionalPriceCopy } from '../../components/PricingCurrencyProvider';
+import { PriceText, PricingControls, RegionalPriceCopy } from '../../components/PricingCurrencyProvider';
 import { Reveal } from '../../components/Reveal';
 import { ReviewsSection } from '../../components/ReviewsSection';
 import { SiteHeader } from '../../components/SiteHeader';
@@ -57,7 +57,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
   const delivery = locationDelivery(market);
   const featuredServices = featuredLocationServices.map((slug, index) => {
     const service = serviceBySlug(slug)!;
-    return { ...service, number: String(index + 1).padStart(2, '0'), eyebrow: service.category, copy: service.headline, price: service.tiers[0].price, href: `${pagePath}/${slug}` };
+    return { ...service, number: String(index + 1).padStart(2, '0'), eyebrow: service.category, copy: service.headline, priceId: service.tiers[0].priceId, href: `${pagePath}/${slug}` };
   });
   const answers = [
     { question: `Does Kraftt work with businesses in ${market.name}?`, answer: `Yes. ${delivery.description}` },
@@ -115,6 +115,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
             </div>
           </Reveal>
 
+          <PricingControls />
           <div className={`home-services-featured-grid home-services-featured-row ${styles.serviceGrid}`}>
             {featuredServices.map((service, index) => {
               const href = service.href;
@@ -122,7 +123,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
                 <Reveal className={`home-service-featured home-service-featured-${index + 1}`} key={service.slug} delay={index * .04}>
                   <div className="home-service-featured-top"><span>{service.number}</span><i aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={38} /></i></div>
                   <div className="home-service-featured-copy"><small>{service.eyebrow}</small><h3>{service.name}</h3><p>{service.copy}</p></div>
-                  <div className="home-service-featured-bottom"><span>From <RegionalPriceCopy>{service.price}</RegionalPriceCopy></span><Link href={href}>View service <i aria-hidden="true">↗</i></Link></div>
+                  <div className="home-service-featured-bottom"><span><PriceText id={service.priceId} from /></span><Link href={href}>View service <i aria-hidden="true">↗</i></Link></div>
                 </Reveal>
               );
             })}
@@ -262,7 +263,7 @@ export function LocationLandingPage({ market }: { market: LocationMarket }) {
                 <div className="home-trust-decision-choice-action"><span>Request a free call</span><i aria-hidden="true">→</i></div>
               </Link>
               <Link className="home-trust-decision-choice" href="/audit">
-                <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>₹999</RegionalPriceCopy></small></div>
+                <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></small></div>
                 <p>Best for an unclear direction</p>
                 <strong>Start with a researched Digital Presence Audit.</strong>
                 <small>Get a structured review of the business, competitors and current online presence before deciding what to improve.</small>

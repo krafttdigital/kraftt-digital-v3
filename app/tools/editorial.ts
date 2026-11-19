@@ -1,3 +1,5 @@
+import { formatPrice, formatRegionalAmount, quoteLabel } from '../data/pricing';
+import { websiteEstimate } from './packageEstimates';
 import { businessGuides } from './businessGuides';
 export type ToolGuide = {
   eyebrow: string;
@@ -12,27 +14,29 @@ export type ToolGuide = {
   faqs: readonly { question: string; answer: string }[];
 };
 
+const indiaExample = websiteEstimate({ siteType: 'informational', scope: 'business', brand: true, seo: true, urgency: 'exploring' }, 'INR');
+
 export const toolGuides: Record<string, ToolGuide> = {
   ...businessGuides,
   'website-cost-calculator': {
-    eyebrow: 'Website cost in India',
-    headline: 'What does a business website cost in India?',
-    introduction: 'Kraftt’s published India starting prices range from ₹12,000 for a one-page informational website to ₹45,000 for a 6–10+ page Growth website. An online store starts at ₹22,000; the Complete Store tier starts at ₹70,000. These are Kraftt package prices, not an average for every agency or every project.',
-    context: 'The right estimate depends on whether you need an informational site or a store, how much structure the project needs, and whether you also need brand identity or ongoing SEO. The calculator matches your brief to a published tier; a written quote confirms the exact scope.',
+    eyebrow: 'Website and store estimates',
+    headline: 'What does a business website cost?',
+    introduction: 'Kraftt websites start at {{web-1}} for a single page. Stores start at {{shopify-1}}. Use the region selector to compare the two published price lists.',
+    context: 'The right estimate depends on whether you need an informational site, online store or marketplace catalogue, how much structure the project needs, and whether you also need brand identity or ongoing SEO. The calculator matches your brief to a published tier; a written quote confirms the exact scope.',
     methodTitle: 'How the website estimate is calculated',
     steps: [
-      { title: 'Choose the site type', detail: 'An informational website uses the Starter, Business and Growth prices. An e-commerce brief uses Launch Store, Growth Store and Complete Store prices.' },
-      { title: 'Match the size of the brief', detail: 'One page or core section selects the first tier; 2–5 selects the middle tier; 6–10+ selects the largest tier. The tool matches a tier rather than charging per page.' },
-      { title: 'Add only the selected extras', detail: 'Brand Identity adds ₹12,000 to the one-time starting estimate if needed. Ongoing SEO is shown separately from ₹12,000 per month when selected.' },
+      { title: 'Choose the site type', detail: 'An informational website uses the Starter, Business and Growth prices. An e-commerce brief uses the three store tiers. Marketplace catalogue rates are published for India; international requirements need a quote.' },
+      { title: 'Match the size of the brief', detail: 'Website tiers use page count. Store and marketplace tiers use product counts of up to 30, 50 and 100. Larger projects and custom functionality need a quote.' },
+      { title: 'Add only the selected extras', detail: 'Brand Starter adds {{brand-1}} when selected. Ongoing SEO starts at {{ecomseo-1}} for websites and stores. Marketplace listing SEO needs a separate scope.' },
       { title: 'Confirm the scope', detail: 'Your preferred start time helps plan a conversation but does not change the calculated price. Custom features, content and third-party requirements are priced in a written proposal.' },
     ],
     exampleTitle: 'A worked website-cost example',
-    example: 'Business website ₹25,000 + Brand Identity ₹12,000 = ₹37,000 starting one-time estimate.',
-    exampleNote: 'If ongoing SEO is selected, the result also shows from ₹12,000 per month. That recurring amount is not part of the one-time total.',
+    example: `India example: Business website (${formatPrice('web-2', 'INR')}) + Brand Starter (${formatPrice('brand-1', 'INR')}) = ${indiaExample?.oneTimeTotal == null ? quoteLabel : formatRegionalAmount(indiaExample.oneTimeTotal, 'INR') + ' one-time'}.`,
+    exampleNote: `In this India example, adding ongoing SEO starts at ${formatPrice('ecomseo-1', 'INR')}. The result lists that charge separately.`,
     faqs: [
-      { question: 'How much does a small business website cost in India?', answer: 'At Kraftt, a one-page Starter website starts at ₹12,000 and a 2–5 page Business website starts at ₹25,000. The final quote depends on the approved pages, features, content and handover scope.' },
-      { question: 'How much does an e-commerce website cost?', answer: 'Kraftt’s published store tiers start at ₹22,000 for Launch Store, ₹40,000 for Growth Store and ₹70,000 for Complete Store. The calculator chooses a starting tier from your store brief; a proposal defines the actual catalogue and integrations.' },
-      { question: 'Is SEO included in the website price?', answer: 'Website packages have their own agreed launch scope. The calculator’s ongoing SEO option is a separate monthly service starting at ₹12,000 per month; it is not added to the one-time website total.' },
+      { question: 'How much does a small business website cost?', answer: 'At Kraftt, a one-page Starter website starts at {{web-1}} and a Business website starts at {{web-2}}. The final quote depends on the approved pages, features, content and handover scope.' },
+      { question: 'How much does an e-commerce website cost?', answer: 'Kraftt’s published store tiers start at {{shopify-1}} for Launch Store, {{shopify-2}} for Growth Store and {{shopify-3}} for Complete Store. The calculator chooses a starting tier from your store brief; a proposal defines the actual catalogue and integrations.' },
+      { question: 'Is SEO included in the website price?', answer: 'Website packages have their own agreed launch scope. The calculator’s ongoing SEO option is a separate monthly service starting at {{ecomseo-1}}. The calculator shows ongoing charges separately from the build.' },
       { question: 'Does needing the website sooner increase the estimate?', answer: 'No. The start-time answer is collected for planning and does not add a rush fee or change the calculator result. A delivery plan is agreed only after reviewing the complete scope and access.' },
       { question: 'Is the calculator result a final quote?', answer: 'No. It is a starting estimate from Kraftt’s published packages. You receive an exact written scope and price before committing to the project.' },
       { question: 'Do I need to pay for an audit to request a website quote?', answer: 'No. You can request a free introductory call and a written quote. A paid audit is optional when a deeper review is useful before selecting work.' },
@@ -68,17 +72,17 @@ export const toolGuides: Record<string, ToolGuide> = {
     methodTitle: 'How the social tier is selected',
     steps: [
       { title: 'Count platforms and posts', detail: 'The tool uses the platform and monthly post answers as the tier-selection inputs.' },
-      { title: 'Apply the highest matching tier', detail: 'Three or more platforms or 30+ posts selects Social Presence Management. Otherwise, two platforms or about 21 posts selects Social Growth.' },
-      { title: 'Use Starter for smaller briefs', detail: 'One platform with about 15 posts selects Social Starter. Published India starting prices are ₹12,000, ₹22,000 and ₹40,000 per month respectively.' },
+      { title: 'Apply the highest matching tier', detail: 'Three platforms or 22–30 posts selects Social Presence Management. Four or more platforms, or more than 30 posts, need a quote.' },
+      { title: 'Use Starter for smaller briefs', detail: 'One platform with about 15 posts selects Social Starter. Starting prices are {{social-1}} for Starter, {{social-2}} for Growth and {{social-3}} for Presence Management.' },
       { title: 'Confirm what is outside the tier', detail: 'Stories are listed in each tier’s included output. Direct-message handling, conventional video production and paid campaigns require separate scoping.' },
     ],
     exampleTitle: 'A social-cost example',
-    example: 'Two platforms and about 21 posts per month match Social Growth, starting at ₹22,000 per month.',
+    example: 'Two platforms and about 21 posts per month match Social Growth, starting at {{social-2}}.',
     exampleNote: 'Posts are one shared content set across the selected platforms, not 21 unique posts for each platform.',
     faqs: [
       { question: 'How does the calculator choose my package?', answer: 'It looks at your platform count and monthly post volume, then selects the highest applicable published tier. Stories and direct-message answers are retained for scope discussion.' },
       { question: 'Are posts unique for every platform?', answer: 'No. The included posts are one shared content set adapted across the selected platforms.' },
-      { question: 'Are direct messages included?', answer: 'Direct-message handling is separately scoped. Selecting that answer does not silently add it to the package price.' },
+      { question: 'Are direct messages included?', answer: 'Direct-message handling is separately scoped. Selecting that answer keeps the applicable base package visible and flags the complete brief for a quote.' },
       { question: 'Does the price include ad spend or campaign management?', answer: 'No. The listed social tiers cover the stated content and management scope; paid campaigns and media spend are separate.' },
     ],
   },
@@ -94,7 +98,7 @@ export const toolGuides: Record<string, ToolGuide> = {
       { title: 'Compare with monthly SEO cost', detail: 'The displayed percentage is (additional revenue − monthly SEO cost) ÷ monthly SEO cost × 100.' },
       { title: 'Interpret it carefully', detail: 'This is revenue-based return after the SEO fee, not net business profit. Actual growth, conversion rates and margins can differ.' },
     ],
-    exampleTitle: 'An illustrative SEO example',
+    exampleTitle: 'An illustrative SEO example in INR',
     example: '1,000 monthly visitors × 20% growth = 200 extra visitors. At 2% conversion and ₹5,000 per order, that models 4 extra orders and ₹20,000 additional revenue.',
     exampleNote: 'With a ₹12,000 monthly SEO cost, the displayed revenue-based ROI is about 66.7%. This does not deduct product or delivery costs.',
     faqs: [
@@ -116,7 +120,7 @@ export const toolGuides: Record<string, ToolGuide> = {
       { title: 'Calculate profit after ads', detail: 'The tool calculates revenue × margin percentage − ad spend. This assumes the margin already reflects the other costs you want to include.' },
       { title: 'Compare, then investigate', detail: 'ROAS alone does not prove incrementality or reliable attribution. Check refunds, repeat purchases and any costs missing from your margin.' },
     ],
-    exampleTitle: 'A ROAS example',
+    exampleTitle: 'A ROAS example in INR',
     example: '₹100,000 ad-attributed revenue ÷ ₹25,000 spend = 4.00× ROAS. At 40% margin, break-even is 2.50× and simplified profit after ads is ₹15,000.',
     exampleNote: 'The profit figure changes if the entered margin does not already account for fulfilment, fees and other relevant costs.',
     faqs: [

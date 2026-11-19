@@ -2,16 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { DraftingCompass, Factory, ShoppingBag, Sparkles } from 'lucide-react';
 import Faq, { type Faq6Data } from '../../components/ui/faq-6';
-import { AnimatedServiceIcon } from './AnimatedServiceIcon';
 import { Footer } from './Footer';
 import { HomeShowcase } from './HomeShowcase';
-import { JsonLd } from './JsonLd';
+import { RegionalJsonLd } from './RegionalJsonLd';
 import { CurrencySymbol, RegionalPriceCopy } from './PricingCurrencyProvider';
 import { Reveal } from './Reveal';
 import { ReviewsSection } from './ReviewsSection';
 import { AnimatedTestimonials, type Testimonial } from '@/components/ui/animated-testimonials';
 import { SiteHeader } from './SiteHeader';
-import { HomePackages } from './HomePackages';
+import { HomeServiceShowcase } from './service-showcase/HomeServiceShowcase';
 import { HomeResultsCarousel, type HomeResultSlide } from './HomeResultsCarousel';
 import { SHOW_ELIXIR_STORY, industryPagesLive } from '../data/site';
 import { caseStudyFlow } from '../data/caseStudyFlow';
@@ -45,31 +44,10 @@ type HomePageExperienceProps = {
   };
 };
 
-const featuredServices = [
-  { number: '01', eyebrow: 'Build your digital foundation', name: 'Website Design & Development', slug: 'web-design-development', href: '/services/web-design-development', price: '₹12,000 / $299', copy: 'Responsive websites that explain the offer, establish credibility and guide visitors toward the next step.' },
-  { number: '02', eyebrow: 'Create a recognisable identity', name: 'Brand Identity & System', slug: 'brand-identity', href: '/services/brand-identity', price: '₹12,000 / $299', copy: 'A practical visual and verbal system that gives the business a consistent and recognisable presence.' },
-  { number: '03', eyebrow: 'Be found with intent', name: 'SEO Services', slug: 'ecommerce-seo', href: '/services/ecommerce-seo', price: '₹12,000/month / $299/month', copy: 'Ongoing search work for stronger pages, relevant discovery and a clearer view of what is improving.' },
-  { number: '04', eyebrow: 'Sell through your own store', name: 'E-commerce Store Development', slug: 'ecommerce-store-development', href: '/services/ecommerce-store-development', price: '₹22,000 / $499', copy: 'Shopify, Wix and WooCommerce stores with organised products and a usable buying journey.' },
-];
-
-const professionalServices = [
-  { name: 'Social Media Strategy & Management', slug: 'social-media-management', href: '/services/social-media-management' },
-  { name: 'Landing Pages', slug: 'landing-pages', href: '/services/landing-pages' },
-  { name: 'App Development', slug: 'app-development', href: '/services/app-development' },
-  { name: 'Custom Software & Internal Tools', slug: 'dashboards-internal-tools', href: '/services/dashboards-internal-tools' },
-];
-
-const marketplacePlatforms = [
-  { name: 'Amazon', src: '/assets/marketplaces/amazon.png' },
-  { name: 'Flipkart', src: '/assets/marketplaces/flipkart.png' },
-  { name: 'Myntra', src: '/assets/marketplaces/myntra.png' },
-  { name: 'Meesho', src: '/assets/marketplaces/meesho.png' },
-];
-
 const trustCommitments = [
   ['Q1', 'Is Kraftt Digital a good website design and development agency for my business?', 'Kraftt is a strong fit for established businesses replacing a dated website, professionals who need a credible online presence and founders launching a focused service or store. The work combines business discovery, page structure, responsive design, development, launch SEO and clear enquiry paths within the agreed scope.'],
   ['Q2', 'Is Kraftt Digital also a branding agency?', 'Yes. Kraftt provides brand strategy, positioning, logo systems, colour and typography direction, voice guidance and practical brand applications. Branding can be commissioned separately or connected with a website so the identity and digital experience communicate the same commercial idea.'],
-  ['Q3', 'What SEO services does Kraftt Digital provide?', 'Kraftt provides launch SEO for agreed website builds and separate monthly SEO plans from ₹12,000 per month. Depending on the selected scope, ongoing work can include Search Console monitoring, on-page improvements, local SEO, researched content, technical checks, GEO and AEO work, competitor analysis and reporting. Rankings, leads and AI citations are not guaranteed.'],
+  ['Q3', 'What SEO services does Kraftt Digital provide?', 'Kraftt provides launch SEO for agreed website builds and separate monthly SEO plans from {{ecomseo-1}}. Depending on the selected scope, ongoing work can include Search Console monitoring, on-page improvements, local SEO, researched content, technical checks, GEO and AEO work, competitor analysis and reporting. Rankings, leads and AI citations are not guaranteed.'],
   ['Q4', 'How is Kraftt different from a typical website development company?', 'Kraftt starts with the business, audience, positioning and customer journey before deciding the website structure or technology. Brand identity, website, e-commerce, SEO and content can be planned as one connected presence, with Ketan Goyal leading direction and reviewing delivery.'],
   ['Q5', 'How should I choose the best website, branding or SEO agency?', 'Compare relevant case studies, verified client feedback, the clarity of the process, named deliverables, exclusions, pricing signals and who is accountable for the work. Kraftt publishes starting prices, documents scope before work begins and is suited to businesses that value research, direct access and connected execution.'],
   ['Q6', 'Where does Kraftt work, and how does an engagement begin?', 'Kraftt is based in India and works with businesses across India and internationally through a remote-friendly process. Begin with a free introductory call, followed by discovery, a written quote and terms, then a proposal and agreement before the project starts. A paid Digital Presence Audit is optional when deeper research would improve the direction.'],
@@ -91,17 +69,17 @@ const homepageFaqData = {
     {
       id: 'services',
       title: 'Services',
-      items: trustCommitments.slice(0, 3).map(([id, question, answer]) => ({ id, question, answer })),
+      items: trustCommitments.slice(0, 3).map(([id, question, answer]) => ({ id, question, answer: <RegionalPriceCopy>{answer}</RegionalPriceCopy> })),
     },
     {
       id: 'choosing-kraftt',
       title: 'Choosing Kraftt',
-      items: trustCommitments.slice(3, 6).map(([id, question, answer]) => ({ id, question, answer })),
+      items: trustCommitments.slice(3, 6).map(([id, question, answer]) => ({ id, question, answer: <RegionalPriceCopy>{answer}</RegionalPriceCopy> })),
     },
     {
       id: 'project-process',
       title: 'Project process',
-      items: [trustCommitments[7], trustCommitments[8], trustCommitments[9]].map(([id, question, answer]) => ({ id, question, answer })),
+      items: [trustCommitments[7], trustCommitments[8], trustCommitments[9]].map(([id, question, answer]) => ({ id, question, answer: <RegionalPriceCopy>{answer}</RegionalPriceCopy> })),
     },
     {
       id: 'privacy-responsibility',
@@ -110,7 +88,7 @@ const homepageFaqData = {
         trustCommitments[6],
         trustCommitments[10],
         trustCommitments[11],
-      ].map(([id, question, answer]) => ({ id, question, answer })),
+      ].map(([id, question, answer]) => ({ id, question, answer: <RegionalPriceCopy>{answer}</RegionalPriceCopy> })),
     },
   ],
 } satisfies Faq6Data;
@@ -211,7 +189,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
 
   return (
     <main>
-      <JsonLd data={{
+      <RegionalJsonLd data={{
         ...createPageSchema({
           name: schemaContext.name,
           description: schemaContext.description,
@@ -226,71 +204,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
       }} />
       <SiteHeader overlay />
       <HomeShowcase eyebrow={eyebrow} intro={intro} isHomepage={!geographicContext} />
-
-      
-
-      {/* {!geographicContext && <HomePackages />} */}
-
-      <section className="home-services-play section-light" id="what-we-build">
-        <div className="home-services-play-inner">
-          <Reveal className="home-services-play-heading" direction="scale">
-            <div className="home-services-play-count" aria-label="Four featured services">
-              <strong>04</strong>
-              <span>Featured<br />services</span>
-            </div>
-            <div className="home-services-play-title">
-              <p className="eyebrow eyebrow-dark">What we build</p>
-              <h2>Or start with a single service</h2>
-            </div>
-            <div className="home-services-play-intro">
-              <p>Start with the service that solves the immediate gap, then connect the wider brand, content or system when the business needs it.</p>
-              <div><span>Direct service pages</span><span>Published starting prices</span><span>Defined scope</span></div>
-            </div>
-          </Reveal>
-
-          <div className="home-services-featured-grid home-services-featured-row">
-            {featuredServices.map((service, index) => {
-              const href = geographicContext?.enabledServiceSlugs.includes(service.slug) ? `${geographicContext.serviceBasePath}/${service.slug}` : service.href;
-              return (
-                <Reveal className={`home-service-featured home-service-featured-${index + 1}`} key={service.slug} delay={index * .04}>
-                  <div className="home-service-featured-top"><span>{service.number}</span><i aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={38} /></i></div>
-                  <div className="home-service-featured-copy"><small>{service.eyebrow}</small><h3>{service.name}</h3><p>{service.copy}</p></div>
-                  <div className="home-service-featured-bottom"><span>From <RegionalPriceCopy>{service.price}</RegionalPriceCopy></span><Link href={href}>View service <i aria-hidden="true">↗</i></Link></div>
-                </Reveal>
-              );
-            })}
-          </div>
-
-          <div id="marketplace-highlight" className="home-marketplace-row">
-            <Reveal className="home-marketplace-feature">
-              <div className="home-marketplace-feature-copy">
-                <div className="home-marketplace-feature-icon"><AnimatedServiceIcon slug="marketplace-catalogue-building" /></div>
-                <div><p>Marketplace catalogue service</p><h3>Register your products directly on e-commerce giants.</h3><span>You handle the orders. We handle the listings, product setup, marketplace SEO and catalogue structure.</span></div>
-              </div>
-              <Link className="home-marketplace-feature-cta" href={geographicContext?.enabledServiceSlugs.includes('marketplace-catalogue-building') ? `${geographicContext.serviceBasePath}/marketplace-catalogue-building` : '/services/marketplace-catalogue-building'}>View marketplace service <i aria-hidden="true">↗</i></Link>
-              <div className="home-marketplace-platforms" aria-label="Marketplace platforms">
-                {marketplacePlatforms.map((marketplace) => <div key={marketplace.name}><div><Image src={marketplace.src} alt={`${marketplace.name} marketplace logo`} fill sizes="(max-width: 700px) 40vw, 13vw" /></div></div>)}
-              </div>
-              
-            </Reveal>
-
-            <Reveal className="home-marketplace-all">
-              <Link href="/services">View all services <i aria-hidden="true">→</i></Link>
-            </Reveal>
-          </div>
-
-          {/* <Reveal className="home-professional-services">
-            <div className="home-professional-services-heading"><span>Other professional services</span><p>Add a focused capability without losing the wider business context.</p></div>
-            <div className="home-professional-services-grid">
-              {professionalServices.map((service) => {
-                const href = geographicContext?.enabledServiceSlugs.includes(service.slug) ? `${geographicContext.serviceBasePath}/${service.slug}` : service.href;
-                return <Link href={href} key={service.slug}><i aria-hidden="true"><AnimatedServiceIcon slug={service.slug} size={30} /></i><strong>{service.name}</strong><span>View service <b aria-hidden="true">↗</b></span></Link>;
-              })}
-            </div>
-          </Reveal> */}
-
-        </div>
-      </section>
+      <HomeServiceShowcase market={geographicContext} />
 
       <section className="home-case-playground section-light">
         <Reveal className="home-case-playground-heading">
@@ -483,7 +397,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
             {/* <div className="home-trust-decision-lead">
               <span>Choose how to begin</span>
               <strong>Choose the right first step<br /><em>for what you know today.</em></strong>
-              <p><RegionalPriceCopy>Use the free call when you know what you want to discuss. Choose the ₹999 audit when you need researched priorities before selecting a service.</RegionalPriceCopy></p>
+              <p><RegionalPriceCopy>{"Use the free call when you know what you want to discuss. Choose the {{audit}} audit when you need researched priorities before selecting a service."}</RegionalPriceCopy></p>
               <div className="home-trust-decision-note" aria-label="What both options provide">
                 <span>Clear recommendation</span>
                 <span>Standalone first step</span>
@@ -502,7 +416,7 @@ export function HomePageExperience({ eyebrow, intro, schema, geographicContext }
                 <Link href="/tools/digital-presence-score">Not sure what you need? Take the 2-minute Digital Presence Score.</Link>
               </div>
               <Link className="home-trust-decision-choice" href="/audit">
-                <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>₹999</RegionalPriceCopy></small></div>
+                <div className="home-trust-decision-choice-meta"><span>02</span><small><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></small></div>
                 <p>Optional, paid</p>
                 <strong>Start with a researched Digital Presence Audit.</strong>
                 <small>Get a structured review of the business, competitors and current online presence before deciding what to improve.</small>

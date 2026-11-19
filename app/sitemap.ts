@@ -8,11 +8,14 @@ import { absoluteUrl } from './data/seo';
 import { locationHubPaths, locationServicePaths, regionHubPaths, regionServicePaths } from './data/geo';
 import { tools } from './tools/data';
 import { businessTools } from './tools/businessModels';
+import { publishedPosts } from './blog/posts';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const articles = publishedPosts();
+  const latestArticleUpdate = articles.map((post) => post.updatedAt).sort().at(-1) ?? '2026-11-18';
   const staticRoutes = [
     '', '/services', '/work', '/process', '/about', '/audit',
-    '/contact', '/partner-program', '/offers', '/tools', '/location', '/region', '/legal/privacy-policy', '/legal/terms',
+    '/contact', '/partner-program', '/offers', '/tools', '/blog', '/location', '/region', '/legal/privacy-policy', '/legal/terms',
   ];
   const routes = new Set([
     ...staticRoutes,
@@ -22,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...bundles.map((bundle) => `/services/bundles/${bundle.slug}`),
     ...projects.map((project) => `/work/${project.slug}`),
     ...tools.map((tool) => `/tools/${tool.slug}`),
+    ...articles.map((post) => `/blog/${post.slug}`),
     ...locationHubPaths,
     ...locationServicePaths,
     ...regionHubPaths,
@@ -36,6 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...['bathinda', 'barnala', 'delhi', 'gurugram'].map((city): [string, string] => [`/location/${city}`, '2026-11-13']),
     [diwaliGrowthOffer.pagePath, '2026-11-13'],
     ['/tools', '2026-11-15'],
+    ['/blog', latestArticleUpdate],
+    ...articles.map((post): [string, string] => [`/blog/${post.slug}`, post.updatedAt]),
     ...tools.map((tool): [string, string] => [`/tools/${tool.slug}`, '2026-10-16']),
     ...businessTools.map((tool): [string, string] => [`/tools/${tool.slug}`, '2026-11-15']),
   ]);

@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { ArrowRight, Building2, Layers3, MapPin, ShoppingBag } from 'lucide-react';
-import { RegionalPriceCopy, usePricingCurrency } from '../components/PricingCurrencyProvider';
+import { PriceText, usePricingCurrency } from '../components/PricingCurrencyProvider';
 import { Reveal } from '../components/Reveal';
 import { bundles } from '../data/bundles';
 
 const bundleIcons = [Layers3, ShoppingBag, Building2, MapPin];
 
 function visibleBundles(currency: 'INR' | 'USD') {
-  return bundles.filter((bundle) => currency === 'INR' || bundle.slug !== 'local-business-dominator');
+  return bundles.filter(bundle => currency === 'INR' || bundle.slug !== 'local-business-dominator');
 }
 
 export function RegionalBundleCount() {
@@ -34,7 +34,7 @@ export function RegionalBundleList() {
             {bundle.deliverables.slice(0, 4).map((deliverable) => <li key={deliverable}>{deliverable}</li>)}
           </ul>
           <dl>
-            <div><dt>Bundle price</dt><dd><RegionalPriceCopy>{bundle.price}</RegionalPriceCopy></dd></div>
+            <div><dt>Bundle price</dt><dd><PriceText id={null} /></dd></div>
             <div><dt>Delivery</dt><dd>{bundle.timeline}</dd></div>
           </dl>
           <div className="services-flow-card-action"><span>View the full bundle</span><ArrowRight size={17} /></div>

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { navItems } from '../data/site';
 import { BrandWordmark } from './BrandWordmark';
+import { RegionCurrencySelect } from './PricingCurrencyProvider';
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,14 +59,18 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
         {navItems.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
       </nav>
 
-      <Link className="header-cta" href="/contact">
-        Request a free call <span aria-hidden="true">↗</span>
-      </Link>
+      <div className="site-header-actions">
+        <RegionCurrencySelect placement="header" />
+        <Link className="header-cta" href="/contact">
+          Request a free call <span aria-hidden="true">↗</span>
+        </Link>
+      </div>
 
       <details className="mobile-menu" ref={mobileMenuRef}>
         <summary aria-label="Open navigation">Menu</summary>
         <nav aria-label="Mobile navigation">
           {navItems.map((item) => <Link key={item.href} href={item.href} onClick={closeMobileMenu}>{item.label}</Link>)}
+          <RegionCurrencySelect placement="mobile" />
           <Link href="/contact" onClick={closeMobileMenu}>Request a free call</Link>
         </nav>
       </details>

@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { trackEvent } from '../../../lib/analytics/core';
-import { usePricingCurrency } from '../../components/PricingCurrencyProvider';
 import { formatRegionalAmount, type PricingCurrency } from '../../data/pricing';
 import { businessTools, defaults, evaluate, type InputField, type ResultRow, type Values } from '../businessModels';
 import { Field, ResultPanel } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
+import { InputCurrencySelect } from './InputCurrencySelect';
 
 function formatResult(row: ResultRow, currency: PricingCurrency, unknown: string) {
   if (row.value === null) return unknown;
@@ -17,7 +17,7 @@ function formatResult(row: ResultRow, currency: PricingCurrency, unknown: string
 
 export function BusinessCalculator({ slug }: { slug: string }) {
   const tool = businessTools.find(item => item.slug === slug)!;
-  const currency = usePricingCurrency();
+  const [currency, setCurrency] = useState<PricingCurrency>('INR');
   const [values, setValues] = useState<Values>(() => defaults(tool));
   const [touched, setTouched] = useState<Set<string>>(new Set());
   const [started, setStarted] = useState(false);
@@ -48,8 +48,19 @@ export function BusinessCalculator({ slug }: { slug: string }) {
   }
 
   function loadScenario(example: boolean) {
+    if (example && hasMoney) setCurrency('INR');
     setStarted(example);
     setValues(example ? { ...tool.example } : defaults(tool));
+    setTouched(new Set());
+  }
+
+  function changeCurrency(next: PricingCurrency) {
+    setCurrency(next);
+    setValues(previous => {
+      const updated = { ...previous };
+      for (const field of tool.fields) if (field.money) updated[field.key] = '';
+      return updated;
+    });
     setTouched(new Set());
   }
 
@@ -93,9 +104,10 @@ export function BusinessCalculator({ slug }: { slug: string }) {
             : 'Use likes, comments, saves and shares from the same post or reporting period.'} Results update as you type.</p>
         </div>
         <div className="business-tool-controls">
-          <Button type="button" variant="secondary" onClick={() => loadScenario(true)}>Try worked example</Button>
+          <Button type="button" variant="secondary" onClick={() => loadScenario(true)}>{hasMoney ? 'Try worked example (INR)' : 'Try worked example'}</Button>
           <Button type="button" variant="secondary" disabled={!started} onClick={() => loadScenario(false)}>Reset</Button>
         </div>
+        {hasMoney && <InputCurrencySelect currency={currency} change={changeCurrency} />}
         {comparison ? (
           <>
             {renderField(tool.fields[0])}

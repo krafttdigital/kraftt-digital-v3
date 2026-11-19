@@ -1,5 +1,8 @@
 import { readFile } from 'node:fs/promises';
+import { loadProjectModule } from './quotation-test-modules.mjs';
 const metadataMaster = JSON.parse(await readFile(new URL('../app/data/metadata-master.json', import.meta.url), 'utf8'));
+const { formatServicePrice, geographicCurrency } = loadProjectModule('app/data/pricing.ts');
+const { serviceBySlug } = loadProjectModule('app/data/services.ts');
 const baseUrl = (process.env.SEO_VALIDATE_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 
 const decode = (value = '') => value
@@ -57,7 +60,12 @@ for (const canonicalUrl of productionUrls) {
   if (!pageTitle) failures.push(`${path}: missing title`);
   if (!description) failures.push(`${path}: missing description`);
   const expected = metadataMaster[path];
-  if (expected && (pageTitle !== expected.title || description !== expected.description || ogTitle !== expected.ogTitle || ogDescription !== expected.ogDescription)) failures.push(`${path}: metadata differs from approved master`);
+  const geoService = /^\/(?:location|region)\/[^/]+\/([^/]+)$/.exec(path)?.[1];
+  const service = geoService ? serviceBySlug(geoService) : undefined;
+  const pricingSuffix = service ? ` ${formatServicePrice(service.tiers[0].priceId, geographicCurrency(path), true)}.` : '';
+  if (expected && (pageTitle !== expected.title || description !== expected.description + pricingSuffix || ogTitle !== expected.ogTitle || ogDescription !== expected.ogDescription + pricingSuffix)) {
+    failures.push(`${path}: metadata differs from approved copy or regional pricing`);
+  }
   if (canonical !== canonicalUrl) failures.push(`${path}: canonical ${canonical || '(missing)'} does not match ${canonicalUrl}`);
   if (robots.toLowerCase().includes('noindex') || robots.toLowerCase().includes('nofollow') || !robots.toLowerCase().includes('index') || !robots.toLowerCase().includes('follow')) failures.push(`${path}: index/follow robots missing`);
   if (!ogTitle || !ogDescription || ogUrl !== canonicalUrl || !ogImage) failures.push(`${path}: incomplete Open Graph metadata`);

@@ -61,7 +61,7 @@ export default function ProcessPage() {
               <Image src="/01-audit.png" alt="Kraftt business audit and research illustration" fill priority sizes="(max-width: 900px) 90vw, 40vw" />
             </div>
             <div className="process-clarity-audit-copy">
-              <div><span>Separate paid option</span><strong><RegionalPriceCopy>₹999</RegionalPriceCopy></strong></div>
+              <div><span>Separate paid option</span><strong><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></strong></div>
               <h2>Digital Presence Audit</h2>
               <p>Business · category · competitors · systems · opportunities</p>
               <small>Useful when deeper research would help; not required for every project.</small>
@@ -91,7 +91,7 @@ export default function ProcessPage() {
             <p>The free introduction comes first. Any optional paid research and the later project commitment are labelled clearly.</p>
             <div>
               <span><b>Free</b> introductory call</span>
-              <span><b><RegionalPriceCopy>₹999</RegionalPriceCopy></b> optional paid audit</span>
+              <span><b><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></b> optional paid audit</span>
               <span><b>Written</b> scope and terms</span>
             </div>
             <Link href="/contact">Request a free call <span aria-hidden="true">→</span></Link>

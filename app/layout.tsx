@@ -11,6 +11,7 @@ import './globals.css';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { JsonLd } from './components/JsonLd';
 import { PricingCurrencyProvider } from './components/PricingCurrencyProvider';
+import { locationHubPaths, locationServicePaths, regionHubPaths, regionServicePaths } from './data/geo';
 import { metadataByPath, organizationAndWebsiteSchema } from './data/seo';
 import { siteUrl } from './data/site';
 
@@ -91,7 +92,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${cormorant.variable} ${outfit.variable}`}>
         <PublicRouteOnly>{analyticsConfig.gtmId && <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${analyticsConfig.gtmId}`} height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} title="Google Tag Manager" /></noscript>}</PublicRouteOnly>
         <AnalyticsRuntime services={Object.fromEntries(services.map(service => [service.name, SERVICE_MAP[service.slug]]))} paths={[...sitemap().map(item => new URL(item.url).pathname.replace(/\/$/, '') || '/'), '/offers', '/thank-you']} />
-        <PricingCurrencyProvider>
+        <PricingCurrencyProvider regionalPaths={[...locationHubPaths, ...locationServicePaths, ...regionHubPaths, ...regionServicePaths]}>
           <JsonLd data={organizationAndWebsiteSchema()} />
           {children}
           <PublicRouteOnly><FloatingWhatsApp /></PublicRouteOnly>

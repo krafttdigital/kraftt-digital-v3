@@ -18,7 +18,6 @@ import {
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Footer as SiteFooter } from '../../components/Footer';
 import { SiteHeader } from '../../components/SiteHeader';
-import { CurrencySymbol } from '../../components/PricingCurrencyProvider';
 import { Reveal } from '../../components/Reveal';
 import type { ToolDefinition } from '../data';
 
@@ -57,7 +56,7 @@ const toolDetailFacts: Record<string, { number: string; facts: [string, string][
   },
   'roas-calculator': {
     number: '05',
-    facts: [['02', 'Core inputs'], ['Live', 'Break-even test'], ['₹', 'Profit view']],
+    facts: [['02', 'Core inputs'], ['Live', 'Break-even test'], ['INR/USD', 'Input currency']],
   },
   'gst-calculator': {
     number: '06',
@@ -139,12 +138,12 @@ export function ToolIntro({ tool }: { tool: ToolDefinition }) {
         <span aria-hidden="true"><Icon size={16} strokeWidth={1.6} /></span>
         <p className="tool-eyebrow">Free Kraftt tool · {detail.number}</p>
       </div>
-      <h1 id="tool-page-title">{tool.slug === 'website-cost-calculator' ? 'Website Cost in India Calculator' : tool.name}</h1>
+      <h1 id="tool-page-title">{tool.name}</h1>
       <p className="tool-intro-copy">{tool.value}</p>
       <div className="tool-intro-facts" aria-label={`${tool.name} overview`}>
         {detail.facts.map(([value, label]) => (
           <div key={label}>
-            <strong>{value === '₹' ? <CurrencySymbol /> : value}</strong>
+            <strong>{value}</strong>
             <span>{label}</span>
           </div>
         ))}
@@ -192,6 +191,10 @@ export function ResultActions({
   const contactParams = new URLSearchParams({ source });
   if (service) contactParams.set('service', service);
   if (band) contactParams.set('band', band);
+  for (const key of ['quote_currency', 'package', 'addons', 'custom_scope']) {
+    const value = params.get(key);
+    if (value) contactParams.set(key, value);
+  }
   const contactHref = `/contact?${contactParams.toString()}`;
   return (
     <div className="tool-result-actions">

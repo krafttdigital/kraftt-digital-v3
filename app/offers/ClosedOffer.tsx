@@ -11,7 +11,7 @@ export function ClosedOffer({ offer, initialExpired, children }: { offer: Offer;
   return <aside className="offer-enquiry-form" role="status">
     <p className="eyebrow eyebrow-dark">Offer closed · 8 November 2026</p>
     <h2>This campaign has ended.</h2>
-    <p>The scope and prices below are historical campaign terms. Ask us about a current project scope and quotation.</p>
+    <p>The scope and prices below are historical campaign terms in Indian rupees (INR). Ask us about a current project scope and quotation.</p>
     <Link className="button button-accent" href="/contact">Enquire about a new project →</Link>
   </aside>;
 }

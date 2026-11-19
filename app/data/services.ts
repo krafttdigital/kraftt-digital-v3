@@ -1,12 +1,13 @@
 import { marketplacePackages, marketplaceScopeNotes } from './marketplace';
+import type { PriceId } from './pricing-catalogue';
 import { serviceHighIntentFaqs } from './serviceHighIntentFaqs';
 
 export type ServiceTier = {
   name: string;
-  price: string;
+  priceId: PriceId | null;
   timeline: string;
   deliverables: string[];
-  addOns?: string[];
+  quotedAddOns?: string[];
   notIncluded: string[];
 };
 
@@ -40,12 +41,12 @@ export type Service = {
 
 const tier = (
   name: string,
-  price: string,
+  priceId: PriceId | null,
   timeline: string,
   deliverables: string[],
-  addOns: string[] = [],
+  quotedAddOns: string[] = [],
   notIncluded: string[] = [],
-): ServiceTier => ({ name, price, timeline, deliverables, addOns, notIncluded });
+): ServiceTier => ({ name, priceId, timeline, deliverables, quotedAddOns, notIncluded });
 
 export const coreServiceSlugs = [
   "web-design-development",
@@ -67,7 +68,7 @@ export const services: Service[] = [
     "tiers": [
       {
         "name": "Starter — Single Page",
-        "price": "₹12,000 / $299",
+        "priceId": "web-1",
         "timeline": "3–4 days",
         "deliverables": [
           "Single page responsive website",
@@ -75,19 +76,11 @@ export const services: Service[] = [
           "WhatsApp chat button integration",
           "Mobile optimised"
         ],
-        "addOns": [
-          "GEO & AEO optimisation — ₹4,000 / $79",
-          "JSON-LD schema markup — ₹2,500 / $49",
-          "Google Search Console setup — ₹1,000 / $19",
-          "Analytics tools setup — ₹1,500 / $29",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
-        ],
         "notIncluded": []
       },
       {
         "name": "Business — Multi Page",
-        "price": "₹25,000 / $599",
+        "priceId": "web-2",
         "timeline": "6–8 days",
         "deliverables": [
           "5-page responsive website",
@@ -96,18 +89,11 @@ export const services: Service[] = [
           "Contact form + basic lead capture through mail",
           "Google Search Console setup"
         ],
-        "addOns": [
-          "GEO & AEO optimisation — ₹4,000 / $79",
-          "JSON-LD schema markup — ₹2,500 / $49",
-          "Analytics tools setup — ₹1,500 / $29",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
-        ],
         "notIncluded": []
       },
       {
         "name": "Growth — Full Build",
-        "price": "₹45,000 / $999",
+        "priceId": "web-3",
         "timeline": "10–12 days",
         "deliverables": [
           "8–10 page responsive website",
@@ -116,11 +102,6 @@ export const services: Service[] = [
           "Google Search Console included",
           "WhatsApp + Mail Inquiry System",
           "Blog section setup"
-        ],
-        "addOns": [
-          "Analytics tools setup — ₹1,500 / $29",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
         ],
         "notIncluded": []
       }
@@ -167,7 +148,7 @@ export const services: Service[] = [
     "faqs": [
       {
         "question": "How much does a business website cost at Kraftt Digital?",
-        "answer": "Kraftt Digital websites start at ₹12,000 for a single page, ₹25,000 for a five-page business website, and ₹45,000 for an eight-to-ten-page website. International starting prices are $299, $599 and $999 respectively. Final pricing depends on the agreed pages, features, content and integrations. 3D websites require a custom quotation."
+        "answer": "Kraftt Digital websites start at {{web-1}} for a single page, {{web-2}} for a five-page business website, and {{web-3}} for an eight-to-ten-page website. Final pricing depends on the agreed pages, features, content and integrations. 3D websites require a custom quotation."
       },
       {
         "question": "Which website package is right for my business?",
@@ -191,7 +172,7 @@ export const services: Service[] = [
       },
       {
         "question": "What does website maintenance cost after launch?",
-        "answer": "Optional website maintenance costs ₹1,500 per month or ₹12,000 per year for India, and $29 per month or $249 per year internationally. The proposal defines the support and routine update allowance. New features, additional pages and larger integrations are quoted separately. Domain, hosting and third-party renewal charges remain separate."
+        "answer": "Optional website maintenance costs {{web-1-monthly-maintenance-support}} or {{web-1-annual-maintenance-support}}. The proposal defines the support and routine update allowance. New features, additional pages and larger integrations are quoted separately. Domain, hosting and third-party renewal charges remain separate."
       },
       {
         "question": "Will a new website guarantee enquiries or a first-page Google ranking?",
@@ -210,7 +191,7 @@ export const services: Service[] = [
     "tiers": [
       {
         "name": "Brand Starter",
-        "price": "₹12,000 / $299",
+        "priceId": "brand-1",
         "timeline": "7–8 days",
         "deliverables": [
           "Competitor Research",
@@ -220,16 +201,11 @@ export const services: Service[] = [
           "Typography",
           "Brand voice and tone guide"
         ],
-        "addOns": [
-          "Brand guidelines document — ₹4,000 / $99",
-          "Social media profile kit — ₹3,000 / $79",
-          "Packaging design concept — ₹3,000 / $79"
-        ],
         "notIncluded": []
       },
       {
         "name": "Brand Identity",
-        "price": "₹30,000 / $699",
+        "priceId": "brand-2",
         "timeline": "8–12 days",
         "deliverables": [
           "Competitor Research",
@@ -242,15 +218,11 @@ export const services: Service[] = [
           "Business card + letterhead design",
           "Brand guidelines PDF"
         ],
-        "addOns": [
-          "3 custom brand illustrations — ₹6,500 / $149",
-          "Social media profile kit — ₹3,000 / $79"
-        ],
         "notIncluded": []
       },
       {
         "name": "Full Brand System",
-        "price": "₹55,000 / $1,299",
+        "priceId": "brand-3",
         "timeline": "15–20 days",
         "deliverables": [
           "Competitor Research",
@@ -266,7 +238,6 @@ export const services: Service[] = [
           "Pitch deck template (For ppt's/Pdf's)",
           "Brand guidelines (PDF File)"
         ],
-        "addOns": [],
         "notIncluded": []
       }
     ],
@@ -307,7 +278,7 @@ export const services: Service[] = [
     "faqs": [
       {
         "question": "How much do Kraftt Digital's branding packages cost?",
-        "answer": "Brand Starter starts at ₹12,000/$299, Brand Identity at ₹30,000/$699, and Full Brand System at ₹55,000/$1,299. All three include competitor research, positioning and target-audience work. The packages differ in the depth of the identity system, applications and documentation. Your proposal confirms the final deliverables and price."
+        "answer": "Brand Starter starts at {{brand-1}}, Brand Identity at {{brand-2}}, and Full Brand System at {{brand-3}}. All three include competitor research, positioning and target-audience work. The packages differ in the depth of the identity system, applications and documentation. Your proposal confirms the final deliverables and price."
       },
       {
         "question": "What is the difference between logo design and branding?",
@@ -352,7 +323,7 @@ export const services: Service[] = [
     "tiers": [
       {
         "name": "Launch Store",
-        "price": "₹22,000 / $499",
+        "priceId": "shopify-1",
         "timeline": "7–8 days",
         "deliverables": [
           "Domain connection",
@@ -362,17 +333,11 @@ export const services: Service[] = [
           "Up to 30 products uploaded",
           "Basic Google SEO for store"
         ],
-        "addOns": [
-          "Product mockup images — quantity scoped — ₹4,000 / $79",
-          "Extra product upload — per product — ₹150 / $2",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
-        ],
         "notIncluded": []
       },
       {
         "name": "Growth Store",
-        "price": "₹40,000 / $899",
+        "priceId": "shopify-2",
         "timeline": "8–12 days",
         "deliverables": [
           "Full Brand theme setup + custom sections",
@@ -383,18 +348,11 @@ export const services: Service[] = [
           "WhatsApp chat widget",
           "Email capture + basic automation"
         ],
-        "addOns": [
-          "Product mockup images — quantity scoped — ₹4,000 / $79",
-          "Extra product upload — per product — ₹150",
-          "Blog content setup — ₹6,500 / $149",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
-        ],
         "notIncluded": []
       },
       {
         "name": "Complete Store",
-        "price": "₹70,000 / $1,499",
+        "priceId": "shopify-3",
         "timeline": "18–21 days",
         "deliverables": [
           "Full Shopify build",
@@ -407,12 +365,6 @@ export const services: Service[] = [
           "Email automations",
           "GEO + AEO optimisation",
           "SEO Blog content setup"
-        ],
-        "addOns": [
-          "Weekly SEO blog content — monthly fee — ₹6,500/month / $149/month",
-          "Ongoing store SEO — foundations already set up — ₹8,000/month / $199/month",
-          "Monthly maintenance / support — ₹1,500/month / $29/month",
-          "Annual maintenance / support — ₹12,000/year / $249/year"
         ],
         "notIncluded": []
       }
@@ -459,7 +411,7 @@ export const services: Service[] = [
     "faqs": [
       {
         "question": "How much does an e-commerce website cost at Kraftt Digital?",
-        "answer": "Launch Store starts at ₹22,000/$499, Growth Store at ₹40,000/$899, and Complete Store at ₹70,000/$1,499. Catalogue allowances are up to 30, 50 and 100 products respectively. Platform subscriptions, paid themes, apps and provider charges are separate. Complex functionality and catalogue requirements can change the final quotation."
+        "answer": "Launch Store starts at {{shopify-1}}, Growth Store at {{shopify-2}}, and Complete Store at {{shopify-3}}. Catalogue allowances are up to 30, 50 and 100 products respectively. Platform subscriptions, paid themes, apps and provider charges are separate. Complex functionality and catalogue requirements can change the final quotation."
       },
       {
         "question": "Do you build stores on Shopify, Wix and WooCommerce?",
@@ -467,7 +419,7 @@ export const services: Service[] = [
       },
       {
         "question": "How many products will you upload, and can I add more?",
-        "answer": "Launch Store includes up to 30 products, Growth Store up to 50, and Complete Store up to 100. Additional uploads can be scoped separately; the listed extra-product rate is ₹150, with $2 specified for Launch Store. Variants, image preparation and description writing must be defined alongside the upload count in your proposal."
+        "answer": "Launch Store includes up to 30 products, Growth Store up to 50, and Complete Store up to 100. Additional uploads can be scoped separately; Launch Store lists {{shopify-1-extra-product-upload-per-product}} per additional product. Growth Store extra uploads: {{shopify-2-extra-product-upload-per-product}}. Variants, image preparation and description writing must be defined alongside the upload count in your proposal."
       },
       {
         "question": "Do you write product descriptions and create product images?",
@@ -483,11 +435,11 @@ export const services: Service[] = [
       },
       {
         "question": "Can you teach me how to manage my store?",
-        "answer": "Yes. Platform guidance and training can be included in the agreed store scope so you understand how to manage your catalogue and use the platform. Your proposal should specify the training format, sessions and topics. Ongoing support is available at ₹1,500/month or ₹12,000/year, and $29/month or $249/year internationally, within an agreed allowance."
+        "answer": "Yes. Platform guidance and training can be included in the agreed store scope so you understand how to manage your catalogue and use the platform. Your proposal should specify the training format, sessions and topics. Ongoing support is available at {{shopify-1-monthly-maintenance-support}} or {{shopify-1-annual-maintenance-support}}, within an agreed allowance."
       },
       {
         "question": "Is ongoing SEO included with the store build?",
-        "answer": "The store build includes the launch SEO specified in the selected package. Ongoing SEO is separate. The ₹8,000/$199 monthly store SEO add-on is intended for stores where foundational SEO is already set up; its work allowance is confirmed in the proposal. Weekly SEO blog content is listed separately at ₹6,500/$149 per month."
+        "answer": "The store build includes the launch SEO specified in the selected package. Ongoing SEO is separate. The store SEO add-on ({{shopify-3-ongoing-store-seo-foundations-already-set-up}}) is intended for stores where foundational SEO is already set up; its work allowance is confirmed in the proposal. Weekly SEO blog content is listed separately at {{shopify-3-weekly-seo-blog-content-monthly-fee}}."
       }
     ],
     "relatedProjectSlug": "kiraq-jewellery"
@@ -506,7 +458,7 @@ export const services: Service[] = [
     "tiers": [
       {
         "name": "SEO Starter",
-        "price": "₹12,000/month / $299/month",
+        "priceId": "ecomseo-1",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Google Search Console setup + monitoring",
@@ -515,14 +467,11 @@ export const services: Service[] = [
           "Keyword tracking report",
           "1 researched and human-reviewed SEO article/month"
         ],
-        "addOns": [
-          "GEO & AEO layer — ₹3,500/month / $79/month"
-        ],
         "notIncluded": []
       },
       {
         "name": "SEO Growth",
-        "price": "₹22,000/month / $549/month",
+        "priceId": "ecomseo-2",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Full Search Console management",
@@ -532,14 +481,11 @@ export const services: Service[] = [
           "Relevant outreach: activity target agreed; placements not guaranteed",
           "Monthly performance report"
         ],
-        "addOns": [
-          "Product description rewrites — ₹8,200/month / $199/month"
-        ],
         "notIncluded": []
       },
       {
         "name": "SEO Comprehensive",
-        "price": "₹40,000/month / $999/month",
+        "priceId": "ecomseo-3",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Complete SEO management",
@@ -551,7 +497,6 @@ export const services: Service[] = [
           "Ranking + traffic growth focus",
           "Product description rewrites"
         ],
-        "addOns": [],
         "notIncluded": []
       }
     ],
@@ -592,7 +537,7 @@ export const services: Service[] = [
     "faqs": [
       {
         "question": "How much do Kraftt Digital's SEO services cost per month?",
-        "answer": "SEO Starter costs ₹12,000/$299 per month, SEO Growth ₹22,000/$549, and SEO Comprehensive ₹40,000/$999. Packages vary in page work, content, technical support and research. The separate ₹8,000/$199 store SEO add-on is intended for stores with foundational SEO already in place and has its own agreed scope."
+        "answer": "SEO Starter costs {{ecomseo-1}}, SEO Growth {{ecomseo-2}}, and SEO Comprehensive {{ecomseo-3}}. Packages vary in page work, content, technical support and research. The separate store SEO add-on ({{shopify-3-ongoing-store-seo-foundations-already-set-up}}) is intended for stores with foundational SEO already in place and has its own agreed scope."
       },
       {
         "question": "What is the difference between website SEO setup and ongoing SEO?",
@@ -616,7 +561,7 @@ export const services: Service[] = [
       },
       {
         "question": "How much SEO content is included each month?",
-        "answer": "SEO Starter includes one researched, human-reviewed article per month, Growth includes four, and Comprehensive includes eight. Topics should support the business and the search needs of its customers. Article scope, approvals and publishing responsibilities are agreed in advance. Store packages also list a separate weekly-content add-on at ₹6,500/$149 per month."
+        "answer": "SEO Starter includes one researched, human-reviewed article per month, Growth includes four, and Comprehensive includes eight. Topics should support the business and the search needs of its customers. Article scope, approvals and publishing responsibilities are agreed in advance. Store packages also list a separate weekly-content add-on at {{shopify-3-weekly-seo-blog-content-monthly-fee}}."
       },
       {
         "question": "What does backlink outreach include?",
@@ -636,7 +581,7 @@ export const services: Service[] = [
     "tiers": [
       {
         "name": "Social Starter",
-        "price": "₹12,000/month / $299/month",
+        "priceId": "social-1",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Social media strategy",
@@ -651,15 +596,11 @@ export const services: Service[] = [
           // "Engagement and comment replies",
           // "Monthly performance report"
         ],
-        "addOns": [
-          "Additional platform — ₹4,000/month / $99/month",
-          "AI-generated reel/short — per reel — ₹1,000 / $19"
-        ],
         "notIncluded": []
       },
       {
         "name": "Social Growth",
-        "price": "₹22,000/month / $599/month",
+        "priceId": "social-2",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Social media strategy",
@@ -675,15 +616,12 @@ export const services: Service[] = [
           // "Engagement and comment replies",
           // "Monthly performance report"
         ],
-        "addOns": [
-          "Additional platform — ₹4,000/month / $99/month",
-          "AI-generated reel/short — per reel — ₹1,000 / $19"
-        ],
+        "quotedAddOns": ["Additional platform", "AI-generated reel/short — per reel"],
         "notIncluded": []
       },
       {
         "name": "Social Presence Management",
-        "price": "₹40,000/month / $999/month",
+        "priceId": "social-3",
         "timeline": "Ongoing monthly",
         "deliverables": [
           "Social media strategy",
@@ -699,10 +637,7 @@ export const services: Service[] = [
           // "Engagement and comment replies",
           // "Monthly performance report"
         ],
-        "addOns": [
-          "Additional platform — ₹4,000/month / $99/month",
-          "AI-generated reel/short — per reel — ₹1,000 / $19"
-        ],
+        "quotedAddOns": ["Additional platform", "AI-generated reel/short — per reel"],
         "notIncluded": []
       }
     ],
@@ -744,7 +679,7 @@ export const services: Service[] = [
     "faqs": [
       {
         "question": "How much does Kraftt charge for social media management?",
-        "answer": "Social Starter costs ₹12,000/$299 per month for one platform, Social Growth ₹22,000/$599 for two, and Social Presence Management ₹40,000/$999 for three. Packages include the listed strategy, content work, publishing, engagement, comment replies and monthly reporting. Paid advertising campaign management is excluded."
+        "answer": "Social Starter costs {{social-1}} for one platform, Social Growth {{social-2}} for two, and Social Presence Management {{social-3}} for three. Packages include the listed strategy, content work, publishing, engagement, comment replies and monthly reporting. Paid advertising campaign management is excluded."
       },
       {
         "question": "Does a three-platform package include 90 different posts?",
@@ -760,7 +695,7 @@ export const services: Service[] = [
       },
       {
         "question": "Do you shoot or edit conventional reels and videos?",
-        "answer": "Conventional video shooting and reel/video editing are not included in the listed social packages. AI-generated reels are a separate specified deliverable: Social Starter lists an add-on at ₹1,000/$19 per reel, and Social Presence Management includes five AI-generated reels. Their duration, style, revisions and platform allocation are agreed before production."
+        "answer": "Conventional video shooting and reel/video editing are not included in the listed social packages. AI-generated reels are a separate specified deliverable: Social Starter lists an add-on at {{social-1-ai-generated-reel-short-per-reel}} per reel, and Social Presence Management includes five AI-generated reels. Their duration, style, revisions and platform allocation are agreed before production."
       },
       {
         "question": "Do you run Meta ads, Google ads or paid social campaigns?",
@@ -788,7 +723,7 @@ export const services: Service[] = [
     problemSolved: 'Incomplete product information, inconsistent listings and unfamiliar marketplace setup steps that delay a confident launch.',
     tiers: marketplacePackages.map((pack) => tier(
       `${pack.name} Catalogue`,
-      `₹${pack.price.toLocaleString('en-IN')} · India only`,
+      pack.id,
       pack.timeline,
       pack.includes,
       [],
@@ -835,7 +770,7 @@ export const services: Service[] = [
     idealClient: 'Businesses launching an offer, campaign, event or product that needs a focused page outside the main website journey.',
     problemSolved: 'Campaign traffic arriving on a general website page with too many choices, weak message continuity or no clear conversion path.',
     tiers: [
-      tier('Custom landing-page scope', 'Custom quote', 'Agreed after discovery', ['Offer and audience review', 'Page structure and responsive design', 'Development on the agreed platform', 'Enquiry or conversion path setup', 'Launch checks and handover']),
+      tier('Custom landing-page scope', null, 'Agreed after discovery', ['Offer and audience review', 'Page structure and responsive design', 'Development on the agreed platform', 'Enquiry or conversion path setup', 'Launch checks and handover']),
     ],
     mainDeliverables: ['Landing-page structure', 'Responsive page design and build', 'Clear call-to-action journey', 'Agreed form, WhatsApp or checkout connection'],
     notIncluded: ['Advertising campaign management or media spend', 'Unlisted integrations or automation', 'Ongoing testing and optimisation unless separately agreed'],
@@ -861,7 +796,7 @@ export const services: Service[] = [
     idealClient: 'Businesses with a validated app requirement, known users and a clear operational or customer-facing problem to solve.',
     problemSolved: 'An app idea without prioritised features, user flows, data requirements or a realistic delivery scope.',
     tiers: [
-      tier('Custom application scope', 'Custom quote', 'Agreed after discovery', ['Requirements and feature mapping', 'User journeys and interface design', 'Application development for agreed platforms', 'Testing, release preparation and handover', 'Support terms defined in the proposal']),
+      tier('Custom application scope', null, 'Agreed after discovery', ['Requirements and feature mapping', 'User journeys and interface design', 'Application development for agreed platforms', 'Testing, release preparation and handover', 'Support terms defined in the proposal']),
     ],
     mainDeliverables: ['Prioritised application scope', 'User flows and interface system', 'Android, iOS or cross-platform build as agreed', 'Testing and release preparation'],
     notIncluded: ['App-store fees and third-party subscriptions', 'Unlisted features or integrations', 'Guaranteed approval by Apple, Google or another platform'],
@@ -887,7 +822,7 @@ export const services: Service[] = [
     idealClient: 'Websites, stores and launches that need customer-facing copy, brands building a reusable content library, and teams without an in-house copywriter.',
     problemSolved: 'A launch with no copy, generic product descriptions, weak offer clarity, or no welcome and nurture sequence.',
     tiers: [
-      tier('Custom content scope', 'Custom quote', 'Agreed after discovery', ['Landing or sales-page copy', 'Product descriptions', 'Email sequences as scoped', 'Review and handover of approved copy']),
+      tier('Custom content scope', null, 'Agreed after discovery', ['Landing or sales-page copy', 'Product descriptions', 'Email sequences as scoped', 'Review and handover of approved copy']),
     ],
     mainDeliverables: ['Landing or sales-page copy', 'Search- and conversion-aware product descriptions', 'Email sequence drafts', 'Ad creative copy when included in the agreed scope'],
     notIncluded: ['Website or store build unless paired with a build package', 'Paid media spend and campaign management', 'Claims or technical statements that the client cannot substantiate'],
@@ -913,7 +848,7 @@ export const services: Service[] = [
     idealClient: 'Operations and e-commerce teams managing inventory or orders manually, and businesses ready to replace ad-hoc spreadsheets with one focused tool.',
     problemSolved: 'Disconnected spreadsheets, repetitive data entry, and no central view for inventory, orders, accounts or reporting.',
     tiers: [
-      tier('Custom software scope', 'Custom quote', 'Agreed after discovery', ['Requirements and workflow mapping', 'User roles and data model', 'Prioritised modules and integrations', 'Testing, handover and support terms defined in the proposal']),
+      tier('Custom software scope', null, 'Agreed after discovery', ['Requirements and workflow mapping', 'User roles and data model', 'Prioritised modules and integrations', 'Testing, handover and support terms defined in the proposal']),
     ],
     mainDeliverables: ['Custom admin panel or internal tool', 'Login and role-based access control', 'Operational dashboards and reports', 'API integrations where included'],
     notIncluded: ['Ongoing hosting and provider charges', 'Third-party subscription or transaction fees', 'Unlisted integrations or modules outside the agreed architecture'],
@@ -955,7 +890,7 @@ export const services: Service[] = [
     idealClient: 'D2C brands testing creative variations, founders visualising products before manufacturing, and teams that need more platform-ready assets quickly.',
     problemSolved: 'Creative demand outpacing production capacity, limited shoot budgets, or products that need visualisation before physical samples exist.',
     tiers: [
-      tier('Custom creative scope', 'Custom quote', 'Agreed after discovery', ['Creative brief and brand references', 'Agreed image, copy or video asset counts', 'Human review and refinement', 'Final files in agreed formats']),
+      tier('Custom creative scope', null, 'Agreed after discovery', ['Creative brief and brand references', 'Agreed image, copy or video asset counts', 'Human review and refinement', 'Final files in agreed formats']),
     ],
     mainDeliverables: ['Static and motion ad creative', 'Product mockups and shoot simulations', 'AI-assisted product and email copy', 'Social designs'],
     notIncluded: ['Paid advertising budget or media buying', 'A permanent replacement for real product photography', 'Unreviewed AI output — every delivered asset receives human curation'],

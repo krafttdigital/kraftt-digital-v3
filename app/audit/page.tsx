@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '../components/Footer';
-import { JsonLd } from '../components/JsonLd';
+import { RegionalJsonLd } from '../components/RegionalJsonLd';
 import { RegionalPriceCopy } from '../components/PricingCurrencyProvider';
 import { SiteHeader } from '../components/SiteHeader';
 import { createPageMetadata, createPageSchema, serviceSchema } from '../data/seo';
@@ -29,7 +29,7 @@ const deliverables = [
 export default function AuditPage() {
   return (
     <main className="audit-page">
-      <JsonLd data={createPageSchema({
+      <RegionalJsonLd tiers={[{ name: "Digital Presence Audit", priceId: "audit", deliverables: [pageDescription] }]} data={createPageSchema({
         name: pageTitle,
         description: pageDescription,
         path: '/audit',
@@ -59,7 +59,7 @@ export default function AuditPage() {
           <p>This paid review examines your business, competitors and current online presence, then explains the gaps and priorities. A free introductory call is available if you prefer to talk first.</p>
           <p>Optional. Best if you already have a website or social presence and want an honest review before you spend. It helps us find the best service for your business.</p>
           <div className="audit-hero-price">
-            <div><span>Fixed audit</span><strong><RegionalPriceCopy>₹999</RegionalPriceCopy></strong></div>
+            <div><span>Fixed audit</span><strong><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></strong></div>
             <p>A separate paid service. You do not need an audit to discuss a project.</p>
           </div>
           <ul className="audit-hero-review-list">{reviewed.map((item) => <li key={item}>{item}</li>)}</ul>
@@ -71,7 +71,7 @@ export default function AuditPage() {
             <small>Secure form or WhatsApp · Payment instructions follow after scope confirmation</small>
           </div>
           <div className="audit-form-panel">
-            <div className="audit-form-heading"><span><RegionalPriceCopy>₹999</RegionalPriceCopy></span><div><p className="eyebrow eyebrow-dark">Short guided form</p><h2>Tell us what feels unclear.</h2></div></div>
+            <div className="audit-form-heading"><span><RegionalPriceCopy>{"{{audit}}"}</RegionalPriceCopy></span><div><p className="eyebrow eyebrow-dark">Short guided form</p><h2>Tell us what feels unclear.</h2></div></div>
             <AuditForm />
           </div>
           <ol className="audit-hero-next-steps" aria-label="What happens next">
@@ -94,7 +94,7 @@ export default function AuditPage() {
       </section>
 
       <section className="audit-explainer">
-        <div><p className="eyebrow eyebrow-dark">Why the audit is paid</p><h2>Research deserves protected time.</h2><p><RegionalPriceCopy>The ₹999 fee lets Kraftt study the business properly instead of turning the exercise into a free speculative pitch.</RegionalPriceCopy></p></div>
+        <div><p className="eyebrow eyebrow-dark">Why the audit is paid</p><h2>Research deserves protected time.</h2><p><RegionalPriceCopy>{"The {{audit}} fee lets Kraftt study the business properly instead of turning the exercise into a free speculative pitch."}</RegionalPriceCopy></p></div>
         <div className="audit-next-steps"><p className="eyebrow eyebrow-dark">What happens next</p><ol><li><span>01</span><p><strong>Request reviewed</strong>Your details are checked for fit and completeness.</p></li><li><span>02</span><p><strong>Payment confirmed</strong>Payment instructions and any missing inputs are shared.</p></li><li><span>03</span><p><strong>Research begins</strong>Delivery format and timing are confirmed before work starts.</p></li></ol></div>
       </section>
 

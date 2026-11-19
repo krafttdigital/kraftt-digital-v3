@@ -1,26 +1,28 @@
-export type MarketplacePackage = { name: string; price: number; timeline: string; includes: string[] };
+import type { PriceId } from './pricing-catalogue';
 
-export const marketplacePackages: MarketplacePackage[] = [
+export type MarketplacePackage = { name: string; id: PriceId; timeline: string; productAllowance: number; includes: string[] };
+
+const packages: MarketplacePackage[] = [
   {
     "name": "Starter",
-    "price": 15000,
+    "id": "marketplace-1",
     "timeline": "8–10 days",
+    "productAllowance": 30,
     "includes": [
       "Account setup and verification assistance",
       "Product and Niche Research",
-      "Up to 30 products uploaded",
       "Pricing calculation support",
       "Platform Working Tutorial"
     ]
   },
   {
     "name": "Intermediate",
-    "price": 25000,
+    "id": "marketplace-2",
     "timeline": "14–15 days",
+    "productAllowance": 50,
     "includes": [
       "Account setup and verification assistance",
       "Detailed Product and Niche Research",
-      "Up to 50 products uploaded",
       "Pricing calculation support",
       "Platform Working Tutorial",
       "Basic structured SEO Title and descriptions for Product"
@@ -28,12 +30,12 @@ export const marketplacePackages: MarketplacePackage[] = [
   },
   {
     "name": "Growth",
-    "price": 50000,
+    "id": "marketplace-3",
     "timeline": "18–20 days",
+    "productAllowance": 100,
     "includes": [
       "Account setup and verification assistance",
       "Detailed product, niche and competitor research",
-      "Up to 100 products uploaded",
       "Pricing calculation support",
       "Platform Working Tutorial",
       "Proper structured SEO Titles and descriptions for Product",
@@ -41,9 +43,19 @@ export const marketplacePackages: MarketplacePackage[] = [
     ]
   }
 ];
+
+export const marketplacePackages = packages.map(pkg => ({
+  ...pkg,
+  includes: [
+    ...pkg.includes.slice(0, 2),
+    `Up to ${pkg.productAllowance} products uploaded`,
+    ...pkg.includes.slice(2),
+  ],
+}));
+
 export const marketplaceScopeNotes = [
-  "India only. All three packages cover Amazon, Flipkart, Myntra and Meesho. Starter starts at ₹15,000.",
-  "Product allowances are 30 / 50 / 100. Allocation across platforms and variant counting must be written into the quotation.",
+  "Published marketplace rates are for India. All three packages cover Amazon, Flipkart, Myntra and Meesho.",
+  `Product allowances are ${marketplacePackages.map(pkg => pkg.productAllowance).join(' / ')}. Allocation across platforms and variant counting must be written into the quotation.`,
   "Platform verification and listing approval are outside Kraftt’s control. Timelines depend on documents and platform processing.",
   "Client handles stock, orders, fulfilment, returns and customer support. Kraftt does not manage ad campaigns.",
   "Mockup quantities and ongoing listing optimisation allowances are defined in the proposal."

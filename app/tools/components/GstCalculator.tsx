@@ -42,7 +42,7 @@ export function GstCalculator() {
       <div className="tool-form-heading"><p className="tool-eyebrow">GST amount and split</p><h2>Add tax or reverse an inclusive total.</h2></div>
       <OptionQuestion label="What do you want to calculate?" value={mode} onChange={(value) => { setMode(value); setShowResult(false); }} options={[{ value: 'exclusive', label: 'Exclusive → Inclusive' }, { value: 'inclusive', label: 'Inclusive → Breakdown' }]} />
       <div className="tool-field-grid">
-        <Field label={mode === 'inclusive' ? 'Total inclusive amount (₹)' : 'Base amount (₹)'}><input type="number" min="0" step="0.01" inputMode="decimal" value={amount} onChange={(event) => { setAmount(event.target.value); setShowResult(false); }} placeholder="25000" required /></Field>
+        <Field label={mode === 'inclusive' ? 'Total inclusive amount (INR)' : 'Base amount (INR)'}><input type="number" min="0" step="0.01" inputMode="decimal" value={amount} onChange={(event) => { setAmount(event.target.value); setShowResult(false); }} placeholder="25000" required /></Field>
         <Field label="GST rate"><select value={rate} onChange={(event) => { setRate(event.target.value); setShowResult(false); }}><option value="5">5%</option><option value="12">12%</option><option value="18">18%</option><option value="28">28%</option><option value="custom">Custom</option></select></Field>
         {rate === 'custom' && <Field label="Custom GST rate (%)"><input type="number" min="0" step="0.01" inputMode="decimal" value={customRate} onChange={(event) => { setCustomRate(event.target.value); setShowResult(false); }} placeholder="Enter rate" required /></Field>}
       </div>

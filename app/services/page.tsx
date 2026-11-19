@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { AnimatedServiceIcon } from '../components/AnimatedServiceIcon';
 import { Footer } from '../components/Footer';
-import { JsonLd } from '../components/JsonLd';
-import { RegionalPriceCopy } from '../components/PricingCurrencyProvider';
+import { RegionalJsonLd } from '../components/RegionalJsonLd';
+import { PriceText, PricingControls, RegionalPriceCopy } from '../components/PricingCurrencyProvider';
 import { Reveal } from '../components/Reveal';
 import { SiteHeader } from '../components/SiteHeader';
 import { createPageMetadata, createPageSchema, faqSchema } from '../data/seo';
@@ -20,7 +20,7 @@ export const metadata: Metadata = createPageMetadata({ title: pageTitle, descrip
 const toServiceCard = (service: (typeof services)[number]) => ({
   ...service,
   href: `/services/${service.slug}`,
-  price: service.tiers[0].price,
+  priceId: service.tiers[0].priceId,
   timeline: service.tiers[0].timeline,
   summary: service.problemSolved,
 });
@@ -61,7 +61,7 @@ function ServiceCard({ service, index, actionLabel }: {
         {service.productProof && <small>{service.productProof.name} · Kraftt product proof</small>}
       </div>
       <dl>
-        <div><dt>Starts at</dt><dd><RegionalPriceCopy>{service.price}</RegionalPriceCopy></dd></div>
+        <div><dt>Starts at</dt><dd><PriceText id={service.priceId} from /></dd></div>
         <div><dt>First delivery</dt><dd>{service.timeline}</dd></div>
       </dl>
       <div className="services-flow-card-action"><span>{actionLabel}</span><ArrowRight size={17} /></div>
@@ -96,8 +96,8 @@ const servicesPageFaqs = [
     ],
   },
   {
-    question: 'How much do digital agency services cost in India?',
-    answer: 'Kraftt offers published starting packages and custom-scoped work. Website and brand identity projects currently start from ₹12,000, e-commerce development from ₹22,000, and ongoing SEO and social media management from ₹12,000 per month. Apps, software and more complex requirements are quoted after discovery.',
+    question: 'How much do digital agency services cost?',
+    answer: 'Kraftt offers published starting packages and custom-scoped work. Starting prices include websites ({{web-1}}), brand identity ({{brand-1}}), e-commerce development ({{shopify-1}}), ongoing SEO ({{ecomseo-1}}) and social media management ({{social-1}}). Apps, software and more complex requirements are quoted after discovery.',
     links: [{ label: 'Compare services and prices', href: '#service-menu' }],
   },
   {
@@ -128,10 +128,10 @@ const servicesPageFaqs = [
   },
   {
     question: 'How do I start a project with Kraftt Digital?',
-    answer: 'Start with a free introductory call to explain the requirement. Kraftt then reviews the need, recommends the appropriate service, confirms scope, timing, fees and responsibilities, and begins only after the written proposal and agreement are approved. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.',
+    answer: 'Start with a free introductory call to explain the requirement. Kraftt then reviews the need, recommends the appropriate service, confirms scope, timing, fees and responsibilities, and begins only after the written proposal and agreement are approved. Choose the {{audit}} audit when the decision needs deeper business, competitor and digital-presence research.',
     links: [
       { label: 'Request a free call', href: '/contact' },
-      { label: 'Request the ₹999 audit', href: '/audit' },
+      { label: 'Explore the paid audit', href: '/audit' },
     ],
   },
 ];
@@ -139,7 +139,7 @@ const servicesPageFaqs = [
 export default function ServicesPage() {
   return (
     <main className="services-clarity-page">
-      <JsonLd data={createPageSchema({
+      <RegionalJsonLd data={createPageSchema({
         name: pageTitle,
         description: pageDescription,
         path: '/services',
@@ -179,6 +179,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="services-flow-catalogue" id="service-menu" aria-labelledby="services-catalogue-title">
+        <PricingControls />
         <Reveal className="services-flow-showcase-heading services-flow-services-heading" direction="left">
           <p><span>01</span> — Core services</p>
           <h2 id="services-catalogue-title">Choose what your business needs next.</h2>
@@ -229,9 +230,9 @@ export default function ServicesPage() {
         <div className="page-faq-inner">
           <Reveal className="page-faq-heading" direction="left">
             <div><p className="eyebrow eyebrow-dark">Services FAQ · quick decisions</p><h2 id="services-faq-title">Clear answers<br /><em>before you choose.</em></h2></div>
-            <div><p>Compare service fit, likely investment and the right starting point. Get quick direction on a call or use the audit for deeper research.</p><span className="page-faq-actions"><Link href="/contact">Request a free call <ArrowRight size={14} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={14} /></Link></span></div>
+            <div><p>Compare service fit, likely investment and the right starting point. Get quick direction on a call or use the audit for deeper research.</p><span className="page-faq-actions"><Link href="/contact">Request a free call <ArrowRight size={14} /></Link><Link href="/audit">Explore the paid audit <ArrowUpRight size={14} /></Link></span></div>
           </Reveal>
-          <PageFaq title="Kraftt Digital services questions" items={servicesPageFaqs} categoryTitles={['Choosing a service', 'Scope, pricing and next steps']} />
+          <PageFaq title="Kraftt Digital services questions" items={servicesPageFaqs.map(faq => ({ ...faq, answer: <RegionalPriceCopy>{faq.answer}</RegionalPriceCopy> }))} categoryTitles={['Choosing a service', 'Scope, pricing and next steps']} />
         </div>
       </section>
       <Footer />

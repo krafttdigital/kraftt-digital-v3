@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { GeoServicePage } from '../../../components/geo/GeoServicePage';
 import { enabledRegionServices, isRegionServiceEnabled, regionBySlug, regionServiceAlternates, regions } from '../../../data/geo';
+import { formatServicePrice } from '../../../data/pricing';
 import { createPageMetadata } from '../../../data/seo';
 import { serviceBySlug } from '../../../data/services';
 
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ country: 
   return createPageMetadata({
     title: `${service.name} in India for ${region.shortName} Businesses | Kraftt Digital`,
     description: `Kraftt provides ${service.name.toLowerCase()} from India for ${region.shortName} businesses through documented scope, remote collaboration and existing regional package pricing.`,
+    pricingDescription: formatServicePrice(service.tiers[0].priceId, 'USD', true),
     path: `/region/${region.slug}/${service.slug}`,
     label: `${service.name.replace(' & Development', '')} · ${region.shortName}`,
     locale: region.ogLocale,

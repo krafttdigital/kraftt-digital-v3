@@ -1,8 +1,7 @@
-import { detectPricingCurrency } from '../../data/pricing.server';
+import { geographicCurrency } from '../../data/pricing';
 
-export async function GET() {
-  const currency = await detectPricingCurrency();
-  return Response.json({ currency }, {
-    headers: { 'Cache-Control': 'private, no-store' },
-  });
+// Keep the existing endpoint deterministic for callers passing a page path.
+export function GET(request: Request) {
+  const path = new URL(request.url).searchParams.get('path') ?? '/';
+  return Response.json({ currency: geographicCurrency(path) ?? 'INR' });
 }

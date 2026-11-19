@@ -144,7 +144,7 @@ export function DigitalPresenceScore() {
             </div>
             <div className="tool-result-cta">
               <h3>Your free score flags the categories.</h3>
-              <p><RegionalPriceCopy>The ₹999 Digital Presence Audit tells you exactly what to fix and how — in detail, not a summary.</RegionalPriceCopy></p>
+              <p><RegionalPriceCopy>{"The {{audit}} Digital Presence Audit tells you exactly what to fix and how — in detail, not a summary."}</RegionalPriceCopy></p>
               <ResultActions
                 serviceHref={serviceByFocus[result.focus].href}
                 serviceLabel={serviceByFocus[result.focus].label}

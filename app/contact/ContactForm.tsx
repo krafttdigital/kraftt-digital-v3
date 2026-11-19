@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { services } from '../data/services';
 import { whatsappUrl } from '../data/site';
 import { parseLeadHandoff } from '../data/handoff';
+import { usePricingCurrency } from '../components/PricingCurrencyProvider';
+import { pricingEnquiry, pricingMarket } from '../data/pricing';
 
 const formspreeEndpoint = 'https://formspree.io/f/mgawjopk';
 const fields = [
@@ -18,6 +20,7 @@ const fields = [
 ] as const;
 
 export function ContactForm() {
+  const currency = usePricingCurrency();
   const formRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(false);
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -42,10 +45,18 @@ export function ContactForm() {
     return form?.reportValidity() ? form : null;
   }
 
+  function submission(form: HTMLFormElement) {
+    const data = new FormData(form);
+    const params = new URLSearchParams(window.location.search);
+    const pricing = pricingEnquiry(params, currency, parseLeadHandoff(params).service?.slug);
+    for (const [name, value] of Object.entries(pricing)) data.set(name, value);
+    return data;
+  }
+
   function sendWhatsApp() {
     const form = validForm();
     if (!form) return;
-    const data = new FormData(form);
+    const data = submission(form);
     const details = fields
       .map(([key, label]) => [label, String(data.get(key) ?? '').trim()] as const)
       .filter(([, value]) => value)
@@ -55,7 +66,10 @@ export function ContactForm() {
     const service = String(data.get('service') || 'a project');
     const source = String(data.get('source') || 'page');
     const pageName = source === 'score' ? 'Digital Presence Score' : source === 'calculator' ? 'calculator' : source === 'offer' ? 'offer' : service === 'a project' ? 'website' : 'Services';
-    window.open(whatsappUrl(`Hi Kraftt, I'd like a free call about ${service} (from the ${pageName} page).\n\n${details}`), '_blank', 'noopener,noreferrer');
+    const estimate = data.get('estimate_summary');
+    const region = `Pricing region: ${currency === 'INR' ? 'India · INR' : 'International · USD'}.`;
+    const extra = estimate ? `\nCalculator estimate (${data.get('estimate_currency')}):\n${estimate}` : '';
+    window.open(whatsappUrl(`Hi Kraftt, I'd like a free call about ${service} (from the ${pageName} page).\n\n${details}\n${region}${extra}`), '_blank', 'noopener,noreferrer');
   }
 
   async function sendForm(event: FormEvent<HTMLFormElement>) {
@@ -67,7 +81,7 @@ export function ContactForm() {
     try {
       const response = await fetch(formspreeEndpoint, {
         method: 'POST',
-        body: new FormData(form),
+        body: submission(form),
         headers: { Accept: 'application/json' },
       });
       if (!response.ok) throw new Error('Could not send enquiry');
@@ -88,6 +102,8 @@ export function ContactForm() {
       <input type="hidden" name="place" defaultValue="" />
       <input type="hidden" name="source" defaultValue="" />
       <input type="hidden" name="band" defaultValue="" />
+      <input type="hidden" name="pricing_market" value={pricingMarket(currency)} />
+      <input type="hidden" name="pricing_currency" value={currency} />
       <div className="audit-field-grid">
         <label><span>Your name *</span><input name="name" autoComplete="name" placeholder="Your name" required /></label>
         <label><span>Email *</span><input name="email" type="email" autoComplete="email" placeholder="you@business.com" required /></label>
@@ -96,6 +112,7 @@ export function ContactForm() {
         <label className="audit-field-span"><span>A few words about your project *</span><textarea name="message" rows={3} maxLength={1000} placeholder="What are you trying to improve or launch?" required /></label>
       </div>
       <label className="audit-consent"><input type="checkbox" name="consent" value="Yes" required /><span>I agree to Kraftt using these details to reply to my enquiry. See the <Link href="/legal/privacy-policy">privacy policy</Link>.</span></label>
+      <p className="contact-form-note">Pricing region: {currency === 'INR' ? 'India · INR' : 'International · USD'}</p>
       <div className="contact-form-actions">
         <button className="button button-accent" type="submit" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Send enquiry'} <span aria-hidden="true">→</span></button>
         <button className="button button-outline-dark" type="button" onClick={sendWhatsApp}>Send on WhatsApp <span aria-hidden="true">↗</span></button>

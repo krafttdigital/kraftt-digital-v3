@@ -4,12 +4,11 @@ import type { LocationMarket, RegionMarket } from '../../data/geo';
 import { projectBySlug } from '../../data/projects';
 import { createPageSchema, faqSchema, serviceSchema } from '../../data/seo';
 import type { Service } from '../../data/services';
-import { whatsappUrl } from '../../data/site';
 import { contactHandoff } from '../../data/handoff';
 import { Footer } from '../Footer';
 import { HomeShowcase } from '../HomeShowcase';
-import { JsonLd } from '../JsonLd';
-import { RegionalPriceCopy } from '../PricingCurrencyProvider';
+import { RegionalJsonLd } from '../RegionalJsonLd';
+import { PackageAddOns, PriceText, PricingControls, PricingWhatsApp, RegionalPriceCopy } from '../PricingCurrencyProvider';
 import { ProjectCard } from '../ProjectCard';
 import { Reveal } from '../Reveal';
 import { SiteHeader } from '../SiteHeader';
@@ -60,11 +59,11 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
   const intro = serviceIntro(service, market, kind);
   const faqs = geoFaqs(service, market, kind);
   const relatedProject = projectBySlug(service.relatedProjectSlug);
-  const message = whatsappUrl(`Hi Kraftt, I'd like a free call about ${service.name} in ${marketName} (from the ${marketName} Services page).`);
+  const message = `Hi Kraftt, I'd like a free call about ${service.name} in ${marketName} (from the ${marketName} Services page).`;
 
   return (
     <main className={styles.page}>
-      <JsonLd data={createPageSchema({
+      <RegionalJsonLd tiers={service.tiers} data={createPageSchema({
         name: `${service.name} in ${marketName} | Kraftt Digital`,
         description: intro,
         path,
@@ -101,20 +100,22 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
         </Reveal>
       </section>
 
-      <section className={styles.packages} aria-labelledby="geo-packages-title">
+      <section className={styles.packages} id="packages" aria-labelledby="geo-packages-title">
         <Reveal className={styles.sectionHeading}>
           <div><p className="eyebrow">Existing packages · published pricing</p><h2 id="geo-packages-title">Choose the depth.<br /><em>Keep scope visible.</em></h2></div>
           <p>Packages, deliverables and independently configured regional prices come directly from the main {service.name} service data.</p>
         </Reveal>
+        <PricingControls />
         <div className={styles.packageGrid}>
           {service.tiers.map((tier, index) => (
             <Reveal className={styles.packageCard} delay={index * 0.05} key={tier.name}>
               <div><span>{String(index + 1).padStart(2, '0')}</span><small>{tier.timeline}</small></div>
               <h3>{tier.name}</h3>
-              <strong><RegionalPriceCopy>{tier.price}</RegionalPriceCopy></strong>
+              <strong><PriceText id={tier.priceId} from /></strong>
               <p>What you receive</p>
               <ul>{tier.deliverables.map((item) => <li key={item}><Check size={14} aria-hidden="true" /><span>{item}</span></li>)}</ul>
-              <a href={message}>Discuss this package <ArrowRight size={15} aria-hidden="true" /></a>
+              <PackageAddOns id={tier.priceId} quoted={tier.quotedAddOns} />
+              <PricingWhatsApp id={tier.priceId} message={`${message} I’m interested in ${tier.name}.`}>Discuss this package <ArrowRight size={15} aria-hidden="true" /></PricingWhatsApp>
             </Reveal>
           ))}
         </div>
@@ -155,7 +156,7 @@ export function GeoServicePage({ kind, market, service, siblingServices }: GeoSe
 
       <section className={styles.cta} aria-labelledby="geo-service-cta-title">
         <Reveal direction="left"><p className="eyebrow">Choose the next clear step</p><h2 id="geo-service-cta-title">Discuss {service.name.toLowerCase()}.<br /><em>Start with clarity.</em></h2></Reveal>
-        <Reveal className={styles.ctaActions} direction="right"><p>Start with a free call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={contactHandoff(service.slug, 'page', market.slug)}>Request a free call <ArrowRight size={15} /></Link><a href={message}>Message about this service <ArrowRight size={15} /></a></div></Reveal>
+        <Reveal className={styles.ctaActions} direction="right"><p>Start with a free call to discuss your requirement. A paid audit is available separately if deeper research would help.</p><div><Link href={contactHandoff(service.slug, 'page', market.slug)}>Request a free call <ArrowRight size={15} /></Link><PricingWhatsApp message={message}>Message about this service <ArrowRight size={15} /></PricingWhatsApp></div></Reveal>
       </section>
 
       <Footer />

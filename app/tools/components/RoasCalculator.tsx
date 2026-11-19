@@ -5,12 +5,11 @@ import { trackEvent } from '../../../lib/analytics/core';
 import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Field, ResultPanel, revealResult } from './CalculatorPrimitives';
 import { Button, ResultActions } from './ToolSuite';
-import { usePricingCurrency } from '../../components/PricingCurrencyProvider';
-import { formatRegionalAmount } from '../../data/pricing';
+import { formatRegionalAmount, type PricingCurrency } from '../../data/pricing';
+import { InputCurrencySelect } from './InputCurrencySelect';
 
 export function RoasCalculator() {
-  const currency = usePricingCurrency();
-  const currencySymbol = currency === 'INR' ? '₹' : '$';
+  const [currency, setCurrency] = useState<PricingCurrency>('INR');
   const [spend, setSpend] = useState('');
   const [revenue, setRevenue] = useState('');
   const [margin, setMargin] = useState('');
@@ -29,7 +28,8 @@ export function RoasCalculator() {
   return <>
     <form className="tool-calculator tool-wrap-wide" id="tool-workspace" onSubmit={calculate}>
       <div className="tool-form-heading"><p className="tool-eyebrow">Advertising return</p><h2>Measure return against real margin.</h2></div>
-      <div className="tool-field-grid"><Field label={`Ad spend (${currencySymbol})`}><input type="number" min="0.01" step="0.01" value={spend} onChange={(event) => { setSpend(event.target.value); setShowResult(false); }} placeholder="25000" required /></Field><Field label={`Revenue from those ads (${currencySymbol})`}><input type="number" min="0" step="0.01" value={revenue} onChange={(event) => { setRevenue(event.target.value); setShowResult(false); }} placeholder="100000" required /></Field><Field label="Profit margin (%) — optional" hint="Add this to see break-even ROAS and profit after ads."><input type="number" min="0.01" max="100" step="0.1" value={margin} onChange={(event) => { setMargin(event.target.value); setShowResult(false); }} placeholder="40" /></Field></div>
+      <InputCurrencySelect currency={currency} change={next => { setCurrency(next); setSpend(''); setRevenue(''); setShowResult(false); }} />
+      <div className="tool-field-grid"><Field label={`Ad spend (${currency})`}><input type="number" min="0.01" step="0.01" value={spend} onChange={(event) => { setSpend(event.target.value); setShowResult(false); }} placeholder="Enter spend" required /></Field><Field label={`Revenue from those ads (${currency})`}><input type="number" min="0" step="0.01" value={revenue} onChange={(event) => { setRevenue(event.target.value); setShowResult(false); }} placeholder="Enter revenue" required /></Field><Field label="Profit margin (%) — optional" hint="Add this to see break-even ROAS and profit after ads."><input type="number" min="0.01" max="100" step="0.1" value={margin} onChange={(event) => { setMargin(event.target.value); setShowResult(false); }} placeholder="40" /></Field></div>
       <Button type="submit" disabled={!valid}>{valid ? 'Calculate ROAS' : `Calculate ROAS (${answered}/2 answered)`}</Button>
     </form>
     {showResult && <section className="tool-results" ref={resultRef} aria-live="polite"><div className="tool-wrap"><ResultPanel eyebrow="Return on ad spend" title={`${result.roas.toFixed(2)}x`}>

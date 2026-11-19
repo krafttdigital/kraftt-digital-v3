@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { LocationServicePage as LocationServiceContent } from '../../_components/LocationServicePage';
 import { enabledLocationServices, isLocationServiceEnabled, locationBySlug, locations } from '../../../data/geo';
+import { formatServicePrice } from '../../../data/pricing';
 import { createPageMetadata } from '../../../data/seo';
 import { serviceBySlug } from '../../../data/services';
 
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   return createPageMetadata({
     title: `${service.name} in ${location.name} | Kraftt Digital`,
     description: `Kraftt provides ${service.name.toLowerCase()} for ${location.name} businesses through clear scope, existing package options and a research-led delivery process.`,
+    pricingDescription: formatServicePrice(service.tiers[0].priceId, 'INR', true),
     path: `/location/${location.slug}/${service.slug}`,
     label: `${service.name.replace(' & Development', '')} · ${location.name}`,
   });

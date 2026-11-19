@@ -5,14 +5,13 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Clock3 } from 'lucide-react';
 import { AnimatedServiceIcon } from '../../components/AnimatedServiceIcon';
 import { Footer } from '../../components/Footer';
-import { JsonLd } from '../../components/JsonLd';
-import { RegionalPriceCopy } from '../../components/PricingCurrencyProvider';
+import { RegionalJsonLd } from '../../components/RegionalJsonLd';
+import { PackageAddOns, PriceText, PricingControls, PricingWhatsApp, RegionalPriceCopy } from '../../components/PricingCurrencyProvider';
 import { Reveal } from '../../components/Reveal';
 import { SiteHeader } from '../../components/SiteHeader';
 import { regionServiceAlternates } from '../../data/geo';
 import { createPageMetadata, createPageSchema, faqSchema, serviceSchema } from '../../data/seo';
 import { serviceBySlug, services } from '../../data/services';
-import { whatsappUrl } from '../../data/site';
 import { contactHandoff } from '../../data/handoff';
 import { PageFaq } from '@/components/ui/faq-6';
 
@@ -63,10 +62,10 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = serviceBySlug(slug);
   if (!service) notFound();
 
-  const serviceMessage = whatsappUrl(`Hi Kraftt, I'd like a free call about ${service.name} (from the Services page).`);
+  const serviceMessage = `Hi Kraftt, I'd like a free call about ${service.name} (from the Services page).`;
   const contactHref = contactHandoff(service.slug, 'page');
   const discussionLabel = discussionLabels[service.slug] ?? 'Discuss your requirements';
-  const isCustomScope = service.tiers.length === 1 || service.tiers[0].price.toLowerCase().includes('custom');
+  const isCustomScope = service.tiers.every(tier => tier.priceId === null);
   const isMarketplaceService = service.slug === 'marketplace-catalogue-building';
   const featuredFaqs = service.faqs.slice(0, 5);
   const processLabels = ['Introduce', 'Define', 'Create', 'Review', 'Deliver'];
@@ -78,7 +77,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
   return (
     <main className="service-simple-page">
-      <JsonLd data={createPageSchema({
+      <RegionalJsonLd tiers={service.tiers} data={createPageSchema({
         name: `${service.name} Service | Kraftt Digital`, description: service.headline, path: `/services/${service.slug}`,
         breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }, { name: service.name, path: `/services/${service.slug}` }],
         entities: [serviceSchema({ name: service.name, description: service.problemSolved, path: `/services/${service.slug}` }), faqSchema(featuredFaqs, `/services/${service.slug}`)],
@@ -93,7 +92,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             <Reveal className="service-simple-hero-panel" direction="right">
               <div className="service-simple-hero-panel-head"><span>Start with clarity</span><strong>At a glance</strong></div>
               <div className="service-simple-hero-facts">
-                <div><span>Starting at</span><strong><RegionalPriceCopy>{service.tiers[0].price}</RegionalPriceCopy></strong></div>
+                <div><span>Starting at</span><strong><PriceText id={service.tiers[0].priceId} from /></strong></div>
                 <div><span>First delivery</span><strong>{service.tiers[0].timeline}</strong></div>
                 <div><span>Scope options</span><strong>{service.tiers.length === 1 ? 'Custom' : `${service.tiers.length} packages`}</strong></div>
               </div>
@@ -130,7 +129,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               <p>{isCustomScope ? 'Tell us what the business needs and receive a tailored recommendation after discovery.' : 'Start with the depth that fits now. Deliverables, timing and responsibilities are confirmed before work begins.'}</p>
               <ul><li><Check size={15} /> Free introductory call</li><li><Check size={15} /> Clear scope and quotation</li><li><Check size={15} /> Review before finalisation</li></ul>
               <Link href="#packages">{isCustomScope ? 'Review the service scope' : 'Compare packages'} <ArrowRight size={15} /></Link>
-              <a href={serviceMessage}>{discussionLabel} <ArrowUpRight size={15} /></a>
+              <PricingWhatsApp message={serviceMessage}>{discussionLabel} <ArrowUpRight size={15} /></PricingWhatsApp>
             </Reveal>
           </div>
           {(service.scopeClarification || service.scopeDetails) && <Reveal className="service-simple-scope-note">
@@ -147,13 +146,14 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="service-simple-packages" id="packages" aria-labelledby="service-packages-title">
         <div className="service-simple-shell">
           <Reveal className="service-simple-section-head"><div><p className="eyebrow eyebrow-dark">Investment and delivery</p><h2 id="service-packages-title">Packages &amp; scope</h2></div><p>Compare the included work and delivery window. Provider charges and anything outside the written scope remain separate.</p></Reveal>
+          <PricingControls />
           <div className={`service-simple-package-grid service-simple-package-grid-${service.tiers.length}`}>
             {service.tiers.map((tier, index) => <Reveal className="service-simple-package" delay={index * .04} key={tier.name}>
-              <div className="service-simple-package-top"><span>0{index + 1}</span>{index === 1 ? <span className="service-simple-package-popular">Popular</span> : <Clock3 size={16} />}</div><h3>{tier.name}</h3><strong><RegionalPriceCopy>{tier.price}</RegionalPriceCopy></strong><small>{tier.timeline}</small>
+              <div className="service-simple-package-top"><span>0{index + 1}</span>{index === 1 ? <span className="service-simple-package-popular">Popular</span> : <Clock3 size={16} />}</div><h3>{tier.name}</h3><strong><PriceText id={tier.priceId} from /></strong><small>{tier.timeline}</small>
               <ul>{tier.deliverables.slice(0, 6).map((item) => <li key={item}><Check size={14} /><span>{item}</span></li>)}</ul>
               {tier.deliverables.length > 6 && <details><summary>View {tier.deliverables.length - 6} more inclusions <span>+</span></summary><ul>{tier.deliverables.slice(6).map((item) => <li key={item}><Check size={14} /><span>{item}</span></li>)}</ul></details>}
-              {tier.addOns && tier.addOns.length > 0 && <details><summary>Optional add-ons <span>+</span></summary><ul>{tier.addOns.map((item) => <li key={item}><ArrowRight size={13} /><RegionalPriceCopy>{item}</RegionalPriceCopy></li>)}</ul></details>}
-              <a href={whatsappUrl(`Hi Kraftt, I would like to discuss the ${tier.name} option for ${service.name}.`)}>Discuss this option <ArrowRight size={15} /></a>
+              <PackageAddOns id={tier.priceId} quoted={tier.quotedAddOns} />
+              <PricingWhatsApp id={tier.priceId} message={`Hi Kraftt, I would like to discuss the ${tier.name} option for ${service.name}.`}>Discuss this option <ArrowRight size={15} /></PricingWhatsApp>
             </Reveal>)}
           </div>
           <Reveal className="service-simple-scope-note"><strong>{service.slug === 'brand-identity' ? 'Scope to confirm' : 'Not included by default'}</strong><div>{service.notIncluded.map((item) => <p key={item}>{item}</p>)}</div></Reveal>
@@ -181,9 +181,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="page-faq-section" id="service-faq" aria-labelledby="service-faq-title"><div className="page-faq-inner">
         <Reveal className="page-faq-heading" direction="left">
           <div><p className="eyebrow eyebrow-dark">Before you decide · 05 focused answers</p><h2 id="service-faq-title">Questions before<br /><em>you begin.</em></h2></div>
-          <div><p>Five clear answers about scope, investment, timing and ownership for {service.name.toLowerCase()}.</p><span className="page-faq-actions"><Link href={contactHref}>Request a free call <ArrowRight size={15} /></Link><Link href="/audit">Request the ₹999 audit <ArrowUpRight size={15} /></Link></span></div>
+          <div><p>Five clear answers about scope, investment, timing and ownership for {service.name.toLowerCase()}.</p><span className="page-faq-actions"><Link href={contactHref}>Request a free call <ArrowRight size={15} /></Link><Link href="/audit">Request the <PriceText id="audit" /> audit <ArrowUpRight size={15} /></Link></span></div>
         </Reveal>
-        <PageFaq title={`${service.name} questions`} items={featuredFaqs} categoryTitles={['Scope and investment', 'Delivery and ownership']} />
+        <PageFaq title={`${service.name} questions`} items={featuredFaqs.map(faq => ({ ...faq, answer: <RegionalPriceCopy>{faq.answer}</RegionalPriceCopy> }))} categoryTitles={['Scope and investment', 'Delivery and ownership']} />
       </div></section>
 
       <section className="service-simple-related" aria-labelledby="related-services-title"><div className="service-simple-shell">
@@ -197,7 +197,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         </Reveal>)}</div>
       </div></section>
 
-      <section className="service-simple-final"><Reveal direction="left"><p className="eyebrow">Choose the right first step</p><h2>Discuss the requirement.<br /><em>Decide with clarity.</em></h2></Reveal><Reveal direction="right"><p>Use the free call for quick direction. Choose the ₹999 audit when the decision needs deeper business, competitor and digital-presence research.</p><div><Link href={contactHref}>Request a free call <ArrowRight size={15} /></Link><Link href="/audit"><RegionalPriceCopy>Request the ₹999 audit</RegionalPriceCopy> <ArrowUpRight size={15} /></Link></div></Reveal></section>
+      <section className="service-simple-final"><Reveal direction="left"><p className="eyebrow">Choose the right first step</p><h2>Discuss the requirement.<br /><em>Decide with clarity.</em></h2></Reveal><Reveal direction="right"><p>Use the free call for quick direction. Choose the <PriceText id="audit" /> audit when the decision needs deeper business, competitor and digital-presence research.</p><div><Link href={contactHref}>Request a free call <ArrowRight size={15} /></Link><Link href="/audit">Request the <PriceText id="audit" /> audit <ArrowUpRight size={15} /></Link></div></Reveal></section>
       <Footer />
     </main>
   );

@@ -53,11 +53,12 @@ const changedTerms = m.copy(base); changedTerms.clauses[0].body = 'Manually agre
 // Exercise the full site's real catalogue, not studio-specific production presets.
 const c = loadQuotationModule('catalogue');
 const { services } = loadProjectModule('app/data/services.ts'), { bundles } = loadProjectModule('app/data/bundles.ts');
+const { addOnIds, priceFor } = loadProjectModule('app/data/pricing.ts');
 const catalogue = c.buildCatalogue(services, bundles);
 assert.equal(catalogue.filter(item => !item.id.startsWith('addon-')).length, services.reduce((n, service) => n + service.tiers.length, 0) + bundles.length);
 assert.equal(new Set(catalogue.map(item => item.id)).size, catalogue.length, 'Catalogue IDs must be unique');
-for (const service of services) for (const tier of service.tiers) for (const raw of tier.addOns || []) {
-  const name = raw.replace(/\s+—\s+₹.*$/, '');
+for (const service of services) for (const tier of service.tiers) for (const id of addOnIds(tier.priceId)) {
+  const { name } = priceFor(id, 'INR');
   assert.ok(catalogue.some(item => item.id.startsWith('addon-') && item.name === name), `Missing add-on: ${name}`);
 }
 const maintenance = catalogue.filter(item => /^(Monthly|Annual) maintenance \/ support$/.test(item.name));

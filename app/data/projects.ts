@@ -133,7 +133,7 @@ export const projects: Project[] = [
     liveUrl: 'https://mittalarchitect.in',
     workCategory: 'Professional Services',
     industry: 'Architecture & Interior Design',
-    package: 'Website Growth (₹45,000)',
+    package: 'Website Growth (₹45,000 INR, historical)',
     metrics: [
       { icon: '▦', value: 'Projects', label: 'Structured portfolio', note: 'Detailed project pages help visitors assess the practice.', kind: 'Delivery' },
       { icon: '→', value: 'Direct', label: 'WhatsApp route', note: 'Visitors can open a prepared enquiry message.', kind: 'Delivery' },
@@ -173,11 +173,11 @@ export const projects: Project[] = [
     liveUrl: 'https://kiraq.in',
     workCategory: 'Consumer Brands',
     industry: 'Jewellery & Lifestyle E-commerce',
-    package: 'Brand Identity + Website Business (₹25,000) + Social Starter + AI Ad Creatives',
+    package: 'Brand Identity + Website Business (₹25,000 INR, historical) + Social Starter + AI Ad Creatives',
     metrics: [
       { icon: '◎', value: '05', label: 'Social platforms', note: 'Instagram, Facebook, Threads, Pinterest and YouTube were set up.', kind: 'Scope' },
       { icon: '▦', value: '01', label: 'Self-serve admin', note: 'Products, pricing, descriptions and reviews can be managed internally.', kind: 'Delivery' },
-      { icon: '₹', value: '₹25K', label: 'Website package', note: 'Custom Business website package, alongside identity and launch support.', kind: 'Scope' },
+      { icon: '₹', value: '₹25K INR', label: 'Website package', note: 'Custom Business website package, alongside identity and launch support.', kind: 'Scope' },
       { icon: '✓', value: '01', label: 'Connected launch', note: 'Identity, store, social setup and AI creatives launched as one system.', kind: 'Qualitative' },
     ],
     competitors: ['Salty.in', 'JewelMars.in', 'Yellow Chimes', 'Influencer-led jewellery brands'],
